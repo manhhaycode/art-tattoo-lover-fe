@@ -1,7 +1,3 @@
-import config from '@/config';
-import { Fragment } from 'react';
+import AppRoutes from './AppRoutes';
 
-//Public routes
-const publicRoutes = [{ path: config.routes.home, component: Fragment }];
-
-export { publicRoutes };
+export default AppRoutes;

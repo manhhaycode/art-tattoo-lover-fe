@@ -3,10 +3,47 @@
 @tailwind utilities;
 
 :root {
+    --dark-theme: #18191a;
+    --gray-dark: #242526;
+    --search-gray-dark: #3a3b3c;
+    --button-primary: #ff3b5c;
+    --hover-button-primary: #fe2c55;
 }
 
 body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+}
+
+.animation-search-big-bar {
+    transition:
+        transform 250ms ease,
+        opacity 150ms 100ms ease,
+        visibility 0ms 125ms;
+}
+
+.animation-search-small-bar {
+    transition:
+        transform 250ms ease,
+        opacity 250ms ease,
+        visibility 0ms 125ms;
+}
+
+.animation-header {
+    transition: height 250ms ease;
+}
+
+.transform-scale-search-big {
+    transform: scale(0.41, 0.7272727272727273) translateY(-3.25rem);
+    visibility: hidden;
+    opacity: 0;
+}
+
+.transform-scale-search-small {
+    transform: scale(2.4390243902439024, 1.375) translateY(3.25rem);
+    visibility: hidden;
+    opacity: 0;
 }
