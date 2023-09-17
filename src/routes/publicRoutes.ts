@@ -1,7 +1,6 @@
 import config from '@/config';
 import { Discover, Home } from '@/features/misc';
 import DefaultLayout from '@/layouts/DefaultLayout';
-import { Fragment } from 'react';
 
 //Public routes
 const publicRoutes = [
