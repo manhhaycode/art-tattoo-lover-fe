@@ -3,7 +3,6 @@ import { MenuIcon } from '@/assets/icons';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import { UserStatus } from '@/assets/icons/icon';
-import { useEffect } from 'react';
 export default function Header() {
     return (
         <div
