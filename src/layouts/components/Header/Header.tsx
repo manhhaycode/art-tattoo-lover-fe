@@ -5,8 +5,14 @@ import SearchBar from './SearchBar';
 import { UserStatus } from '@/assets/icons/icon';
 export default function Header() {
     return (
-        <div id="header" className="header-wrapper w-full bg-gray-dark h-20 relative animation-header">
-            <div className="header-container flex h-20 mx-auto 2xl:w-[1372px] justify-between items-center">
+        <div
+            id="header"
+            onClick={(e) => {
+                e.stopPropagation();
+            }}
+            className="header-wrapper w-full bg-gray-dark h-20 relative animation-header"
+        >
+            <div className="header-container flex h-20 mx-auto 2xl:w-[1372px] justify-between items-center relative z-10">
                 <div className="flex gap-x-[60px] items-center">
                     <Link to="/">
                         <img width="194" src={logo}></img>

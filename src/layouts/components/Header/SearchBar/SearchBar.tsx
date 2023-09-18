@@ -10,8 +10,8 @@ export default function SearchBar() {
         (e: MouseEvent<HTMLDivElement>) => {
             console.log(searchBigRef, searchSmallRef, isSearchBarVisible);
             if (searchBigRef.current && searchSmallRef.current) {
+                e.stopPropagation();
                 if (!isSearchBarVisible) {
-                    e.stopPropagation();
                     searchBigRef.current.classList.toggle('transform-scale-search-big');
                     searchSmallRef.current.classList.toggle('transform-scale-search-small');
                     document.getElementById('header')?.classList.toggle('h-40');
@@ -46,7 +46,7 @@ export default function SearchBar() {
             <div
                 onClick={handleClickSearchSmallBar}
                 ref={searchSmallRef}
-                className="h-[50px] rounded-3xl bg-search-gray-dark flex h- px-6 gap-x-[20px] items-center cursor-pointer animation-search-small-bar"
+                className="h-[50px] rounded-3xl bg-search-gray-dark flex h- px-6 gap-x-[20px] items-center cursor-pointer animation-search-small-bar relative"
             >
                 <div className="flex gap-x-[10px]">
                     <div className="font-medium text-placeholder-gray">Tìm kiếm Tattoo Studio</div>
@@ -62,27 +62,27 @@ export default function SearchBar() {
                     e.stopPropagation();
                 }}
                 ref={searchBigRef}
-                className="absolute top-0 left-0 w-full origin-[50%_0%] animation-search-big-bar transform-scale-search-big px-20"
+                className="absolute top-0 left-0 z-0 w-full origin-[50%_0%] animation-search-big-bar transform-scale-search-big px-20 pointer-events-none"
             >
-                <div className="pb-3">
-                    <div className="max-w-[850px] mx-auto">
+                <div className="pb-3 pointer-events-none">
+                    <div className="max-w-[850px] mx-auto pointer-events-none">
                         <div className="flex h-[80px] items-center justify-evenly">
-                            <Link to="/" className="font-medium text-lg">
+                            <Link to="/" className="font-medium text-lg pointer-events-auto">
                                 Artist Nổi Bật
                             </Link>
-                            <Link to="/" className="font-medium text-lg">
+                            <Link to="/" className="font-medium text-lg pointer-events-auto">
                                 News Feed
                             </Link>
                         </div>
-                        <div className="h-[66px] rounded-[32px] bg-search-gray-dark flex px-6 gap-x-[20px] items-center cursor-pointer relative justify-between">
+                        <div className="h-[66px] rounded-[32px] bg-search-gray-dark flex pl-6 pr-2 gap-x-[20px] items-center cursor-pointer relative justify-between pointer-events-auto">
                             <div className="flex gap-x-56">
                                 <div className="font-medium text-placeholder-gray">Tìm kiếm Tattoo Studio</div>
                                 <div className="border-[1px] border-solid border-[#B0B3B8] absolute left-1/2 bottom-1/2 h-8 translate-y-[50%]"></div>
                                 <div className="font-medium text-placeholder-gray">Dịch vụ bất kỳ</div>
                             </div>
-                            <button className="flex gap-x-3 py-2 pl-4 pr-[20px] items-center bg-button-primary rounded-3xl w-[164px]">
-                                <SearchIcon styles={{ stroke: '#fff' }} />
-                                <p className="justify-self-center font-medium text-lg">Tìm Kiếm</p>
+                            <button className="flex gap-x-2 p-[14px] items-center bg-button-primary rounded-3xl">
+                                <SearchIcon styles={{ stroke: '#fff', strokeWidth: '3', width: '20', height: '20' }} />
+                                <p className="justify-self-center font-semibold text-base leading-none">Tìm Kiếm</p>
                             </button>
                         </div>
                     </div>
