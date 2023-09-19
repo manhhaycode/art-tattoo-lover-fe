@@ -15,6 +15,7 @@ export default {
                 'search-gray-dark': '#3A3B3C',
                 'button-primary': '#FF3B5C',
                 'hover-button-primary': '#FE2C55',
+                'stroke-gray': '#424249',
                 'placeholder-gray': 'rgba(176,179,184,0.7)',
             },
         },
