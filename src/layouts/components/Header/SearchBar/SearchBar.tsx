@@ -1,6 +1,6 @@
 import { SearchIcon } from '@/assets/icons';
 import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Input from '@/components/common/Input';
 import Modal from '@/components/Modal';
@@ -19,6 +19,7 @@ export default function SearchBar({
     const serviceRef = useRef<HTMLButtonElement>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [studioName, setStudioName] = useState('');
+    const location = useLocation();
 
     const handleClickSearchSmallBar = useCallback(
         (e: MouseEvent<HTMLDivElement>) => {
@@ -83,6 +84,11 @@ export default function SearchBar({
             setClickOutside(false);
         }
     }, [clickOutside, setClickOutside]);
+
+    useEffect(() => {
+        handleCloseSearchBigBar();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location]);
 
     return (
         <div

@@ -1,6 +1,9 @@
 const routes = {
     home: '/',
-    discover: '/discover',
+    discovery: '/discovery',
+    becomeStudio: '/become-studio',
+    topArtist: 'top-artist',
+    newsFeed: 'news-feed',
     artist: '/@:artistId',
     searchLocation: '/search-location',
     searchStudio: '/search-studio',
