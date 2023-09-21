@@ -157,6 +157,7 @@ export default function SearchBar({
                         <div className="h-[66px] rounded-[32px] bg-search-gray-dark flex px-2 items-center cursor-pointer relative justify-between pointer-events-auto">
                             <div className="flex items-center w-full">
                                 <Input
+                                    type="header"
                                     onClick={() => {
                                         inputRef.current?.classList.add('!bg-[rgb(80,82,83)]');
                                     }}
@@ -167,7 +168,6 @@ export default function SearchBar({
                                     }}
                                     className="pl-4 h-12 rounded-3xl w-3/5"
                                     placeholder="Tìm kiếm Tattoo Studio"
-                                    type="text"
                                 />
                                 <div className="border-[1px] border-solid border-[#B0B3B8] h-8 mx-3"></div>
                                 <button
@@ -189,7 +189,7 @@ export default function SearchBar({
                                             e.stopPropagation();
                                         }}
                                         animate={isModalVisible}
-                                        className="mt-3 py-4 absolute top-full -left-[10px"
+                                        className="mt-3 py-4 absolute top-full -left-[10px]"
                                     >
                                         <h1 className="font-semibold text-sm ml-1 py-2 mb-5">
                                             Tìm kiếm các dịch vụ Tattoo

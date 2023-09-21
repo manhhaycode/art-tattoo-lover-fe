@@ -11,6 +11,7 @@ export default {
             },
             fontFamily: {
                 sans: ['Montserrat', 'sans-serif'],
+                'serif-slide': ['Bevan', 'serif'],
             },
             colors: {
                 'dark-theme': '#18191A',
