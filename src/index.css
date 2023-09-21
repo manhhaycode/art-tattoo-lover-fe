@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .modal *::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+    .modal *::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+}
+
 :root {
     --dark-theme: #18191a;
     --gray-dark: #242526;
@@ -18,9 +27,33 @@ body {
     color: #fff;
 }
 
+button {
+    all: unset;
+}
+
 textarea:focus,
 input:focus {
     outline: none;
+}
+
+html *::-webkit-scrollbar {
+    @media (max-width: 992px) {
+        width: 0;
+        height: 0;
+    }
+    width: 5px;
+    height: 5px;
+    background-color: transparent;
+}
+
+html *::-webkit-scrollbar-thumb {
+    background-color: #ff3b5c;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+}
+
+html *::-webkit-scrollbar-track {
+    background-color: #424249;
 }
 
 header::after {

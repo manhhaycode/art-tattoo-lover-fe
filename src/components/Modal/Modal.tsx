@@ -31,9 +31,14 @@ export default function Modal({ children, ...props }: { children: React.ReactNod
             initial="closed"
             animate={props.animate ? 'open' : 'closed'}
             variants={variants}
-            className={'max-w-[850px] bg-gray-dark absolute origin-[50%_5%] ' + props.className}
+            className={
+                'modal max-w-[850px] bg-gray-dark absolute origin-[50%_5%] w-[436px] shadow-shadow-modal rounded-3xl text-white pr-1 ' +
+                props.className
+            }
         >
-            {children}
+            <div className="p-4 pr-3  overscroll-contain overflow-x-hidden overflow-auto max-h-[calc(100vh-210px)]">
+                <div className="mt-2 mb-4 px-5">{children}</div>
+            </div>
         </motion.div>
     );
 }

@@ -8,7 +8,7 @@ export default function Header() {
     const [clickOutside, setClickOutside] = useState(false);
     return (
         <header
-            className="fixed w-full animation-header bg-gray-dark z-[10000] after:bg-gray-dark"
+            className="sticky top-0 w-full animation-header bg-gray-dark z-[10000] after:bg-gray-dark"
             onClick={(e) => {
                 if (e.currentTarget.contains(e.target as Node)) e.stopPropagation();
                 setClickOutside(true);
