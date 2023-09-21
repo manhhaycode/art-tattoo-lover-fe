@@ -1,9 +1,17 @@
 import { SearchIcon } from '@/assets/icons';
 import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Input from '@/components/common/Input';
 import Modal from '@/components/Modal';
+import { db } from '@/assets/data';
+import Image from '@/components/common/Image';
+
+interface IService {
+    id?: number;
+    name?: string;
+    image?: string;
+}
 
 export default function SearchBar({
     clickOutside,
@@ -17,9 +25,11 @@ export default function SearchBar({
     const searchBigRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const serviceRef = useRef<HTMLButtonElement>(null);
+    const [serviceChoose, setServiceChoose] = useState<IService>({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [studioName, setStudioName] = useState('');
     const location = useLocation();
+    const navigate = useNavigate();
 
     const handleClickSearchSmallBar = useCallback(
         (e: MouseEvent<HTMLDivElement>) => {
@@ -93,9 +103,9 @@ export default function SearchBar({
     return (
         <div
             onClick={(e) => {
-                if (e.target !== serviceRef.current) {
+                if (!serviceRef.current?.contains(e.target as Node)) {
                     setIsModalVisible(false);
-                } else if (e.currentTarget.contains(e.target as Node)) {
+                } else {
                     e.stopPropagation();
                 }
             }}
@@ -165,23 +175,69 @@ export default function SearchBar({
                                     onClick={() => {
                                         setIsModalVisible(true);
                                     }}
-                                    className="font-medium font-sans text-placeholder-gray w-2/5 h-12 flex items-center hover:bg-[rgb(80,82,83)] rounded-3xl pl-4 relative"
+                                    className={
+                                        'font-medium font-sans text-placeholder-gray hover:bg-[rgb(80,82,83)] w-2/5 h-12 flex items-center rounded-3xl pl-4 relative'
+                                    }
                                 >
-                                    Dịch vụ bất kỳ
+                                    {serviceChoose.name ? (
+                                        <p className="text-white">{serviceChoose.name}</p>
+                                    ) : (
+                                        'Dịch vụ bất kỳ'
+                                    )}
                                     <Modal
                                         onClick={(e) => {
                                             e.stopPropagation();
                                         }}
                                         animate={isModalVisible}
-                                        className="w-[416px] min-h-[500px] bg-gray-dark mt-6 absolute top-full left-0 border-[1px] border-solid border-[#B0B3B8] rounded-3xl"
+                                        className="mt-3 py-4 absolute top-full -left-[10px"
                                     >
-                                        <div>s</div>
+                                        <h1 className="font-semibold text-sm ml-1 py-2 mb-5">
+                                            Tìm kiếm các dịch vụ Tattoo
+                                        </h1>
+                                        <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+                                            {db.servicesTattoo.map((service) => {
+                                                return (
+                                                    <div key={service.id} className="flex flex-col">
+                                                        <Image
+                                                            onClick={() => {
+                                                                setServiceChoose(service);
+                                                                setIsModalVisible(false);
+                                                                serviceRef.current?.classList.add(
+                                                                    '!bg-[rgb(58,59,60)]',
+                                                                );
+                                                                setTimeout(() => {
+                                                                    serviceRef.current?.classList.remove(
+                                                                        '!bg-[rgb(58,59,60)]',
+                                                                    );
+                                                                }, 350);
+                                                            }}
+                                                            style={
+                                                                serviceChoose.id === service.id
+                                                                    ? { borderColor: '#FF3B5C' }
+                                                                    : {}
+                                                            }
+                                                            className="rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-modal"
+                                                            src={service.img}
+                                                        />
+                                                        <div className="flex items-center flex-grow">
+                                                            <p className="text-sm mt-2 mx-px">{service.name}</p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     </Modal>
                                 </button>
                             </div>
                             <motion.button
                                 whileTap={{ scale: 0.8 }}
-                                transition={{ type: 'spring', stiffness: 500, damping: 10 }}
+                                onTap={() => {
+                                    handleCloseSearchBigBar();
+                                    navigate(
+                                        '/search-studio?studioName=' + studioName + '&service=' + serviceChoose.name,
+                                    );
+                                }}
+                                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                                 className="flex gap-x-2 p-[14px] items-center bg-button-primary rounded-3xl min-w-fit ml-3"
                             >
                                 <SearchIcon styles={{ stroke: '#fff', strokeWidth: '3', width: '20', height: '20' }} />
