@@ -62,7 +62,6 @@ export default function SearchBar({
 
     const handleCloseSearchBigBarWhenClickOutside = useCallback(
         (e: globalThis.MouseEvent) => {
-            console.log(e.currentTarget, e.target);
             if (!document.getElementsByTagName('header')[0].contains(e.target as Node)) {
                 handleCloseSearchBigBar();
             }
