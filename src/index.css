@@ -9,6 +9,16 @@
     .modal *::-webkit-scrollbar-track {
         background-color: transparent;
     }
+
+    .input-search-location:hover,
+    .service-search-location:hover {
+        box-shadow: inset 0 0 0 0.125rem #a9afbb;
+    }
+
+    .input-search-location:focus-within,
+    .service-search-location:focus-within {
+        box-shadow: inset 0 0 0 0.125rem #121417;
+    }
 }
 
 :root {
