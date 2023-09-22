@@ -1,11 +1,12 @@
 import { db } from '@/assets/data';
 import { MapPinIcon, SearchIcon } from '@/assets/icons';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from '../common/Image';
 import Input from '../common/Input';
-import Modal from '../Modal';
+import DropdownImage from '../Dropdown';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useSearchLocationStore } from '@/store/componentStore';
 
 interface IService {
     id?: number;
@@ -16,9 +17,18 @@ interface IService {
 export default function SearchBarLoction() {
     const serviceRef = useRef<HTMLButtonElement>(null);
     const [loctionName, setNameLoction] = useState('');
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [serviceChoose, setServiceChoose] = useState<IService>({});
+    const setLocation = useSearchLocationStore((state) => state.setLocation);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setLocation(loctionName);
+        }, 400);
+        return () => clearTimeout(timeout);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loctionName]);
 
     return (
         <div className="w-[90%] flex items-center bg-white shadow-[0_0_0_4px_#fff] mx-auto h-16 rounded-2xl">
@@ -44,35 +54,37 @@ export default function SearchBarLoction() {
                     <button
                         ref={serviceRef}
                         onClick={() => {
-                            if (!isModalVisible) setIsModalVisible(true);
+                            if (!isDropdownVisible) setIsDropdownVisible(true);
                         }}
                         onBlur={() => {
                             console.log('blur');
-                            setIsModalVisible(false);
+                            setIsDropdownVisible(false);
                         }}
                         className={
                             'font-medium font-sans text-[#8e8e8e] w-full h-12 flex items-center rounded-3xl pl-4 relative cursor-pointer'
                         }
                     >
                         {serviceChoose.name ? <p className="text-black">{serviceChoose.name}</p> : 'Dịch vụ bất kỳ'}
-                        <Modal
+                        <DropdownImage
                             onClick={(e) => {
                                 e.stopPropagation();
                             }}
-                            animate={isModalVisible}
+                            animate={isDropdownVisible}
                             className="mt-4 py-4 absolute top-full -left-[18px] w-[500px]"
                         >
                             <h1 className="font-semibold text-sm ml-1 py-2 mb-5">Tìm kiếm các dịch vụ Tattoo</h1>
-                            <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+                            <div className="grid grid-cols-3 gap-x-3 gap-y-4">
                                 {db.servicesTattoo.map((service) => {
                                     return (
                                         <div key={service.id} className="flex flex-col">
                                             <Image
                                                 onClick={() => {
                                                     setServiceChoose(service);
-                                                    setIsModalVisible(false);
+                                                    setIsDropdownVisible(false);
                                                 }}
-                                                className="rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-modal"
+                                                className={'rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown '.concat(
+                                                    service.id === serviceChoose.id ? '!border-button-primary' : '',
+                                                )}
                                                 src={service.img}
                                             />
                                             <div className="flex items-center flex-grow">
@@ -82,7 +94,7 @@ export default function SearchBarLoction() {
                                     );
                                 })}
                             </div>
-                        </Modal>
+                        </DropdownImage>
                     </button>
                 </div>
                 <motion.button

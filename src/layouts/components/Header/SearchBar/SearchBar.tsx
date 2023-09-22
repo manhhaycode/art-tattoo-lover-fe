@@ -3,7 +3,7 @@ import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Input from '@/components/common/Input';
-import Modal from '@/components/Modal';
+import DrodownImage from '@/components/Dropdown';
 import { db } from '@/assets/data';
 import Image from '@/components/common/Image';
 
@@ -26,7 +26,7 @@ export default function SearchBar({
     const inputRef = useRef<HTMLInputElement>(null);
     const serviceRef = useRef<HTMLButtonElement>(null);
     const [serviceChoose, setServiceChoose] = useState<IService>({});
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [studioName, setStudioName] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
@@ -55,7 +55,7 @@ export default function SearchBar({
                 serviceRef.current?.classList.remove('!bg-[rgb(80,82,83)]');
                 document.getElementsByTagName('header')[0].classList.toggle('scale-header');
                 setIsSearchBarVisible(false);
-                setIsModalVisible(false);
+                setIsDropdownVisible(false);
             }
         }
     }, [isSearchBarVisible]);
@@ -79,17 +79,17 @@ export default function SearchBar({
     }, [handleCloseSearchBigBar, handleCloseSearchBigBarWhenClickOutside]);
 
     useEffect(() => {
-        if (isModalVisible) {
+        if (isDropdownVisible) {
             inputRef.current?.classList.remove('!bg-[rgb(80,82,83)]');
             serviceRef.current?.classList.add('!bg-[rgb(80,82,83)]');
         } else {
             serviceRef.current?.classList.remove('!bg-[rgb(80,82,83)]');
         }
-    }, [isModalVisible, isSearchBarVisible]);
+    }, [isDropdownVisible, isSearchBarVisible]);
 
     useEffect(() => {
         if (clickOutside) {
-            setIsModalVisible(false);
+            setIsDropdownVisible(false);
             setClickOutside(false);
         }
     }, [clickOutside, setClickOutside]);
@@ -103,7 +103,7 @@ export default function SearchBar({
         <div
             onClick={(e) => {
                 if (!serviceRef.current?.contains(e.target as Node)) {
-                    setIsModalVisible(false);
+                    setIsDropdownVisible(false);
                 } else {
                     e.stopPropagation();
                 }
@@ -117,7 +117,7 @@ export default function SearchBar({
                     <div
                         className="font-medium text-placeholder-gray h-full flex items-center"
                         onClick={(e) => {
-                            setIsModalVisible(false);
+                            setIsDropdownVisible(false);
                             handleClickSearchSmallBar(e);
                             inputRef.current?.classList.add('!bg-[rgb(80,82,83)]');
                         }}
@@ -128,7 +128,7 @@ export default function SearchBar({
                     <div
                         className="font-medium text-placeholder-gray h-full flex items-center"
                         onClick={(e) => {
-                            setIsModalVisible(true);
+                            setIsDropdownVisible(true);
                             handleClickSearchSmallBar(e);
                         }}
                     >
@@ -172,7 +172,7 @@ export default function SearchBar({
                                 <button
                                     ref={serviceRef}
                                     onClick={() => {
-                                        setIsModalVisible(true);
+                                        setIsDropdownVisible(true);
                                     }}
                                     className={
                                         'font-medium font-sans text-placeholder-gray hover:bg-[rgb(80,82,83)] w-2/5 h-12 flex items-center rounded-3xl pl-4 relative'
@@ -183,11 +183,11 @@ export default function SearchBar({
                                     ) : (
                                         'Dịch vụ bất kỳ'
                                     )}
-                                    <Modal
+                                    <DrodownImage
                                         onClick={(e) => {
                                             e.stopPropagation();
                                         }}
-                                        animate={isModalVisible}
+                                        animate={isDropdownVisible}
                                         className="mt-3 py-4 absolute top-full -left-[10px]"
                                     >
                                         <h1 className="font-semibold text-sm ml-1 py-2 mb-5">
@@ -200,7 +200,7 @@ export default function SearchBar({
                                                         <Image
                                                             onClick={() => {
                                                                 setServiceChoose(service);
-                                                                setIsModalVisible(false);
+                                                                setIsDropdownVisible(false);
                                                                 serviceRef.current?.classList.add(
                                                                     '!bg-[rgb(58,59,60)]',
                                                                 );
@@ -215,7 +215,7 @@ export default function SearchBar({
                                                                     ? { borderColor: '#FF3B5C' }
                                                                     : {}
                                                             }
-                                                            className="rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-modal"
+                                                            className="rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown"
                                                             src={service.img}
                                                         />
                                                         <div className="flex items-center flex-grow">
@@ -225,7 +225,7 @@ export default function SearchBar({
                                                 );
                                             })}
                                         </div>
-                                    </Modal>
+                                    </DrodownImage>
                                 </button>
                             </div>
                             <motion.button

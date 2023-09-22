@@ -1,6 +1,6 @@
 import { HTMLMotionProps, motion, Variants } from 'framer-motion';
 
-export default function Modal({ children, ...props }: { children: React.ReactNode } & HTMLMotionProps<'div'>) {
+export default function DrodownImage({ children, ...props }: { children: React.ReactNode } & HTMLMotionProps<'div'>) {
     const variants: Variants = props.variants || {
         open: {
             scale: 1,
