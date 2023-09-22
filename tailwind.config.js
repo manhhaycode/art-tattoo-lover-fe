@@ -4,7 +4,7 @@ export default {
     theme: {
         extend: {
             boxShadow: {
-                'shadow-modal': '0 0 0 2px #393a3b',
+                'shadow-dropdown': '0 0 0 2px #393a3b',
             },
             backgroundImage: {
                 'header-stroke': "url('/src/assets/img/stroke-header.png')",
