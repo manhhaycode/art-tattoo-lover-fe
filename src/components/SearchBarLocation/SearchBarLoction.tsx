@@ -7,6 +7,8 @@ import DropdownImage from '../Dropdown';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSearchLocationStore } from '@/store/componentStore';
+import { useAutoCompleteLocation } from '@/features/misc/api/placeAPI';
+import { v4 as uuidv4 } from 'uuid';
 
 interface IService {
     id?: number;
@@ -19,16 +21,29 @@ export default function SearchBarLoction() {
     const [loctionName, setNameLoction] = useState('');
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [serviceChoose, setServiceChoose] = useState<IService>({});
-    const setLocation = useSearchLocationStore((state) => state.setLocation);
+    const { setLocation, setAutocomplete, setSessionToken, location, autocomplete, sessionToken } =
+        useSearchLocationStore();
+    const { data } = useAutoCompleteLocation({ input: location, sessionToken: sessionToken });
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (data && data.predictions.length > 0) {
+            setAutocomplete(data);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data]);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
             setLocation(loctionName);
-        }, 400);
+        }, 500);
         return () => clearTimeout(timeout);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loctionName]);
+
+    if (autocomplete) {
+        console.log(autocomplete.predictions);
+    }
 
     return (
         <div className="w-[90%] flex items-center bg-white shadow-[0_0_0_4px_#fff] mx-auto h-16 rounded-2xl">
@@ -100,6 +115,7 @@ export default function SearchBarLoction() {
                 <motion.button
                     whileTap={{ scale: 0.8 }}
                     onTap={() => {
+                        setSessionToken(uuidv4());
                         navigate('/search-location?locationName=' + loctionName + '&service=' + serviceChoose.name);
                     }}
                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}
