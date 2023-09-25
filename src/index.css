@@ -19,6 +19,11 @@
     .service-search-location:focus-within {
         box-shadow: inset 0 0 0 0.125rem #121417;
     }
+
+    .list-category {
+        content: '';
+        box-shadow: #393a3b 0 2px 0;
+    }
 }
 
 :root {
@@ -39,6 +44,7 @@ body {
 
 button {
     all: unset;
+    cursor: pointer;
 }
 
 textarea:focus,

@@ -1,3 +1,4 @@
-import DrodownImage from './DropdownImage';
+import DropdownImage from './DropdownImage';
+import Dropdown from './Dropdown';
 
-export default DrodownImage;
+export { DropdownImage, Dropdown };

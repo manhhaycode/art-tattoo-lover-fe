@@ -1,15 +1,14 @@
 import { db } from '@/assets/data';
-import { MapPinIcon, SearchIcon } from '@/assets/icons';
-import { useState, useRef, useEffect } from 'react';
+import { MapPinIcon, SearchIcon, TargetIcon } from '@/assets/icons';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from '../common/Image';
 import Input from '../common/Input';
-import DropdownImage from '../Dropdown';
+import { Dropdown, DropdownImage } from '../Dropdown';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { useAutoCompleteLocation } from '@/features/misc/api/placeAPI';
-import { v4 as uuidv4 } from 'uuid';
-
+import { useGeoLocation } from '@/lib/hooks';
 interface IService {
     id?: number;
     name?: string;
@@ -20,10 +19,12 @@ export default function SearchBarLoction() {
     const serviceRef = useRef<HTMLButtonElement>(null);
     const [loctionName, setNameLoction] = useState('');
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const [isAutocompleteVisible, setIsAutocompleteVisible] = useState(false);
     const [serviceChoose, setServiceChoose] = useState<IService>({});
-    const { setLocation, setAutocomplete, setSessionToken, location, autocomplete, sessionToken } =
-        useSearchLocationStore();
-    const { data } = useAutoCompleteLocation({ input: location, sessionToken: sessionToken });
+    const [isGeolocation, setIsGeolocation] = useState(false);
+    const { setLocation, setAutocomplete, location, autocomplete, sessionToken } = useSearchLocationStore();
+    const { data, isFetching } = useAutoCompleteLocation({ input: location, sessionToken: sessionToken });
+    const geolocation = useGeoLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,6 +42,15 @@ export default function SearchBarLoction() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loctionName]);
 
+    const handleClickOutsite = useCallback(() => {
+        if (isAutocompleteVisible) setIsAutocompleteVisible(false);
+    }, [isAutocompleteVisible]);
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutsite);
+        return () => document.removeEventListener('click', handleClickOutsite);
+    }, [handleClickOutsite]);
+
     if (autocomplete) {
         console.log(autocomplete.predictions);
     }
@@ -48,19 +58,85 @@ export default function SearchBarLoction() {
     return (
         <div className="w-[90%] flex items-center bg-white shadow-[0_0_0_4px_#fff] mx-auto h-16 rounded-2xl">
             <div className="p-1 h-full w-3/5 ">
-                <div className="input-search-location p-1 rounded-2xl h-full flex items-center">
+                <div
+                    className="input-search-location p-1 rounded-2xl h-full flex items-center relative"
+                    onClick={(e) => {
+                        if (e.currentTarget.contains(e.target as Node)) e.stopPropagation();
+                    }}
+                >
                     <div className="p-3">
                         <MapPinIcon styles={{ color: '#000' }} />
                     </div>
                     <Input
                         value={loctionName || ''}
+                        onFocus={() => {
+                            if (!isAutocompleteVisible) setIsAutocompleteVisible(true);
+                            if (isGeolocation) setIsGeolocation(false);
+                        }}
                         onChange={(e) => {
-                            if (e.target.value !== ' ') setNameLoction(e.target.value);
+                            if (e.target.value !== ' ') {
+                                setNameLoction(e.target.value);
+                            }
                         }}
                         className="mr-1 input-container"
                         type="primary"
                         placeholder="Tìm kiếm theo địa điểm, quận, tên đường..."
                     />
+                    <Dropdown
+                        tabIndex={-1}
+                        animate={isAutocompleteVisible}
+                        className="bg-white !text-black h-fit absolute top-full left-0 w-full"
+                    >
+                        <ul className="font-medium flex flex-col gap-y-1">
+                            {isFetching && (
+                                <li className="flex items-center justify-center">
+                                    <p className="w-1/2">Đang Feching</p>
+                                </li>
+                            )}
+                            {isGeolocation && (
+                                <li className="flex items-center justify-center">
+                                    <p className="w-1/2">
+                                        Chúng tôi không thể xác định vị trí hiện tại của bạn. Vui lòng nhập địa chỉ hoặc
+                                        cấp quyền truy cập vị trí (nếu có)
+                                    </p>
+                                </li>
+                            )}
+                            {location.length === 0 && !isGeolocation && (
+                                <li>
+                                    <button
+                                        title="suggest-location-item"
+                                        className="flex items-center p-4 w-full"
+                                        onClick={() => {
+                                            if (
+                                                !geolocation.isGeolocationAvailable ||
+                                                !geolocation.isGeolocationEnabled
+                                            ) {
+                                                setIsGeolocation(true);
+                                            }
+                                        }}
+                                    >
+                                        <TargetIcon />
+                                        <p className="ml-4">Vị trí hiện tại</p>
+                                    </button>
+                                </li>
+                            )}
+                            {location.length > 0 &&
+                                !isFetching &&
+                                autocomplete.predictions.map((prediction) => {
+                                    return (
+                                        <li key={prediction.place_id}>
+                                            <button
+                                                title="suggest-location-item"
+                                                className="flex items-center p-4 w-full"
+                                            >
+                                                <MapPinIcon />
+                                                <p className="ml-4">{prediction.description}</p>
+                                            </button>
+                                        </li>
+                                    );
+                                })}
+                        </ul>
+                    </Dropdown>
                 </div>
             </div>
             <div className="border-[1px] border-solid border-[#a9afbb] h-10 mx-2"></div>
@@ -115,8 +191,9 @@ export default function SearchBarLoction() {
                 <motion.button
                     whileTap={{ scale: 0.8 }}
                     onTap={() => {
-                        setSessionToken(uuidv4());
-                        navigate('/search-location?locationName=' + loctionName + '&service=' + serviceChoose.name);
+                        navigate(
+                            '/search-location?location=' + location + '&service=' + serviceChoose.name + '&placeId=',
+                        );
                     }}
                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                     className="flex gap-x-2 py-[14px] px-6 items-center bg-button-primary rounded-2xl min-w-fit ml-3 cursor-pointer"

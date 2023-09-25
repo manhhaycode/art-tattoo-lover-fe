@@ -32,12 +32,12 @@ export default function Dropdown({ children, ...props }: { children: React.React
             animate={props.animate ? 'open' : 'closed'}
             variants={variants}
             className={
-                'modal max-w-[850px] bg-gray-dark absolute origin-[50%_5%] w-[436px] shadow-shadow-dropdown rounded-3xl text-white pr-1 ' +
+                'modal max-w-[850px] bg-gray-dark absolute origin-[50%_5%] w-[436px] shadow-shadow-dropdown rounded-3xl text-white ' +
                 props.className
             }
         >
-            <div className="p-4 pr-3  overscroll-contain overflow-x-hidden overflow-auto max-h-[calc(100vh-210px)]">
-                <div className="mt-2 mb-4 px-5">{children}</div>
+            <div className="p-2 overscroll-contain overflow-x-hidden overflow-auto max-h-[calc(100vh-210px)]">
+                {children}
             </div>
         </motion.div>
     );
