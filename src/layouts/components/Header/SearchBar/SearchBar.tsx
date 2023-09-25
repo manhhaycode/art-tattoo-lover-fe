@@ -3,7 +3,7 @@ import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Input from '@/components/common/Input';
-import DrodownImage from '@/components/Dropdown';
+import { DropdownImage } from '@/components/Dropdown';
 import { db } from '@/assets/data';
 import Image from '@/components/common/Image';
 
@@ -183,7 +183,7 @@ export default function SearchBar({
                                     ) : (
                                         'Dịch vụ bất kỳ'
                                     )}
-                                    <DrodownImage
+                                    <DropdownImage
                                         onClick={(e) => {
                                             e.stopPropagation();
                                         }}
@@ -225,7 +225,7 @@ export default function SearchBar({
                                                 );
                                             })}
                                         </div>
-                                    </DrodownImage>
+                                    </DropdownImage>
                                 </button>
                             </div>
                             <motion.button

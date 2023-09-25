@@ -122,3 +122,28 @@ export const MapPinIcon = ({ styles }: { styles?: CSSProperties }) => (
         <circle cx="12" cy="10" r="3"></circle>
     </svg>
 );
+
+export const TargetIcon = ({ styles }: { styles?: CSSProperties }) => (
+    <svg
+        style={styles}
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        width="24"
+        height="24"
+        x="0"
+        y="0"
+        viewBox="0 0 24 24"
+        xmlSpace="preserve"
+    >
+        <g>
+            <circle cx="12" cy="12" r="5" fill="#000000" opacity="1" data-original="#000000"></circle>
+            <path
+                d="M23 11h-1.051c-.47-4.717-4.232-8.479-8.949-8.949V1a1 1 0 1 0-2 0v1.051C6.283 2.521 2.521 6.283 2.051 11H1a1 1 0 1 0 0 2h1.051c.471 4.717 4.232 8.479 8.949 8.949V23a1 1 0 1 0 2 0v-1.051c4.717-.471 8.479-4.232 8.949-8.949H23a1 1 0 1 0 0-2zm-10.014 8.933C12.95 19.414 12.529 19 12 19s-.95.414-.986.933a8.007 8.007 0 0 1-6.946-6.946C4.587 12.95 5 12.528 5 12s-.413-.95-.933-.986a8.007 8.007 0 0 1 6.946-6.946c.037.518.458.932.987.932s.95-.414.986-.933a8.007 8.007 0 0 1 6.946 6.946c-.519.037-.932.459-.932.987s.413.95.933.986a8.01 8.01 0 0 1-6.947 6.947z"
+                fill="#000000"
+                opacity="1"
+                data-original="#000000"
+            ></path>
+        </g>
+    </svg>
+);

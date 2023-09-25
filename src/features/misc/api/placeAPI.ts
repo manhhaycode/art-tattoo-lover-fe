@@ -8,7 +8,10 @@ export const autoCompleteLocation = async (
     if (option.input !== '') {
         try {
             const response: google.maps.places.AutocompleteResponse = await mapPlaceRequest.get('/autocomplete/json', {
-                params: option,
+                params: {
+                    ...option,
+                    sessiontoken: option.sessionToken,
+                },
             });
             return response;
         } catch (_error) {
@@ -26,5 +29,6 @@ export const useAutoCompleteLocation = (option: google.maps.places.Autocompletio
         queryKey: ['autoCompleteLocation', option.input],
         queryFn: () => autoCompleteLocation(option),
         staleTime: Infinity,
+        keepPreviousData: true,
     });
 };
