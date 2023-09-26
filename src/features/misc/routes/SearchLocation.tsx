@@ -1,6 +1,5 @@
 import GoogleMap from '@/components/GoogleMap';
 import StudioCardInfo from '@/components/StudioCardInfo';
-import { useSearchLocationStore } from '@/store/componentStore';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 export default function SearchLocation() {
