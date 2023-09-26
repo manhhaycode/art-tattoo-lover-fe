@@ -12,7 +12,7 @@ export default function SearchLocation() {
                 <div className="flex relative h-full">
                     <div className="p-6 w-[63%]">
                         <div className="grid grid-cols-3 item-center gap-y-6 gap-x-6 ">
-                            {[...Array(24)].map((item, index) => {
+                            {[...Array(24)].map((_item, index) => {
                                 return (
                                     <StudioCardInfo
                                         key={index}
