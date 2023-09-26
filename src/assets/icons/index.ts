@@ -1,3 +1,12 @@
-import { MenuIcon, SearchIcon, LogoIcon, ChevronUpIcon, ChevronDownIcon, MapPinIcon, TargetIcon } from './icon';
+import {
+    MenuIcon,
+    SearchIcon,
+    LogoIcon,
+    ChevronUpIcon,
+    ChevronDownIcon,
+    MapPinIcon,
+    TargetIcon,
+    StarIcon,
+} from './icon';
 
-export { MenuIcon, SearchIcon, LogoIcon, ChevronUpIcon, ChevronDownIcon, MapPinIcon, TargetIcon };
+export { MenuIcon, SearchIcon, LogoIcon, ChevronUpIcon, ChevronDownIcon, MapPinIcon, TargetIcon, StarIcon };

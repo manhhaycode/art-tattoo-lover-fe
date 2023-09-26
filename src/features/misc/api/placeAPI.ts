@@ -18,7 +18,7 @@ export const autoCompleteLocation = async (
             const error = _error as AxiosError;
             if (error.response) {
                 console.log(error.response.data);
-            } else throw new Error(_error.message);
+            } else console.log(_error.message);
         }
     }
     return { predictions: [] };

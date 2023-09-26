@@ -16,6 +16,7 @@ export default {
             colors: {
                 'dark-theme': '#18191A',
                 'gray-dark': '#242526',
+                'studio-card-gray-dark': '#2D2D34',
                 'search-gray-dark': '#3A3B3C',
                 'button-primary': '#FF3B5C',
                 'hover-button-primary': '#FE2C55',
