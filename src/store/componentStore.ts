@@ -7,7 +7,7 @@ interface SearchLocationState {
     setPlaceId: (placeId: string) => void;
     autocomplete: google.maps.places.AutocompleteResponse;
     sessionToken: google.maps.places.AutocompleteSessionToken;
-    setSessionToken: (sessionToken: google.maps.places.AutocompleteSessionToken) => void;
+    setSessionToken: () => void;
     setAutocomplete: (autocomplete: google.maps.places.AutocompleteResponse) => void;
     reset: () => void;
 }
@@ -18,7 +18,7 @@ export const useSearchLocationStore = create<SearchLocationState>((set) => ({
     placeId: '',
     setPlaceId: (placeId) => set({ placeId }),
     sessionToken: uuidv4() as google.maps.places.AutocompleteSessionToken,
-    setSessionToken: (sessionToken) => set({ sessionToken }),
+    setSessionToken: () => set({ sessionToken: uuidv4() }),
     autocomplete: { predictions: [] },
     setAutocomplete: (autocomplete: google.maps.places.AutocompleteResponse) => set({ autocomplete }),
     reset: () =>

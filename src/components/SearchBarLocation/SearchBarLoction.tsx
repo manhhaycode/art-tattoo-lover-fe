@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { useAutoCompleteLocation } from '@/features/misc/api/placeAPI';
 import { useGeoLocation } from '@/lib/hooks';
+import { encodeStringtoURI } from '@/lib/helper';
 interface IService {
     id?: number;
     name?: string;
@@ -17,18 +18,24 @@ interface IService {
 
 export default function SearchBarLoction() {
     const serviceRef = useRef<HTMLButtonElement>(null);
-    const [loctionName, setNameLoction] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [locationName, setLocationName] = useState('');
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [isAutocompleteVisible, setIsAutocompleteVisible] = useState(false);
     const [serviceChoose, setServiceChoose] = useState<IService>({});
     const [isGeolocation, setIsGeolocation] = useState(false);
-    const { setLocation, setAutocomplete, location, autocomplete, sessionToken } = useSearchLocationStore();
+    const { setLocation, setAutocomplete, location, autocomplete, sessionToken, setPlaceId, placeId } =
+        useSearchLocationStore();
     const { data, isFetching } = useAutoCompleteLocation({ input: location, sessionToken: sessionToken });
     const geolocation = useGeoLocation();
     const navigate = useNavigate();
 
+    const handleClickOutsite = useCallback(() => {
+        if (isAutocompleteVisible) setIsAutocompleteVisible(false);
+    }, [isAutocompleteVisible]);
+
     useEffect(() => {
-        if (data && data.predictions.length > 0) {
+        if (data && data.predictions && data.predictions.length > 0) {
             setAutocomplete(data);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,24 +43,16 @@ export default function SearchBarLoction() {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setLocation(loctionName);
+            setLocation(locationName);
         }, 500);
         return () => clearTimeout(timeout);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [loctionName]);
-
-    const handleClickOutsite = useCallback(() => {
-        if (isAutocompleteVisible) setIsAutocompleteVisible(false);
-    }, [isAutocompleteVisible]);
+    }, [locationName]);
 
     useEffect(() => {
         document.addEventListener('click', handleClickOutsite);
         return () => document.removeEventListener('click', handleClickOutsite);
     }, [handleClickOutsite]);
-
-    if (autocomplete) {
-        console.log(autocomplete.predictions);
-    }
 
     return (
         <div className="w-[90%] flex items-center bg-white shadow-[0_0_0_4px_#fff] mx-auto h-16 rounded-2xl">
@@ -68,14 +67,15 @@ export default function SearchBarLoction() {
                         <MapPinIcon styles={{ color: '#000' }} />
                     </div>
                     <Input
-                        value={loctionName || ''}
+                        ref={inputRef}
+                        value={locationName || ''}
                         onFocus={() => {
-                            if (!isAutocompleteVisible) setIsAutocompleteVisible(true);
+                            setIsAutocompleteVisible(true);
                             if (isGeolocation) setIsGeolocation(false);
                         }}
                         onChange={(e) => {
                             if (e.target.value !== ' ') {
-                                setNameLoction(e.target.value);
+                                setLocationName(e.target.value);
                             }
                         }}
                         className="mr-1 input-container"
@@ -91,6 +91,11 @@ export default function SearchBarLoction() {
                             {isFetching && (
                                 <li className="flex items-center justify-center">
                                     <p className="w-1/2">Đang Feching</p>
+                                </li>
+                            )}
+                            {location.length > 0 && !isFetching && autocomplete.predictions.length === 0 && (
+                                <li className="flex items-center justify-center">
+                                    <p className="w-1/2">Không tìm thấy địa điểm</p>
                                 </li>
                             )}
                             {isGeolocation && (
@@ -126,6 +131,11 @@ export default function SearchBarLoction() {
                                     return (
                                         <li key={prediction.place_id}>
                                             <button
+                                                onClick={() => {
+                                                    setPlaceId(prediction.place_id);
+                                                    setLocationName(prediction.description);
+                                                    setIsAutocompleteVisible(false);
+                                                }}
                                                 title="suggest-location-item"
                                                 className="flex items-center p-4 w-full"
                                             >
@@ -148,7 +158,6 @@ export default function SearchBarLoction() {
                             if (!isDropdownVisible) setIsDropdownVisible(true);
                         }}
                         onBlur={() => {
-                            console.log('blur');
                             setIsDropdownVisible(false);
                         }}
                         className={
@@ -192,7 +201,12 @@ export default function SearchBarLoction() {
                     whileTap={{ scale: 0.8 }}
                     onTap={() => {
                         navigate(
-                            '/search-location?location=' + location + '&service=' + serviceChoose.name + '&placeId=',
+                            '/search-location?location=' +
+                                encodeStringtoURI(location) +
+                                '&service=' +
+                                (serviceChoose.name || '') +
+                                '&placeId=' +
+                                placeId,
                         );
                     }}
                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}

@@ -1,10 +1,18 @@
 import GoogleMap from '@/components/GoogleMap';
 import StudioCardInfo from '@/components/StudioCardInfo';
-// import { useLocation } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 export default function SearchLocation() {
-    // const { search } = useLocation();
-    // const searchParams = new URLSearchParams(search);
+    const { search } = useLocation();
+    const searchParams = new URLSearchParams(search);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (searchParams.get('location') === '' || searchParams.get('placeId') === '') {
+            navigate('/');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <>
             <div className="list-category h-20 w-full sticky top-20 z-[1] bg-gray-dark"></div>
