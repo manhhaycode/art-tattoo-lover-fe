@@ -4,7 +4,7 @@ export default function Image(props: React.ImgHTMLAttributes<HTMLImageElement>) 
     return (
         <div className="w-full pt-[100%] relative">
             <div className="absolute top-0 left-0 bottom-0 right-0">
-                <img {...props} className={'object-fill ' + props.className}></img>
+                <img {...props} className={'object-cover w-full h-full ' + props.className}></img>
             </div>
         </div>
     );
