@@ -1,7 +1,9 @@
-import GoogleMap from '@/components/GoogleMap';
 import StudioCardInfo from '@/components/StudioCardInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+
+const GoogleMap = lazy(() => import('@/components/GoogleMap'));
+
 export default function SearchLocation() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
@@ -38,7 +40,9 @@ export default function SearchLocation() {
                             })}
                         </div>
                     </div>
-                    <GoogleMap />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <GoogleMap />
+                    </Suspense>
                 </div>
             </div>
         </>

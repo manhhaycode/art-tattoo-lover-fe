@@ -3,13 +3,6 @@ import config from '@/config';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { usePlaceDetail } from '@/features/misc/api/placeAPI';
 import { useState, useEffect, useCallback } from 'react';
-interface MarkerProps {
-    text: string;
-    lat: number;
-    lng: number;
-}
-
-const AnyReactComponent = ({ text }: MarkerProps) => <div>{text}</div>;
 
 export default function GoogleMap() {
     const { isLoaded } = useJsApiLoader({
@@ -47,10 +40,6 @@ export default function GoogleMap() {
                     },
                 };
             });
-            const boundBox = new google.maps.LatLngBounds();
-            boundBox.extend(data.geometry!.viewport.northeast);
-            boundBox.extend(data.geometry!.viewport.southwest);
-            if (map) map.fitBounds(boundBox, 0);
         }
         setSessionToken();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,12 +49,20 @@ export default function GoogleMap() {
         <div id="google-map" className="sticky top-[163px] h-[calc(100vh-162px)] w-[37%]">
             {isLoaded && (
                 <GoogleMapReact
-                    mapContainerStyle={{ width: 550, height: 550 }}
+                    mapContainerStyle={{ width: '100%', height: '100%' }}
                     center={propsMap.center}
                     zoom={propsMap.zoom}
                     onUnmount={handleUnmount}
                     onLoad={(map) => {
                         setMap(map);
+                    }}
+                    onIdle={() => {
+                        if (data) {
+                            const boundBox = new google.maps.LatLngBounds();
+                            boundBox.extend(data.geometry!.viewport.northeast);
+                            boundBox.extend(data.geometry!.viewport.southwest);
+                            if (map) map.fitBounds(boundBox, 0);
+                        }
                     }}
                     options={{
                         gestureHandling: 'greedy',
