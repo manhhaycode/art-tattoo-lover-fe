@@ -1,12 +1,7 @@
 import Slider1 from '@/assets/img/sliderHome1.png';
 import SearchBarLoction from '@/components/SearchBarLocation';
-import { useSearchLocationStore } from '@/store/componentStore';
 
-// import { useSearchLocationStore } from '@/store/componentStore';
-// import { v4 as uuidv4 } from 'uuid';
 export default function Home() {
-    const { sessionToken } = useSearchLocationStore();
-    console.log(sessionToken);
     return (
         <div id="content" className="pt-6 w-full">
             <div className="mx-auto w-full xl:w-[1372px]">
