@@ -16,8 +16,8 @@ export default function SearchLocation() {
     return (
         <>
             <div className="list-category h-20 w-full sticky top-20 z-[1] bg-gray-dark"></div>
-            <div id="content" className="content-wrapper h-full">
-                <div className="flex relative h-full">
+            <div id="content" className="content-wrapper">
+                <div className="flex relative">
                     <div className="p-6 w-[63%]">
                         <div className="grid grid-cols-3 item-center gap-y-6 gap-x-6 ">
                             {[...Array(24)].map((_item, index) => {

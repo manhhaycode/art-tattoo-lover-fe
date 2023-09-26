@@ -1,8 +1,8 @@
-import GoogleMapReact from 'google-map-react';
+import { GoogleMap as GoogleMapReact, useJsApiLoader } from '@react-google-maps/api';
 import config from '@/config';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { usePlaceDetail } from '@/features/misc/api/placeAPI';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 interface MarkerProps {
     text: string;
     lat: number;
@@ -12,6 +12,10 @@ interface MarkerProps {
 const AnyReactComponent = ({ text }: MarkerProps) => <div>{text}</div>;
 
 export default function GoogleMap() {
+    const { isLoaded } = useJsApiLoader({
+        id: '4efdfc21c30d0be0',
+        googleMapsApiKey: config.API.API_KEY,
+    });
     const { sessionToken, placeId, setSessionToken } = useSearchLocationStore();
     const { data } = usePlaceDetail({ placeId, sessionToken });
     const defaultProps = {
@@ -25,28 +29,28 @@ export default function GoogleMap() {
         },
     };
     const [propsMap, setPropsMap] = useState(defaultProps);
+    const [map, setMap] = useState<google.maps.Map | null>(null);
+
+    const handleUnmount = useCallback(() => {
+        setMap(null);
+    }, []);
 
     useEffect(() => {
         if (data && data.geometry) {
             setPropsMap((propsMap) => {
                 return {
                     ...propsMap,
-                    center: {
-                        lat: data.geometry!.location.lat,
-                        lng: data.geometry!.location.lng,
-                    },
+                    center: data.geometry!.location,
                     bounds: {
-                        northeast: {
-                            lat: data.geometry!.viewport.northeast.lat,
-                            lng: data.geometry!.viewport.southwest.lng,
-                        },
-                        southwest: {
-                            lat: data.geometry!.viewport.southwest.lat,
-                            lng: data.geometry!.viewport.southwest.lng,
-                        },
+                        northeast: data.geometry!.viewport.northeast,
+                        southwest: data.geometry!.viewport.southwest,
                     },
                 };
             });
+            const boundBox = new google.maps.LatLngBounds();
+            boundBox.extend(data.geometry!.viewport.northeast);
+            boundBox.extend(data.geometry!.viewport.southwest);
+            if (map) map.fitBounds(boundBox, 0);
         }
         setSessionToken();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,14 +58,23 @@ export default function GoogleMap() {
 
     return (
         <div id="google-map" className="sticky top-[163px] h-[calc(100vh-162px)] w-[37%]">
-            <GoogleMapReact
-                bootstrapURLKeys={{ key: config.API.API_KEY }}
-                center={propsMap.center}
-                defaultZoom={propsMap.zoom}
-                options={{ mapId: '4efdfc21c30d0be0', gestureHandling: 'greedy' }}
-            >
-                <AnyReactComponent lat={59.955413} lng={30.337844} text="My Marker" />
-            </GoogleMapReact>
+            {isLoaded && (
+                <GoogleMapReact
+                    mapContainerStyle={{ width: 550, height: 550 }}
+                    center={propsMap.center}
+                    zoom={propsMap.zoom}
+                    onUnmount={handleUnmount}
+                    onLoad={(map) => {
+                        setMap(map);
+                    }}
+                    options={{
+                        gestureHandling: 'greedy',
+                        mapTypeControl: false,
+                        streetViewControl: false,
+                        mapId: '4efdfc21c30d0be0',
+                    }}
+                ></GoogleMapReact>
+            )}
         </div>
     );
 }
