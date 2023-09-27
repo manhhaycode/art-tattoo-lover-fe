@@ -15,6 +15,8 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+            <div className='h-[100px] w-full xl:w-[1372px] mx-auto bg-button-primary'></div>
         </div>
+
     );
 }
