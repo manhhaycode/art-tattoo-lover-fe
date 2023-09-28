@@ -200,6 +200,7 @@ export default function SearchBarLoction() {
                 <motion.button
                     whileTap={{ scale: 0.8 }}
                     onTap={() => {
+                        setLocation('');
                         navigate(
                             '/search-location?location=' +
                                 encodeStringtoURI(location) +

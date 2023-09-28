@@ -1,4 +1,5 @@
 import DropdownImage from './DropdownImage';
 import Dropdown from './Dropdown';
+import DropwdownInput from './DropwdownInput';
 
-export { DropdownImage, Dropdown };
+export { DropdownImage, Dropdown, DropwdownInput };

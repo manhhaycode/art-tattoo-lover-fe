@@ -1,17 +1,26 @@
 import StudioCardInfo from '@/components/StudioCardInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
+import { useSearchLocationStore } from '@/store/componentStore';
 
 const GoogleMap = lazy(() => import('@/components/GoogleMap'));
 
 export default function SearchLocation() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
+    const { placeId, setPlaceId } = useSearchLocationStore();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (searchParams.get('location') === '' || searchParams.get('placeId') === '') {
+        if (
+            searchParams.get('location') === '' ||
+            searchParams.get('placeId') === '' ||
+            searchParams.get('location') === null ||
+            searchParams.get('placeId') === null
+        ) {
             navigate('/');
+        } else if (placeId.length === 0) {
+            setPlaceId(searchParams.get('placeId')!);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
