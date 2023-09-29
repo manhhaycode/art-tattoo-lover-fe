@@ -15,8 +15,8 @@ export default function GoogleMap() {
         id: '4efdfc21c30d0be0',
         googleMapsApiKey: config.API.API_KEY,
     });
-    const { sessionToken, placeId, setSessionToken } = useSearchLocationStore();
-    const { data } = usePlaceDetail({ placeId, sessionToken });
+    const { sessionToken, placeChoose, setSessionToken } = useSearchLocationStore();
+    const { data } = usePlaceDetail({ placeId: placeChoose?.place_id || '', sessionToken });
     const [isIdle, setIsIdle] = useState({ isFirstIdle: false, state: false });
     const [isOpen, setIsOpen] = useState(false);
     const { map, setMap } = useGoogleMapStore();

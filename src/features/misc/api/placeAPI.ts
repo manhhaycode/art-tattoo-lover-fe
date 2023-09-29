@@ -61,7 +61,7 @@ export const useAutoCompleteLocation = (option: google.maps.places.Autocompletio
 
 export const usePlaceDetail = (option: google.maps.places.PlaceDetailsRequest) => {
     return useQuery({
-        queryKey: ['autoCompleteLocation', option.placeId],
+        queryKey: ['placeDetail', option.placeId],
         queryFn: () => placeDetail(option),
         staleTime: Infinity,
         keepPreviousData: true,

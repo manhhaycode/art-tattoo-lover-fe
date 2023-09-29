@@ -8,7 +8,7 @@ const GoogleMap = lazy(() => import('@/components/GoogleMap'));
 export default function SearchLocation() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
-    const { placeId, setPlaceId } = useSearchLocationStore();
+    const { placeChoose, setPlaceChoose } = useSearchLocationStore();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,14 +19,14 @@ export default function SearchLocation() {
             searchParams.get('placeId') === null
         ) {
             navigate('/');
-        } else if (placeId.length === 0) {
-            setPlaceId(searchParams.get('placeId')!);
+        } else if (placeChoose === null) {
+            setPlaceChoose({ place_id: searchParams.get('placeId')!, description: searchParams.get('location')! });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <>
-            <div className="list-category h-20 w-full sticky top-20 z-[1] bg-gray-dark"></div>
+            <div className="list-category h-20 w-full sticky top-20 z-[1001] bg-gray-dark"></div>
             <div id="content" className="content-wrapper">
                 <div className="flex relative">
                     <div className="p-6 w-[63%]">

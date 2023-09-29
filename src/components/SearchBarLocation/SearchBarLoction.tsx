@@ -1,6 +1,6 @@
 import { db } from '@/assets/data';
 import { MapPinIcon, SearchIcon, TargetIcon } from '@/assets/icons';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from '../common/Image';
 import Input from '../common/Input';
 import { Dropdown, DropdownImage } from '../Dropdown';
@@ -10,6 +10,7 @@ import { useSearchLocationStore } from '@/store/componentStore';
 import { useAutoCompleteLocation } from '@/features/misc/api/placeAPI';
 import { useGeoLocation } from '@/lib/hooks';
 import { encodeStringtoURI } from '@/lib/helper';
+import { useDebouncedState } from '@mantine/hooks';
 interface IService {
     id?: number;
     name?: string;
@@ -19,40 +20,25 @@ interface IService {
 export default function SearchBarLoction() {
     const serviceRef = useRef<HTMLButtonElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-    const [locationName, setLocationName] = useState('');
+    const [locationName, setLocationName] = useDebouncedState('', 400);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [isAutocompleteVisible, setIsAutocompleteVisible] = useState(false);
     const [serviceChoose, setServiceChoose] = useState<IService>({});
     const [isGeolocation, setIsGeolocation] = useState(false);
-    const { setLocation, setAutocomplete, location, autocomplete, sessionToken, setPlaceId, placeId } =
-        useSearchLocationStore();
-    const { data, isFetching } = useAutoCompleteLocation({ input: location, sessionToken: sessionToken });
+    const { sessionToken, setPlaceChoose, placeChoose } = useSearchLocationStore();
+    const { data, isFetching } = useAutoCompleteLocation({ input: locationName, sessionToken: sessionToken });
     const geolocation = useGeoLocation();
     const navigate = useNavigate();
 
-    const handleClickOutsite = useCallback(() => {
-        if (isAutocompleteVisible) setIsAutocompleteVisible(false);
-    }, [isAutocompleteVisible]);
-
     useEffect(() => {
-        if (data && data.predictions && data.predictions.length > 0) {
-            setAutocomplete(data);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setLocation(locationName);
-        }, 500);
-        return () => clearTimeout(timeout);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [locationName]);
-
-    useEffect(() => {
-        document.addEventListener('click', handleClickOutsite);
-        return () => document.removeEventListener('click', handleClickOutsite);
-    }, [handleClickOutsite]);
+        document.addEventListener('click', () => {
+            setIsAutocompleteVisible(false);
+        });
+        return () =>
+            document.removeEventListener('click', () => {
+                setIsAutocompleteVisible(false);
+            });
+    }, []);
 
     return (
         <div className="w-[90%] flex items-center bg-white shadow-[0_0_0_4px_#fff] mx-auto h-16 rounded-2xl">
@@ -68,7 +54,7 @@ export default function SearchBarLoction() {
                     </div>
                     <Input
                         ref={inputRef}
-                        value={locationName || ''}
+                        defaultValue={locationName}
                         onFocus={() => {
                             setIsAutocompleteVisible(true);
                             if (isGeolocation) setIsGeolocation(false);
@@ -77,6 +63,7 @@ export default function SearchBarLoction() {
                             if (e.target.value !== ' ') {
                                 setLocationName(e.target.value);
                             }
+                            if (placeChoose !== null) setPlaceChoose(null);
                         }}
                         className="mr-1 input-container"
                         type="primary"
@@ -93,7 +80,7 @@ export default function SearchBarLoction() {
                                     <p className="w-1/2">Đang Feching</p>
                                 </li>
                             )}
-                            {location.length > 0 && !isFetching && autocomplete.predictions.length === 0 && (
+                            {locationName.length > 0 && !isFetching && data?.predictions.length === 0 && (
                                 <li className="flex items-center justify-center">
                                     <p className="w-1/2">Không tìm thấy địa điểm</p>
                                 </li>
@@ -106,7 +93,7 @@ export default function SearchBarLoction() {
                                     </p>
                                 </li>
                             )}
-                            {location.length === 0 && !isGeolocation && (
+                            {locationName.length === 0 && !isGeolocation && (
                                 <li>
                                     <button
                                         title="suggest-location-item"
@@ -125,22 +112,23 @@ export default function SearchBarLoction() {
                                     </button>
                                 </li>
                             )}
-                            {location.length > 0 &&
+                            {locationName.length > 0 &&
                                 !isFetching &&
-                                autocomplete.predictions.map((prediction) => {
+                                data?.predictions.map((prediction) => {
                                     return (
                                         <li key={prediction.place_id}>
                                             <button
                                                 onClick={() => {
-                                                    setPlaceId(prediction.place_id);
-                                                    setLocationName(prediction.description);
+                                                    setPlaceChoose(prediction);
                                                     setIsAutocompleteVisible(false);
+                                                    if (inputRef.current)
+                                                        inputRef.current.value = prediction.description;
                                                 }}
                                                 title="suggest-location-item"
                                                 className="flex items-center p-4 w-full"
                                             >
                                                 <MapPinIcon />
-                                                <p className="ml-4">{prediction.description}</p>
+                                                <p className="ml-4 text-truncation">{prediction.description}</p>
                                             </button>
                                         </li>
                                     );
@@ -164,7 +152,11 @@ export default function SearchBarLoction() {
                             'font-medium font-sans text-[#8e8e8e] w-full h-12 flex items-center rounded-3xl pl-4 relative cursor-pointer'
                         }
                     >
-                        {serviceChoose.name ? <p className="text-black">{serviceChoose.name}</p> : 'Dịch vụ bất kỳ'}
+                        {serviceChoose.name ? (
+                            <p className="text-black text-truncation">{serviceChoose.name}</p>
+                        ) : (
+                            'Dịch vụ bất kỳ'
+                        )}
                         <DropdownImage
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -200,15 +192,17 @@ export default function SearchBarLoction() {
                 <motion.button
                     whileTap={{ scale: 0.8 }}
                     onTap={() => {
-                        setLocation('');
-                        navigate(
-                            '/search-location?location=' +
-                                encodeStringtoURI(location) +
-                                '&service=' +
-                                (serviceChoose.name || '') +
-                                '&placeId=' +
-                                placeId,
-                        );
+                        if (data && data.predictions.length > 0) {
+                            const navigateData = placeChoose || data.predictions[0];
+                            navigate(
+                                '/search-location?location=' +
+                                    encodeStringtoURI(navigateData.description!) +
+                                    '&service=' +
+                                    (serviceChoose.name || '') +
+                                    '&placeId=' +
+                                    navigateData.place_id,
+                            );
+                        }
                     }}
                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                     className="flex gap-x-2 py-[14px] px-6 items-center bg-button-primary rounded-2xl min-w-fit ml-3 cursor-pointer"
