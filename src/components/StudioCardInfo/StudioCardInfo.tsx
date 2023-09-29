@@ -1,7 +1,7 @@
 import { MapPinIcon, StarIcon } from '@/assets/icons';
-import Image from '../common/Image';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
-
+import StudioCardImage2 from '@/assets/img/tattoo2.jpg';
+import ImageCarousel from '../ImageCarousel';
 export interface StudioCardInfoProps {
     studioInfo: {
         name: string;
@@ -17,7 +17,16 @@ export default function StudioCardInfo({ studioInfo }: StudioCardInfoProps) {
     return (
         <div className="w-full bg-studio-card-gray-dark shadow-shadow-dropdown rounded-2xl">
             <div className="p-4 flex flex-col w-full gap-y-2 font-medium text-sm">
-                <Image src={StudioCardImage} alt="" />
+                <ImageCarousel
+                    listSrc={[
+                        StudioCardImage,
+                        StudioCardImage2,
+                        StudioCardImage,
+                        StudioCardImage2,
+                        StudioCardImage,
+                        StudioCardImage2,
+                    ]}
+                />
                 <div className="flex items-center font-semibold text-[15px]">
                     <p className="name-studio">SaiGon Tattoo Club</p>
                     <div className="flex items-center ml-3">
