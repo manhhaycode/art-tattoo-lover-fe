@@ -1,5 +1,3 @@
-import { useModalStore } from '@/store/componentStore';
-import Modal from '../Modal';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Input from '../common/Input';
 import { Link } from 'react-router-dom';
@@ -11,7 +9,7 @@ interface ILogin {
 }
 
 export default function Login() {
-    const { register, handleSubmit, watch, formState } = useForm<ILogin>();
+    const { handleSubmit } = useForm<ILogin>();
     const onsSubmit: SubmitHandler<ILogin> = (data) => console.log(data);
 
     return (
