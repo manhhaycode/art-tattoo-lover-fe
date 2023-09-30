@@ -1,7 +1,3 @@
-import { useModalStore } from '@/store/componentStore';
-import React from 'react';
-import Modal from '../Modal';
-
 export default function Register() {
     return (
         <div className="px-4 mt-12 text-center">
