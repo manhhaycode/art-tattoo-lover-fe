@@ -9,6 +9,7 @@ import {
     StarIcon,
     ArrowOpenIcon,
     ArrowCloseIcon,
+    CloseIcon,
 } from './icon';
 
 export {
@@ -22,4 +23,5 @@ export {
     StarIcon,
     ArrowOpenIcon,
     ArrowCloseIcon,
+    CloseIcon,
 };

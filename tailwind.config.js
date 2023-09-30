@@ -5,6 +5,7 @@ export default {
         extend: {
             boxShadow: {
                 'shadow-dropdown': '0 0 0 2px #393a3b',
+                modal: '0 0 0 4px #393a3b',
             },
             backgroundImage: {
                 'header-stroke': "url('/src/assets/img/stroke-header.png')",

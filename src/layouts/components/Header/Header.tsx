@@ -1,9 +1,8 @@
-import { MenuIcon, LogoIcon } from '@/assets/icons';
+import { LogoIcon } from '@/assets/icons';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
-import { UserStatus } from '@/assets/icons/icon';
-import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Menu from './Menu';
 export default function Header() {
     const [clickOutside, setClickOutside] = useState(false);
     return (
@@ -29,14 +28,8 @@ export default function Header() {
                         <Link to="/become-studio" className="font-medium text-lg h-12 flex items-center">
                             Trở Thành Studio
                         </Link>
-                        <motion.button
-                            whileTap={{ scale: 0.8 }}
-                            className="bg-button-primary hover:bg-hover-button-primary flex gap-x-4 items-center pl-3 pr-2 py-[1px] rounded-[30px]"
-                        >
-                            <MenuIcon />
-                            <UserStatus />
-                        </motion.button>
                     </div>
+                    <Menu />
                 </div>
             </div>
         </header>
