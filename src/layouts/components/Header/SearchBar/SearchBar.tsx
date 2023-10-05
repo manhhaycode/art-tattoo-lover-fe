@@ -156,7 +156,7 @@ export default function SearchBar({
                         <div className="h-[66px] rounded-[32px] bg-search-gray-dark flex px-2 items-center cursor-pointer relative justify-between pointer-events-auto">
                             <div className="flex items-center w-full">
                                 <Input
-                                    typeInput="header"
+                                    typeinput="header"
                                     onClick={() => {
                                         inputRef.current?.classList.add('!bg-[rgb(80,82,83)]');
                                     }}

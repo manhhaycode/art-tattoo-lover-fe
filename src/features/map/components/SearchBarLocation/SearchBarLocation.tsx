@@ -1,14 +1,14 @@
 import { db } from '@/assets/data';
 import { MapPinIcon, SearchIcon, TargetIcon } from '@/assets/icons';
 import { useState, useRef, useEffect } from 'react';
-import Image from '../common/Image';
-import Input from '../common/Input';
-import { Dropdown, DropdownImage } from '../Dropdown';
+import Image from '@/components/common/Image';
+import Input from '@/components/common/Input';
+import { Dropdown, DropdownImage } from '@/components/Dropdown';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSearchLocationStore } from '@/store/componentStore';
-import { useAutoCompleteLocation } from '@/features/misc/api/placeAPI';
-import { useGeoLocation } from '@/lib/hooks';
+import { useAutoCompleteLocation } from '@/features/map/api';
+import { useGeoLocation } from '@/hooks';
 import { encodeStringtoURI } from '@/lib/helper';
 import { useDebouncedState } from '@mantine/hooks';
 interface IService {
@@ -17,7 +17,7 @@ interface IService {
     image?: string;
 }
 
-export default function SearchBarLoction() {
+export default function SearchBarLocation() {
     const serviceRef = useRef<HTMLButtonElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [locationName, setLocationName] = useDebouncedState('', 400);

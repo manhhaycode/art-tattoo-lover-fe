@@ -1,5 +1,6 @@
 import config from '@/config';
-import { Discover, Home, BecomeStudio, TopArtist, NewsFeed, SearchStudio, SearchLocation } from '@/features/misc';
+import { Discover, Home, BecomeStudio, TopArtist, NewsFeed, SearchStudio } from '@/features/misc';
+import { SearchLocation } from '@/features/map/routes';
 import DefaultLayout from '@/layouts/DefaultLayout';
 
 //Public routes
