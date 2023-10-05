@@ -6,12 +6,12 @@ import { Dropdown } from '@/components/Dropdown';
 import { useAuthStore } from '@/store/authStore';
 import { useClickOutside } from '@mantine/hooks';
 import { useModalStore } from '@/store/componentStore';
-import Cookie from 'js-cookie';
+import { Logout } from '@/features/auth/components';
 export default function Menu() {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const { setIsModalVisible, setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
     const menuRef = useClickOutside<HTMLDivElement>(() => setIsOpenMenu(false));
-    const { isAuth, reset } = useAuthStore();
+    const { isAuth } = useAuthStore();
     return (
         <div ref={menuRef} className="relative">
             <motion.button
@@ -59,20 +59,11 @@ export default function Menu() {
                             </button>
                             <div className="border-[1px] border-stroke-gray"></div>
                             <div className="p-4">
-                                <motion.button
-                                    whileTap={{ scale: 0.8 }}
-                                    onClick={() => {
-                                        reset();
-                                        Cookie.remove('x-auth-token');
+                                <Logout
+                                    onSuccess={() => {
                                         setIsModalVisible(false);
                                     }}
-                                    transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                                    className="flex gap-x-2 p-[14px] items-center justify-center bg-button-primary rounded-lg min-w-fit w-full "
-                                >
-                                    <p className="justify-self-center font-semibold text-base leading-none">
-                                        Đăng xuất
-                                    </p>
-                                </motion.button>
+                                />
                             </div>
                         </>
                     )}

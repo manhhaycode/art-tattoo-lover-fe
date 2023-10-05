@@ -1,2 +1,2 @@
-import { useLoginMutation } from './authAPI';
-export { useLoginMutation };
+import { useGetSessionMutation, useLoginMutation, useLogoutMutation } from './authAPI';
+export { useLoginMutation, useLogoutMutation, useGetSessionMutation };
