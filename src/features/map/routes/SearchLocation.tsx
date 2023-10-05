@@ -2,8 +2,7 @@ import StudioCardInfo from '@/components/StudioCardInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
 import { useSearchLocationStore } from '@/store/componentStore';
-
-const GoogleMap = lazy(() => import('@/components/GoogleMap'));
+const GoogleMap = lazy(() => import('../components/GoogleMap'));
 
 export default function SearchLocation() {
     const { search } = useLocation();

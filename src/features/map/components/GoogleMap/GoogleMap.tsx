@@ -1,9 +1,9 @@
 import { GoogleMap as GoogleMapReact, useJsApiLoader } from '@react-google-maps/api';
 import config from '@/config';
 import { useGoogleMapStore, useSearchLocationStore } from '@/store/componentStore';
-import { usePlaceDetail } from '@/features/misc/api/placeAPI';
+import { usePlaceDetail } from '@/features/map/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { SkeletonLoader } from '../SkeletonLoader';
+import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { setMapFitBounds } from '@/lib/helper/googleMapHelper';
 import AutocompleteAddress from '../AutocompleteAddress';
 import { ArrowCloseIcon, ArrowOpenIcon } from '@/assets/icons';

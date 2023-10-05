@@ -3,15 +3,15 @@ import { motion } from 'framer-motion';
 import { MenuIcon } from '@/assets/icons';
 import { UserStatus } from '@/assets/icons/icon';
 import { Dropdown } from '@/components/Dropdown';
-import { useAuthStore } from '@/store/auth';
+import { useAuthStore } from '@/store/authStore';
 import { useClickOutside } from '@mantine/hooks';
 import { useModalStore } from '@/store/componentStore';
-
+import Cookie from 'js-cookie';
 export default function Menu() {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const { setIsModalVisible, setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
     const menuRef = useClickOutside<HTMLDivElement>(() => setIsOpenMenu(false));
-    const { isAuth } = useAuthStore();
+    const { isAuth, reset } = useAuthStore();
     return (
         <div ref={menuRef} className="relative">
             <motion.button
@@ -61,7 +61,11 @@ export default function Menu() {
                             <div className="p-4">
                                 <motion.button
                                     whileTap={{ scale: 0.8 }}
-                                    onTap={() => {}}
+                                    onClick={() => {
+                                        reset();
+                                        Cookie.remove('x-auth-token');
+                                        setIsModalVisible(false);
+                                    }}
                                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                                     className="flex gap-x-2 p-[14px] items-center justify-center bg-button-primary rounded-lg min-w-fit w-full "
                                 >

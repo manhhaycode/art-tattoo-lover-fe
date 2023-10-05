@@ -48,7 +48,17 @@ export default function Modal({
             <motion.div
                 id="main-modal"
                 variants={variants}
-                className={`modal-container bg-gray-dark shadow-modal w-[520px] rounded-[20px] ` + props.className}
+                onAnimationStart={() => {
+                    if (props.animate) {
+                        document.body.classList.add('overflow-hidden');
+                    } else {
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                }}
+                className={
+                    `modal modal-container bg-gray-dark shadow-modal w-[520px] rounded-[20px] !overflow-auto relative ` +
+                    props.className
+                }
             >
                 <button
                     onClick={onClose}

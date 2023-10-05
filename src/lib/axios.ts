@@ -1,22 +1,30 @@
 import config from '@/config';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 const httpRequest = axios.create({
     baseURL: config.API.API_URL,
 });
 
-export const get = async (path: string, options: AxiosRequestConfig<object>) => {
+httpRequest.interceptors.response.use(undefined, (error: AxiosError) => {
+    if (error.response) {
+        return Promise.reject(error.response.data);
+    } else {
+        throw new Error('Network Error');
+    }
+});
+
+export const get = async (path: string, options?: AxiosRequestConfig<object>) => {
     const response = await httpRequest.get(path, options);
     return response.data;
 };
 
-export const post = async (path: string, options: AxiosRequestConfig<object>) => {
-    const response = await httpRequest.post(path, options);
+export const post = async (path: string, data?: object, options?: AxiosRequestConfig<object>) => {
+    const response = await httpRequest.post(path, data, options);
     return response.data;
 };
 
-export const patch = async (path: string, options: AxiosRequestConfig<object>) => {
-    const response = await httpRequest.patch(path, options);
+export const patch = async (path: string, data: object, options?: AxiosRequestConfig<object>) => {
+    const response = await httpRequest.patch(path, data, options);
     return response.data;
 };
 

@@ -1,5 +1,5 @@
 @import 'react-multi-carousel/lib/styles.css';
-
+@import 'react-toastify/dist/ReactToastify.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -147,4 +147,24 @@ html *::-webkit-scrollbar {
     width: 5px;
     height: 5px;
     background-color: transparent;
+}
+
+.mantine-DatePickerInput-wrapper {
+    height: 100%;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.mantine-DatePickerInput-input {
+    height: inherit;
+    color: white;
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+.mantine-DatePickerInput-placeholder {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(176, 179, 184, 0.7);
 }

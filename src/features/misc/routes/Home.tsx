@@ -1,5 +1,7 @@
 import Slider1 from '@/assets/img/sliderHome1.png';
-import SearchBarLoction from '@/components/SearchBarLocation';
+import { Suspense, lazy } from 'react';
+
+const SearchBarLocation = lazy(() => import('@/features/map/components/SearchBarLocation'));
 
 export default function Home() {
     return (
@@ -11,7 +13,9 @@ export default function Home() {
                         <h1 className="text-5xl">Gần Nhất</h1>
                     </div>
                     <div className="absolute w-full -bottom-8 ">
-                        <SearchBarLoction />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <SearchBarLocation />
+                        </Suspense>
                     </div>
                 </div>
             </div>

@@ -2,8 +2,8 @@ import { useRef } from 'react';
 import { Input, InputProps } from '@mantine/core';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { useDebouncedState, useFocusWithin } from '@mantine/hooks';
-import { useAutoCompleteLocation } from '@/features/misc/api/placeAPI';
-import { DropwdownInput } from '../Dropdown';
+import { useAutoCompleteLocation } from '@/features/map/api';
+import { DropwdownInput } from '@/components/Dropdown';
 
 interface AutocompleteAddressProps extends InputProps {
     isVisible?: boolean;
