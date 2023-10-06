@@ -1,12 +1,24 @@
 import config from '@/config';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import Cookies from 'js-cookie';
+import { IRefreshToken } from '@/features/auth/types';
+import { refreshToken } from '@/features/auth/api';
 
 const httpRequest = axios.create({
     baseURL: config.API.API_URL,
 });
 
-httpRequest.interceptors.response.use(undefined, (error: AxiosError) => {
+httpRequest.interceptors.response.use(undefined, async (error: AxiosError) => {
+    const refreshTokenString = Cookies.get('tattus-rft');
     if (error.response) {
+        if (!error.request.responseURL.includes('/auth/refresh') && refreshTokenString) {
+            const res: IRefreshToken = await refreshToken();
+            res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+        } else {
+            Cookies.remove('tattus-rft');
+            Cookies.remove('tattus-at');
+            sessionStorage.removeItem('tattus-session');
+        }
         return Promise.reject(error.response.data);
     } else {
         throw new Error('Network Error');
