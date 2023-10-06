@@ -10,6 +10,10 @@ interface IAuth {
         id: string;
         name: string;
     }[];
+    user: {
+        id: string;
+        name: string;
+    };
 }
 
 // const session = sessionStorage.getItem('tattus-session');

@@ -1,53 +1,28 @@
 import * as httpRequest from '@/lib/axios';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
+import { ILogin, ILogout, IRefreshToken, ISession, LoginCredentials } from '../types';
 
-interface LoginCredentials {
-    email: string;
-    password: string;
-}
-
-interface LoginRes {
-    message: string;
-    token: {
-        accessToken: string;
-        accessTokenExp: number;
-        refreshToken: string;
-        refreshTokenExp: number;
-    };
-    session: SessionRes;
-}
-
-interface LogoutRes {
-    message: string;
-    success: boolean;
-}
-
-interface SessionRes {
-    userId: string;
-    roleId: string;
-    sessionId: string;
-}
-
-const login = async (credentials: LoginCredentials): Promise<LoginRes> => {
+const login = async (credentials: LoginCredentials): Promise<ILogin> => {
     try {
-        const resLogin: LoginRes = await httpRequest.post('/auth/login', credentials);
+        const resLogin: ILogin = await httpRequest.post('/auth/login', credentials);
         Cookies.set('tattus-rft', resLogin.token.refreshToken, {
             expires: new Date(resLogin.token.refreshTokenExp * 1000),
         });
         Cookies.set('tattus-at', resLogin.token.accessToken, {
             expires: new Date(resLogin.token.accessTokenExp * 1000),
         });
-        const resSession: SessionRes = await getSession();
+        const resSession: ISession = await getSession();
         return { ...resLogin, session: resSession };
     } catch (e) {
         throw new Error(e.error);
     }
 };
 
-const logout = async (refreshToken: string): Promise<LogoutRes> => {
+const logout = async (): Promise<ILogout> => {
     try {
-        const res: LogoutRes = await httpRequest.post(
+        const refreshToken = Cookies.get('tattus-rft');
+        const res: ILogout = await httpRequest.post(
             '/auth/logout',
             { refreshToken },
             {
@@ -56,61 +31,104 @@ const logout = async (refreshToken: string): Promise<LogoutRes> => {
                 },
             },
         );
+        Cookies.remove('tattus-rft');
+        Cookies.remove('tattus-at');
+        sessionStorage.removeItem('tattus-session');
         return res;
     } catch (e) {
         throw new Error(e.error);
     }
 };
 
-const getSession = async (): Promise<SessionRes> => {
+export const refreshToken = async (): Promise<IRefreshToken> => {
     try {
-        const resSession: SessionRes = await httpRequest.get('/auth/session', {
+        const refreshToken = Cookies.get('tattus-rft');
+        const res: IRefreshToken = await httpRequest.post('/auth/refresh', { refreshToken });
+        Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+        return res;
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+const getSession = async (): Promise<ISession> => {
+    try {
+        const resSession: ISession = await httpRequest.get('/auth/session', {
             headers: {
                 Authorization: `Bearer ${Cookies.get('tattus-at')}`,
             },
         });
-        sessionStorage.setItem('tattus-session', JSON.stringify(resSession));
+        sessionStorage.setItem('tattus-session', resSession.sessionId);
         return resSession;
     } catch (e) {
         throw new Error(e.error);
     }
 };
 
-export const useLoginMutation = (handleFn: {
-    onError?: (error: unknown, variables: LoginCredentials, context: unknown) => void;
-    onSuccess?: (data: LoginRes, variables: LoginCredentials, context: unknown) => void;
-    onMutate?: (variables: LoginCredentials) => Promise<LoginRes>;
-}) => {
+export const useLoginMutation = (
+    handleFn: {
+        onError?: (error: unknown, variables: LoginCredentials, context: unknown) => void;
+        onSuccess?: (data: ILogin, variables: LoginCredentials, context: unknown) => void;
+        onMutate?: (variables: LoginCredentials) => Promise<ILogin>;
+    },
+    retry?: number,
+) => {
     return useMutation({
         mutationFn: (credentials: LoginCredentials) => login(credentials),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
+        retry,
     });
 };
 
-export const useLogoutMutation = (handleFn: {
-    onError?: (error: unknown, variables: string, context: unknown) => void;
-    onSuccess?: (data: LogoutRes, variables: string, context: unknown) => void;
-    onMutate?: (variables: string) => Promise<LoginRes>;
-}) => {
+export const useLogoutMutation = (
+    handleFn: {
+        onError?: (error: unknown, variables: unknown, context: unknown) => void;
+        onSuccess?: (data: ILogout, variables: unknown, context: unknown) => void;
+        onMutate?: () => Promise<ILogout>;
+    },
+    retry?: number,
+) => {
     return useMutation({
-        mutationFn: (refreshToken: string) => logout(refreshToken),
+        mutationFn: logout,
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
+        retry,
     });
 };
 
-export const useGetSessionMutation = (handleFn: {
-    onError?: (error: unknown, variables: unknown, context: unknown) => void;
-    onSuccess?: (data: SessionRes, variables: unknown, context: unknown) => void;
-    onMutate?: (variables: unknown) => Promise<unknown>;
-}) => {
+export const useRefreshTokenMutation = (
+    handleFn: {
+        onError?: (error: unknown, variables: unknown, context: unknown) => void;
+        onSuccess?: (data: IRefreshToken, variables: unknown, context: unknown) => void;
+        onMutate?: () => Promise<IRefreshToken>;
+    },
+    retry?: number,
+) => {
+    return useMutation({
+        mutationFn: refreshToken,
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
+        retry,
+    });
+};
+
+export const useGetSessionMutation = (
+    handleFn: {
+        onError?: (error: unknown, variables: unknown, context: unknown) => void;
+        onSuccess?: (data: ISession, variables: unknown, context: unknown) => void;
+        onMutate?: (variables: unknown) => Promise<unknown>;
+    },
+    retry?: number,
+) => {
     return useMutation({
         mutationFn: getSession,
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
+        retry,
     });
 };
