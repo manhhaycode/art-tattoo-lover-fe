@@ -19,6 +19,10 @@ export default function Login() {
             setAccountType({
                 role: { id: data.session.roleId, name: 'Member' },
                 permissions: [],
+                user: {
+                    id: data.session.userId,
+                    name: 'Mạnh Nguyễn',
+                },
             });
             reset();
         },
