@@ -1,10 +1,9 @@
-import React, { lazy } from 'react';
-// import Header from '@/layouts/components/Header';
+import Header from '@/layouts/components/Header';
 import { useModalStore } from '@/store/componentStore';
+import { lazy } from 'react';
 
 const Modal = lazy(() => import('@/components/Modal'));
 const PortalModal = lazy(() => import('@/components/Portal/PortalModal'));
-const Header = lazy(() => import('@/layouts/components/Header'));
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
     const { isModalVisible, reset } = useModalStore();

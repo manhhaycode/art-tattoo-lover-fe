@@ -1,5 +1,5 @@
 import React from 'react';
-import { HTMLMotionProps, Variants, motion } from 'framer-motion';
+import { HTMLMotionProps, Variants, m } from 'framer-motion';
 import { CloseIcon } from '@/assets/icons';
 
 export default function Modal({
@@ -28,7 +28,7 @@ export default function Modal({
     };
 
     return (
-        <motion.div
+        <m.div
             className="modal-wrapper"
             initial="hidden"
             animate={props.animate ? 'visible' : 'hidden'}
@@ -45,7 +45,7 @@ export default function Modal({
             }}
         >
             <div className="modal-mask"></div>
-            <motion.div
+            <m.div
                 id="main-modal"
                 variants={variants}
                 onAnimationStart={() => {
@@ -66,7 +66,7 @@ export default function Modal({
                 >
                     <CloseIcon styles={{ width: '24px', height: '24px' }} />
                 </button>
-            </motion.div>
-        </motion.div>
+            </m.div>
+        </m.div>
     );
 }

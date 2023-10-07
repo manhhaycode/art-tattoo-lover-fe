@@ -4,13 +4,13 @@ import { useState, useRef, useEffect } from 'react';
 import Image from '@/components/common/Image';
 import Input from '@/components/common/Input';
 import { Dropdown, DropdownImage } from '@/components/Dropdown';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { useAutoCompleteLocation } from '@/features/map/api';
 import { useGeoLocation } from '@/hooks';
 import { encodeStringtoURI } from '@/lib/helper';
 import { useDebouncedState } from '@mantine/hooks';
+import Button from '@/components/common/Button';
 interface IService {
     id?: number;
     name?: string;
@@ -189,7 +189,8 @@ export default function SearchBarLocation() {
                         </DropdownImage>
                     </button>
                 </div>
-                <motion.button
+                <Button
+                    isAnimate={true}
                     whileTap={{ scale: 0.8 }}
                     onTap={() => {
                         if (data && data.predictions.length > 0) {
@@ -204,12 +205,11 @@ export default function SearchBarLocation() {
                             );
                         }
                     }}
-                    transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                    className="flex gap-x-2 py-[14px] px-6 items-center bg-button-primary rounded-2xl min-w-fit ml-3 cursor-pointer"
+                    className="!rounded-2xl ml-3 px-6"
                 >
                     <SearchIcon styles={{ stroke: '#fff', strokeWidth: '3', width: '20', height: '20' }} />
                     <p className="justify-self-center font-semibold text-base leading-none">Tìm Kiếm</p>
-                </motion.button>
+                </Button>
             </div>
         </div>
     );
