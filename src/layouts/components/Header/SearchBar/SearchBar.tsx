@@ -1,11 +1,11 @@
 import { SearchIcon } from '@/assets/icons';
 import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import Input from '@/components/common/Input';
 import { DropdownImage } from '@/components/Dropdown';
 import { db } from '@/assets/data';
 import Image from '@/components/common/Image';
+import Button from '@/components/common/Button';
 
 interface IService {
     id?: number;
@@ -228,7 +228,8 @@ export default function SearchBar({
                                     </DropdownImage>
                                 </button>
                             </div>
-                            <motion.button
+                            <Button
+                                isAnimate={true}
                                 whileTap={{ scale: 0.8 }}
                                 onTap={() => {
                                     handleCloseSearchBigBar();
@@ -236,12 +237,11 @@ export default function SearchBar({
                                         '/search-studio?studioName=' + studioName + '&service=' + serviceChoose.name,
                                     );
                                 }}
-                                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                                className="flex gap-x-2 p-[14px] items-center bg-button-primary rounded-3xl min-w-fit ml-3"
+                                className="!rounded-3xl ml-3"
                             >
                                 <SearchIcon styles={{ stroke: '#fff', strokeWidth: '3', width: '20', height: '20' }} />
                                 <p className="justify-self-center font-semibold text-base leading-none">Tìm Kiếm</p>
-                            </motion.button>
+                            </Button>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { HTMLMotionProps, motion, Variants } from 'framer-motion';
+import { HTMLMotionProps, m, Variants } from 'framer-motion';
 
 export default function Dropdown({ children, ...props }: { children: React.ReactNode } & HTMLMotionProps<'div'>) {
     const variants: Variants = props.variants || {
@@ -26,7 +26,7 @@ export default function Dropdown({ children, ...props }: { children: React.React
         },
     };
     return (
-        <motion.div
+        <m.div
             {...props}
             initial="closed"
             animate={props.animate ? 'open' : 'closed'}
@@ -39,6 +39,6 @@ export default function Dropdown({ children, ...props }: { children: React.React
             <div className="p-2 overscroll-contain overflow-x-hidden overflow-auto max-h-[calc(100vh-210px)]">
                 {children}
             </div>
-        </motion.div>
+        </m.div>
     );
 }

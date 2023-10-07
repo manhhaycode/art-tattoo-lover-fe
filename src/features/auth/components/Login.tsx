@@ -1,10 +1,10 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Input from '@/components/common/Input';
-import { motion } from 'framer-motion';
 import { useModalStore } from '@/store/componentStore';
 import { useAuthStore } from '@/store/authStore';
 import { useLoginMutation } from '../api/authAPI';
 import { Loader } from '@mantine/core';
+import Button from '@/components/common/Button';
 interface ILogin {
     email: string;
     password: string;
@@ -81,19 +81,18 @@ export default function Login() {
                         {loginMutation.isError ? 'Sai email hoặc mật khẩu' : ''}
                     </label>
                     <p className="text-[13px] font-bold text-gray-400 mt-2">Quên mật khẩu?</p>
-                    <motion.button
+                    <Button
+                        isAnimate={true}
                         disabled={loginMutation.isLoading}
                         type="submit"
-                        whileTap={!loginMutation.isLoading ? { scale: 0.8 } : {}}
-                        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                        className="flex gap-x-2 p-[14px] items-center justify-center bg-button-primary rounded-lg min-w-fit w-full "
+                        whileTap={!loginMutation.isLoading ? { scale: 0.9 } : {}}
                     >
                         {loginMutation.isLoading ? (
                             <Loader size={20} color="#fff" />
                         ) : (
                             <p className="justify-self-center font-semibold text-base leading-none">Đăng Nhập</p>
                         )}
-                    </motion.button>
+                    </Button>
                 </form>
             </div>
             <div className="border-t-2 border-solid border-stroke-gray flex justify-center items-center h-20 justify-self-end">

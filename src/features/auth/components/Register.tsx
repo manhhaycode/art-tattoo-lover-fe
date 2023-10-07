@@ -1,11 +1,11 @@
 import { useModalStore } from '@/store/componentStore';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Input from '@/components/common/Input';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import 'dayjs/locale/vi';
 import { DatesProvider, DatePickerInput } from '@mantine/dates';
 import { useState } from 'react';
+import Button from '@/components/common/Button';
 interface ILogin {
     user: string;
     password: string;
@@ -54,16 +54,11 @@ export default function Register() {
                             onChange={setBirthday}
                         />
                     </DatesProvider>
-                    <motion.button
-                        whileTap={{ scale: 0.8 }}
-                        onTap={() => {}}
-                        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                        className="flex gap-x-2 p-[14px] items-center justify-center bg-button-primary rounded-lg min-w-fit w-full "
-                    >
+                    <Button isAnimate={true} whileTap={{ scale: 0.9 }} onTap={() => {}}>
                         <Link to={'/'} className="justify-self-center font-semibold text-base leading-none">
                             Đăng Ký
                         </Link>
-                    </motion.button>
+                    </Button>
                 </form>
             </div>
             <div className="border-t-2 border-solid border-stroke-gray flex justify-center items-center h-20 absolute bottom-0 bg-gray-dark w-full z-[400]">
