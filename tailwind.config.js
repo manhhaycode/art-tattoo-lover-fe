@@ -23,6 +23,8 @@ export default {
                 'hover-button-primary': '#FE2C55',
                 'stroke-gray': '#424249',
                 'placeholder-gray': 'rgba(176,179,184,0.7)',
+                disable: 'rgba(0, 0, 0, 0.2)',
+                'disable-full': '#363636',
             },
         },
     },

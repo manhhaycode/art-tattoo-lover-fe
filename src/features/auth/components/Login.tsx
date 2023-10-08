@@ -1,9 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import Input from '@/components/common/Input';
+import Input, { stylePasswordInput } from '@/components/common/Input';
 import { useModalStore } from '@/store/componentStore';
 import { useAuthStore } from '@/store/authStore';
 import { useLoginMutation } from '../api/authAPI';
-import { Loader } from '@mantine/core';
+import { Loader, PasswordInput } from '@mantine/core';
 import Button from '@/components/common/Button';
 interface ILogin {
     email: string;
@@ -30,7 +30,7 @@ export default function Login() {
     const {
         handleSubmit,
         register,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm<ILogin>();
 
     const onSubmit: SubmitHandler<ILogin> = async (data) => {
@@ -43,6 +43,7 @@ export default function Login() {
                 <h1 className="text-2xl font-semibold mb-12 text-center">Đăng nhập vào Tattus</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-14 gap-y-2">
                     <Input
+                        disabled={loginMutation.isLoading}
                         {...register('email', {
                             onChange() {
                                 if (loginMutation.isError) loginMutation.reset();
@@ -58,7 +59,10 @@ export default function Login() {
                         placeholder="Email đăng nhập"
                     ></Input>
                     <label className="text-sm font-semibold text-red-500">{errors.email?.message}</label>
-                    <Input
+                    <PasswordInput
+                        disabled={loginMutation.isLoading}
+                        variant="unstyled"
+                        classNames={stylePasswordInput}
                         {...register('password', {
                             onChange() {
                                 if (loginMutation.isError) loginMutation.reset();
@@ -69,11 +73,11 @@ export default function Login() {
                             // },
                             required: 'Mật khẩu không được để trống',
                         })}
-                        type="password"
-                        typeinput="header"
-                        className="h-11 rounded-lg"
+                        // type="password"
+                        // typeinput="header"
+                        // className="h-11 rounded-lg"
                         placeholder="Mật khẩu"
-                    ></Input>
+                    ></PasswordInput>
                     {errors.password && (
                         <label className="text-sm font-semibold text-red-500">{errors.password.message}</label>
                     )}
@@ -83,9 +87,11 @@ export default function Login() {
                     <p className="text-[13px] font-bold text-gray-400 mt-2">Quên mật khẩu?</p>
                     <Button
                         isAnimate={true}
-                        disabled={loginMutation.isLoading}
+                        disabled={loginMutation.isLoading || !isValid}
                         type="submit"
-                        whileTap={!loginMutation.isLoading ? { scale: 0.9 } : {}}
+                        whileTap={!loginMutation.isLoading && isValid ? { scale: 0.9 } : {}}
+                        className="mt-3"
+                        {...(!isValid && { className: 'bg-disable text-placeholder-gray mt-3' })}
                     >
                         {loginMutation.isLoading ? (
                             <Loader size={20} color="#fff" />

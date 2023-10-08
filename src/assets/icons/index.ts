@@ -10,6 +10,7 @@ import {
     ArrowOpenIcon,
     ArrowCloseIcon,
     CloseIcon,
+    SecureIcon,
 } from './icon';
 
 export {
@@ -24,4 +25,5 @@ export {
     ArrowOpenIcon,
     ArrowCloseIcon,
     CloseIcon,
+    SecureIcon,
 };

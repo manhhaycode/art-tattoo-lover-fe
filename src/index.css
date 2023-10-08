@@ -111,6 +111,27 @@
         overflow: hidden;
         background-color: rgb(255, 255, 255);
     }
+
+    .maintine-input-inner {
+        height: 100%;
+        width: calc(100% - 40px);
+        background-color: rgb(58, 59, 60);
+        padding-left: 4px;
+        font-size: base;
+        color: white;
+        font-family: sans-serif;
+    }
+    .maintine-input-inner:hover {
+        background-color: rgb(80, 82, 83);
+    }
+
+    .maintine-input-inner:focus {
+        background-color: rgb(80, 82, 83);
+    }
+
+    .maintine-input-inner:disabled {
+        opacity: 1;
+    }
 }
 
 :root {
