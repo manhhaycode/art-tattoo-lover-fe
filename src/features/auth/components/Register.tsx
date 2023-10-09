@@ -27,7 +27,7 @@ export default function Register() {
         trigger,
         watch,
     } = useForm<IRegister>();
-    const onSubmit: SubmitHandler<IRegister> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<IRegister> = () => {};
     const isEmailValid = !errors.email && dirtyFields.email;
 
     return (

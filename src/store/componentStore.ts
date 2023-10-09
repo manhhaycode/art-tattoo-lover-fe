@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
+import { PlaceData } from '@googlemaps/google-maps-services-js';
 interface SearchLocationState {
     placeChoose: Partial<google.maps.places.AutocompletePrediction> | null;
     setPlaceChoose: (placeId: Partial<google.maps.places.AutocompletePrediction> | null) => void;
@@ -23,15 +24,15 @@ export const useSearchLocationStore = create<SearchLocationState>((set) => ({
 interface GoogleMapState {
     map: google.maps.Map | null;
     setMap: (map: google.maps.Map | null) => void;
-    adressChooose: string;
-    setAdressChooose: (adressChooose: string) => void;
+    placeDetail: Partial<PlaceData> | null;
+    setPlaceDetail: (placeDetail: Partial<PlaceData> | null) => void;
 }
 
 export const useGoogleMapStore = create<GoogleMapState>((set) => ({
     map: null,
     setMap: (map) => set({ map }),
-    adressChooose: '',
-    setAdressChooose: (adressChooose) => set({ adressChooose }),
+    placeDetail: null,
+    setPlaceDetail: (placeDetail) => set({ placeDetail }),
 }));
 
 interface ModalState {

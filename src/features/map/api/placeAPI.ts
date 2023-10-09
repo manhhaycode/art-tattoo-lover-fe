@@ -12,6 +12,8 @@ export const autoCompleteLocation = async (
                 params: {
                     ...option,
                     sessiontoken: option.sessionToken,
+                    components: 'country:vn',
+                    language: 'vi',
                 },
             });
             return response;

@@ -16,7 +16,7 @@ export interface StudioCardInfoProps {
 export default function StudioCardInfo({ studioInfo }: StudioCardInfoProps) {
     return (
         <div className="w-full bg-studio-card-gray-dark shadow-shadow-dropdown rounded-2xl">
-            <div className="p-4 flex flex-col w-full gap-y-2 font-medium text-sm">
+            <div className="p-3 flex flex-col w-full gap-y-2 font-medium text-sm">
                 <ImageCarousel
                     listSrc={[
                         StudioCardImage,

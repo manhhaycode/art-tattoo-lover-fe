@@ -81,7 +81,7 @@ export default function Login() {
                     {errors.password && (
                         <label className="text-sm font-semibold text-red-500">{errors.password.message}</label>
                     )}
-                    <label className="text-sm font-semibold text-red-500">
+                    <label className="text-sm font-semibold text-red-500 min-h-[20px]">
                         {loginMutation.isError ? 'Sai email hoặc mật khẩu' : ''}
                     </label>
                     <p className="text-[13px] font-bold text-gray-400 mt-2">Quên mật khẩu?</p>
@@ -96,7 +96,7 @@ export default function Login() {
                         {loginMutation.isLoading ? (
                             <Loader size={20} color="#fff" />
                         ) : (
-                            <p className="justify-self-center font-semibold text-base leading-none">Đăng Nhập</p>
+                            <p className="justify-self-center font-semibold text-base leading-5">Đăng Nhập</p>
                         )}
                     </Button>
                 </form>
