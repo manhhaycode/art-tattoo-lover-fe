@@ -19,7 +19,7 @@ export default function GoogleMap() {
     const { data } = usePlaceDetail({ placeId: placeChoose?.place_id || '', sessionToken });
     const [isIdle, setIsIdle] = useState({ isFirstIdle: false, state: false });
     const [isOpen, setIsOpen] = useState(false);
-    const { map, setMap } = useGoogleMapStore();
+    const { map, setMap, setPlaceDetail } = useGoogleMapStore();
     const navigate = useNavigate();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mapRef = useRef<any>(null);
@@ -34,13 +34,14 @@ export default function GoogleMap() {
     useEffect(() => {
         if (isLoaded && data && data.geometry && map) {
             setMapFitBounds(map, mapRef, data.geometry);
+            setPlaceDetail(data);
         }
         setSessionToken();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoaded, data?.place_id]);
 
     return (
-        <div id="google-map" className="sticky top-[163px] h-[calc(100vh-162px)] w-[37%]">
+        <div id="google-map" className="sticky top-[163px] h-[calc(100vh-162px)] w-full">
             <div className="relative w-full h-full">
                 {!isIdle.isFirstIdle && <SkeletonLoader className="absolute top-0 left-0 z-10" />}
                 {isLoaded && (
@@ -77,6 +78,7 @@ export default function GoogleMap() {
                                 if (!isIdle.isFirstIdle && map && data && data.geometry) {
                                     setMapFitBounds(map, mapRef, data.geometry);
                                     setIsIdle({ isFirstIdle: true, state: false });
+                                    setPlaceDetail(data);
                                 }
                             }}
                             options={{

@@ -12,7 +12,7 @@ import { encodeStringtoURI } from '@/lib/helper';
 import { useDebouncedState } from '@mantine/hooks';
 import Button from '@/components/common/Button';
 interface IService {
-    id?: number;
+    id?: string;
     name?: string;
     image?: string;
 }

@@ -11,24 +11,24 @@ export default function AppProvider({ children }: { children: React.ReactNode })
         <ErrorBoundary fallback={<Error />}>
             <MantineProvider
                 withNormalizeCSS
-                theme={{
-                    colorScheme: 'dark',
-                    colors: {
-                        // override dark colors to change them for all components
-                        dark: [
-                            '#d5d7e0',
-                            '#acaebf',
-                            '#8c8fa3',
-                            '#666980',
-                            '#4d4f66',
-                            '#34354a',
-                            '#2b2c3d',
-                            '#1d1e30',
-                            '#0c0d21',
-                            '#01010a',
-                        ],
-                    },
-                }}
+                // theme={{
+                //     colorScheme: 'dark',
+                //     colors: {
+                //         // override dark colors to change them for all components
+                //         dark: [
+                //             'black',
+                //             '#acaebf',
+                //             '#8c8fa3',
+                //             '#666980',
+                //             '#4d4f66',
+                //             '#34354a',
+                //             'white',
+                //             '#1d1e30',
+                //             '#0c0d21',
+                //             '#01010a',
+                //         ],
+                //     },
+                // }}
             >
                 <LazyMotion features={domAnimation}>
                     <QueryClientProvider client={queryClient}>

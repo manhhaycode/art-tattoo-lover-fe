@@ -8,7 +8,7 @@ import Image from '@/components/common/Image';
 import Button from '@/components/common/Button';
 
 interface IService {
-    id?: number;
+    id?: string;
     name?: string;
     image?: string;
 }

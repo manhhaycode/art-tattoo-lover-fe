@@ -1,4 +1,4 @@
-import { PlaceData } from '@googlemaps/google-maps-services-js';
+import { PlaceData, PlaceType2 } from '@googlemaps/google-maps-services-js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getBoundsZoomLevel = (bounds: google.maps.LatLngBounds, mapSize: { width: number; height: number }) => {
@@ -38,10 +38,49 @@ export const setMapFitBounds = (
     const boundBox = new google.maps.LatLngBounds();
     boundBox.extend(data.viewport.northeast);
     boundBox.extend(data.viewport.southwest);
-    const zoom = getBoundsZoomLevel(boundBox, {
+    let zoom = getBoundsZoomLevel(boundBox, {
         width: mapRef.current.mapRef.clientHeight,
         height: mapRef.current.mapRef.clientWidth,
     });
+
+    if (zoom > 14) zoom = 14;
+
     map.setCenter(data.location);
     map.setZoom(zoom);
+};
+
+export const convertAdressComponents = (addressComponent: PlaceData['address_components']) => {
+    let result: string = '';
+    let length = 0;
+    addressComponent.forEach((item) => {
+        const types = item.types;
+
+        if (length === 2) return;
+
+        if (
+            types.includes(PlaceType2.sublocality) ||
+            types.includes(PlaceType2.sublocality_level_1) ||
+            types.includes(PlaceType2.sublocality_level_2) ||
+            types.includes(PlaceType2.sublocality_level_3) ||
+            types.includes(PlaceType2.sublocality_level_4) ||
+            types.includes(PlaceType2.sublocality_level_5)
+        ) {
+            result = result.concat(item.long_name + ', ');
+            length++;
+        }
+        if (types.includes(PlaceType2.locality)) {
+            result = result.concat(item.long_name + ', ');
+            length++;
+        }
+        if (
+            types.includes(PlaceType2.administrative_area_level_1) ||
+            types.includes(PlaceType2.administrative_area_level_2) ||
+            types.includes(PlaceType2.administrative_area_level_3) ||
+            types.includes(PlaceType2.administrative_area_level_4)
+        ) {
+            result = result.concat(item.long_name + ', ');
+            length++;
+        }
+    });
+    return result.slice(0, -2);
 };
