@@ -26,10 +26,8 @@ export default function SearchLocation() {
     }, []);
     return (
         <>
-            <div className="list-category h-20 flex items-center w-full sticky top-20 z-[1001] bg-gray-dark">
-                <div className="mx-4 w-full">
-                    <CategoryList />
-                </div>
+            <div className="list-category h-20 flex items-center w-full sticky top-20 z-[1001] bg-gray-dark category-list-wrapper">
+                <CategoryList />
             </div>
             <div id="content" className="content-wrapper">
                 <div className="flex relative">
