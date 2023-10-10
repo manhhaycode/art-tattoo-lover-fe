@@ -47,6 +47,7 @@ export default function CategoryList() {
     const [justNext, setJustNext] = useState(false);
     const [justPrev, setJustPrev] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
+    const [isStart, setIsStart] = useState(true);
 
     const handleResize = () => {
         setTimeout(() => {
@@ -75,13 +76,19 @@ export default function CategoryList() {
 
     useEffect(() => {
         if (listRef.current) {
+            let indexLastInView = 0;
             let countElementInView = 0;
             const arrayChild = Array.from(listRef.current.children);
-            arrayChild.forEach((child) => {
+            if (isElementInBoxContainer(arrayChild[0] as HTMLElement, listRef.current as HTMLElement)) setIsStart(true);
+            arrayChild.forEach((child, index) => {
                 if (isElementInBoxContainer(child as HTMLElement, listRef.current as HTMLElement)) {
                     countElementInView++;
+                    indexLastInView = index;
                 }
             });
+            if (indexLastInView !== arrayChild.length - 1) setIsEnd(false);
+            else setIsEnd(true);
+            setPosition(indexLastInView);
             setNumberItemInView(countElementInView);
         }
     }, [dimensions.width]);
@@ -164,6 +171,7 @@ export default function CategoryList() {
                         setPosition(positionNext);
                         setJustNext(true);
                         setJustPrev(false);
+                        setIsStart(false);
                     }
                 }}
                 {...(isEnd && { style: { display: 'none' } })}
@@ -189,11 +197,12 @@ export default function CategoryList() {
                             setPosition(positionNext);
                             setJustNext(false);
                             setIsEnd(false);
+                            setIsStart(false);
                             setJustPrev(true);
                         }, 250);
                     }
                 }}
-                {...(position === 0 && { style: { display: 'none' } })}
+                {...((position === 0 || isStart) && { style: { display: 'none' } })}
             />
         </div>
     );
