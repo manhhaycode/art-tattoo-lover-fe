@@ -1,6 +1,8 @@
+// import { FilterIcon } from '@/assets/icons';
 import { FilterIcon } from '@/assets/icons';
 import StudioCardInfo from '@/components/StudioCardInfo';
 import Button from '@/components/common/Button';
+// import Button from '@/components/common/Button';
 import { convertAdressComponents } from '@/lib/helper/googleMapHelper';
 import { useGoogleMapStore } from '@/store/componentStore';
 
@@ -14,7 +16,7 @@ export default function StudioListLocation() {
                         Hơn 100 địa điểm tại {convertAdressComponents(placeDetail.address_components)}
                     </h1>
                 )}
-                <Button className="ml-auto !p-3 !bg-white text-black font-medium">
+                <Button className="ml-auto !p-3 !bg-white text-black font-medium h-fit self-center">
                     <FilterIcon styles={{ stroke: 'black' }} />
                     Bộ lọc
                 </Button>

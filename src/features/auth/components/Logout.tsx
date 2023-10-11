@@ -22,6 +22,7 @@ export default function Logout({ onSuccess }: { onSuccess?: () => void }) {
                 const rft = Cookies.get('tattus-rft');
                 if (rft) logoutMutation.mutate(rft);
             }}
+            className="w-full"
         >
             <p className="justify-self-center font-semibold text-base leading-none">Đăng xuất</p>
         </Button>
