@@ -1,9 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
 import { useSearchLocationStore } from '@/store/componentStore';
-import { StudioListLocation } from '../components';
+// import { StudioListLocation } from '../components';
 import CategoryList from '@/components/CategoryList';
 const GoogleMap = lazy(() => import('../components/GoogleMap'));
+const StudioListLocation = lazy(() => import('../components/StudioListLocation'));
 
 export default function SearchLocation() {
     const { search } = useLocation();
@@ -32,7 +33,9 @@ export default function SearchLocation() {
             <div id="content" className="content-wrapper">
                 <div className="flex relative">
                     <div className="p-4 w-[63%]">
-                        <StudioListLocation />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <StudioListLocation />
+                        </Suspense>
                     </div>
                     <div className="w-[37%]">
                         <Suspense fallback={<div>Loading...</div>}>

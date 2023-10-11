@@ -1,7 +1,8 @@
 import Slider1 from '@/assets/img/sliderHome1.png';
-// import { Suspense, lazy } from 'react';
-import SearchBarLocation from '@/features/map/components/SearchBarLocation';
-// const SearchBarLocation = lazy(() => import('@/features/map/components/SearchBarLocation'));
+// import SearchBarLocation from '@/features/map/components/SearchBarLocation';
+import { Suspense, lazy } from 'react';
+
+const SearchBarLocation = lazy(() => import('@/features/map/components/SearchBarLocation'));
 
 export default function Home() {
     return (
@@ -13,7 +14,9 @@ export default function Home() {
                         <h1 className="text-5xl">Gần Nhất</h1>
                     </div>
                     <div className="absolute w-full -bottom-8 ">
-                        <SearchBarLocation />
+                        <Suspense fallback={<div></div>}>
+                            <SearchBarLocation />
+                        </Suspense>
                     </div>
                 </div>
             </div>
