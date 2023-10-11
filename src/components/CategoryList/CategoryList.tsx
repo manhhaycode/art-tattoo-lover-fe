@@ -44,8 +44,6 @@ export default function CategoryList() {
     const [dimensions, setDimensions] = useState({ width: 0 });
     const [numberItemInView, setNumberItemInView] = useState(0);
     const [position, setPosition] = useState(0);
-    const [justNext, setJustNext] = useState(false);
-    const [justPrev, setJustPrev] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
     const [isStart, setIsStart] = useState(true);
 
@@ -94,10 +92,10 @@ export default function CategoryList() {
     }, [dimensions.width]);
 
     return (
-        <div className="relative w-full  pl-4">
+        <div className="relative w-full flex px-4">
             <div
                 ref={listRef}
-                className="grid grid-flow-col gap-x-8 items-center overflow-x-auto overscroll-contain w-[calc(100%-132px)]"
+                className="grid grid-flow-col gap-x-8 items-center overflow-x-auto overscroll-contain w-full"
             >
                 <div className="h-fit flex items-center ">
                     <button
@@ -139,6 +137,7 @@ export default function CategoryList() {
                     );
                 })}
             </div>
+
             <CustomRightArrow
                 onClick={() => {
                     const list = listRef.current;
@@ -151,13 +150,6 @@ export default function CategoryList() {
                             : position + (numberItemInView - 1);
 
                     if (list) {
-                        if (justPrev) {
-                            positionNext =
-                                numberItemInView >= 6
-                                    ? position + ((numberItemInView - 1) * 2 - 1)
-                                    : position + (numberItemInView * 2 - 1);
-                        }
-
                         if (positionNext >= list.children.length - 1) {
                             positionNext = list.children.length - 1;
                             setTimeout(() => {
@@ -166,11 +158,10 @@ export default function CategoryList() {
                         }
                         list.children[positionNext].scrollIntoView({
                             behavior: 'smooth',
-                            block: 'end',
+                            block: 'nearest',
+                            inline: 'end',
                         });
                         setPosition(positionNext);
-                        setJustNext(true);
-                        setJustPrev(false);
                         setIsStart(false);
                     }
                 }}
@@ -182,23 +173,16 @@ export default function CategoryList() {
                     if (position === 0) return;
                     let positionNext = position - (numberItemInView - 1);
                     if (list) {
-                        if (justNext) {
-                            positionNext =
-                                numberItemInView >= 6
-                                    ? position - ((numberItemInView - 1) * 2 - 1)
-                                    : position - (numberItemInView * 2 - 1);
-                        }
-                        if (positionNext < 0) positionNext = 0;
+                        if (positionNext <= numberItemInView) positionNext = 0;
                         list.children[positionNext].scrollIntoView({
                             behavior: 'smooth',
-                            block: 'end',
+                            block: 'nearest',
+                            inline: 'end',
                         });
                         setTimeout(() => {
                             setPosition(positionNext);
-                            setJustNext(false);
                             setIsEnd(false);
                             setIsStart(false);
-                            setJustPrev(true);
                         }, 250);
                     }
                 }}
