@@ -6,7 +6,6 @@ import { DropdownImage } from '@/components/Dropdown';
 import { db } from '@/assets/data';
 import Image from '@/components/common/Image';
 import Button from '@/components/common/Button';
-
 interface IService {
     id?: string;
     name?: string;
@@ -28,6 +27,7 @@ export default function SearchBar({
     const [serviceChoose, setServiceChoose] = useState<IService>({});
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [studioName, setStudioName] = useState('');
+    const [isMount, setIsMount] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -98,6 +98,10 @@ export default function SearchBar({
         handleCloseSearchBigBar();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
+
+    useEffect(() => {
+        setIsMount(true);
+    }, []);
 
     return (
         <div
@@ -228,20 +232,28 @@ export default function SearchBar({
                                     </DropdownImage>
                                 </button>
                             </div>
-                            <Button
-                                isAnimate={true}
-                                whileTap={{ scale: 0.8 }}
-                                onTap={() => {
-                                    handleCloseSearchBigBar();
-                                    navigate(
-                                        '/search-studio?studioName=' + studioName + '&service=' + serviceChoose.name,
-                                    );
-                                }}
-                                className="!rounded-3xl ml-3"
-                            >
-                                <SearchIcon styles={{ stroke: '#fff', strokeWidth: '3', width: '20', height: '20' }} />
-                                <p className="justify-self-center font-semibold text-base leading-none">Tìm Kiếm</p>
-                            </Button>
+                            {isMount && (
+                                <Button
+                                    isAnimate={true}
+                                    whileTap={{ scale: 0.8 }}
+                                    onTap={() => {
+                                        handleCloseSearchBigBar();
+                                        navigate(
+                                            '/search-studio?studioName=' +
+                                                studioName +
+                                                '&service=' +
+                                                serviceChoose.name,
+                                        );
+                                    }}
+                                    onClick={() => console.log('abcv')}
+                                    className="!rounded-3xl ml-3"
+                                >
+                                    <SearchIcon
+                                        styles={{ stroke: '#fff', strokeWidth: '3', width: '20', height: '20' }}
+                                    />
+                                    <p className="justify-self-center font-semibold text-base leading-none">Tìm Kiếm</p>
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>

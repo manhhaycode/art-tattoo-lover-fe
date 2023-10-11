@@ -1,3 +1,3 @@
 export default function FilterForm() {
-    return <div>FilterForm</div>;
+    return <div></div>;
 }

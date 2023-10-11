@@ -1,8 +1,10 @@
 import { LogoIcon } from '@/assets/icons';
 import { Link } from 'react-router-dom';
-import SearchBar from './SearchBar';
-import { useState } from 'react';
-import Menu from './Menu';
+import { Suspense, lazy, useState } from 'react';
+
+const SearchBar = lazy(() => import('./SearchBar'));
+const Menu = lazy(() => import('./Menu'));
+
 export default function Header() {
     const [clickOutside, setClickOutside] = useState(false);
     return (
@@ -23,13 +25,17 @@ export default function Header() {
                             Khám Phá
                         </Link>
                     </div>
-                    <SearchBar clickOutside={clickOutside} setClickOutside={setClickOutside} />
+                    <Suspense fallback={<div></div>}>
+                        <SearchBar clickOutside={clickOutside} setClickOutside={setClickOutside} />
+                    </Suspense>
                     <div className="flex gap-x-[60px] items-center">
                         <Link to="/become-studio" className="font-medium text-lg h-12 flex items-center">
                             Trở Thành Studio
                         </Link>
                     </div>
-                    <Menu />
+                    <Suspense fallback={<div></div>}>
+                        <Menu />
+                    </Suspense>
                 </div>
             </div>
         </header>

@@ -1,10 +1,7 @@
 import config from '@/config';
-import { Discover, BecomeStudio, TopArtist, NewsFeed, SearchStudio } from '@/features/misc';
+import { SearchLocation } from '@/features/map/routes';
+import { Discover, BecomeStudio, TopArtist, NewsFeed, SearchStudio, Home } from '@/features/misc';
 import DefaultLayout from '@/layouts/DefaultLayout';
-import { lazy } from 'react';
-
-const Home = lazy(() => import('@/features/misc/routes/Home'));
-const SearchLocation = lazy(() => import('@/features/map/routes/SearchLocation'));
 //Public routes
 const publicRoutes = [
     { path: config.routes.home, component: Home, layout: DefaultLayout },
