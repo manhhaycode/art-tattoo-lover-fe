@@ -1,10 +1,13 @@
 // import { FilterIcon } from '@/assets/icons';
 import { FilterIcon } from '@/assets/icons';
-import StudioCardInfo from '@/components/StudioCardInfo';
+// import StudioCardInfo from '@/components/StudioCardInfo';
 import Button from '@/components/common/Button';
 // import Button from '@/components/common/Button';
 import { convertAdressComponents } from '@/lib/helper/googleMapHelper';
 import { useGoogleMapStore } from '@/store/componentStore';
+import { Suspense, lazy } from 'react';
+
+const StudioCardInfo = lazy(() => import('@/components/StudioCardInfo'));
 
 export default function StudioListLocation() {
     const { placeDetail } = useGoogleMapStore();
@@ -23,21 +26,23 @@ export default function StudioListLocation() {
             </div>
 
             <div className="grid grid-cols-3 item-center gap-y-5 gap-x-5 ">
-                {[...Array(24)].map((_item, index) => {
-                    return (
-                        <StudioCardInfo
-                            key={index}
-                            studioInfo={{
-                                description: 'Studio Tattoo nhận được tài trợ từ các hãng lớn của Đức và Mỹ',
-                                address: 'Phường 12, Q. Phú Nhuận, TPHCM',
-                                img: [''],
-                                name: 'SaiGon Tattoo Club',
-                                rating: 4.87,
-                                voteCount: 326,
-                            }}
-                        />
-                    );
-                })}
+                <Suspense fallback={<div></div>}>
+                    {[...Array(24)].map((_item, index) => {
+                        return (
+                            <StudioCardInfo
+                                key={index}
+                                studioInfo={{
+                                    description: 'Studio Tattoo nhận được tài trợ từ các hãng lớn của Đức và Mỹ',
+                                    address: 'Phường 12, Q. Phú Nhuận, TPHCM',
+                                    img: [''],
+                                    name: 'SaiGon Tattoo Club',
+                                    rating: 4.87,
+                                    voteCount: 326,
+                                }}
+                            />
+                        );
+                    })}
+                </Suspense>
             </div>
         </>
     );
