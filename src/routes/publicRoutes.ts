@@ -1,6 +1,7 @@
 import config from '@/config';
 import { SearchLocation } from '@/features/map/routes';
-import { Discover, BecomeStudio, TopArtist, NewsFeed, SearchStudio, Home } from '@/features/misc';
+import { SearchStudio } from '@/features/studios';
+import { Discover, BecomeStudio, TopArtist, NewsFeed, Home } from '@/features/misc';
 import DefaultLayout from '@/layouts/DefaultLayout';
 //Public routes
 const publicRoutes = [

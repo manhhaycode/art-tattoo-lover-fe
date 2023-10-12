@@ -7,7 +7,7 @@ import { convertAdressComponents } from '@/lib/helper/googleMapHelper';
 import { useGoogleMapStore } from '@/store/componentStore';
 import { Suspense, lazy } from 'react';
 
-const StudioCardInfo = lazy(() => import('@/components/StudioCardInfo'));
+const StudioCardInfo = lazy(() => import('@/features/studios/components/StudioCardInfo'));
 
 export default function StudioListLocation() {
     const { placeDetail } = useGoogleMapStore();

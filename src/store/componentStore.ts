@@ -60,3 +60,13 @@ export const useModalStore = create<ModalState>((set) => ({
         });
     },
 }));
+
+interface DropdownState {
+    isVisible: boolean;
+    setIsVisible: (isVisible: boolean) => void;
+}
+
+export const useDropdownStore = create<DropdownState>((set) => ({
+    isVisible: true,
+    setIsVisible: (isVisible: boolean) => set({ isVisible }),
+}));
