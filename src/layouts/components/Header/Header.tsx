@@ -1,13 +1,15 @@
-import { LogoIcon } from '@/assets/icons';
+import { DropdownIcon, LogoIcon } from '@/assets/icons';
 import { Link } from 'react-router-dom';
 import { Suspense, lazy, useState } from 'react';
 import SearchBar from './SearchBar';
+import { useDropdownStore } from '@/store/componentStore';
 
 // const SearchBar = lazy(() => import('./SearchBar'));
 const Menu = lazy(() => import('./Menu'));
 
 export default function Header() {
     const [clickOutside, setClickOutside] = useState(false);
+    const { isVisible, setIsVisible } = useDropdownStore();
     return (
         <header
             className="sticky top-0 w-full animation-header bg-gray-dark z-[10000] after:bg-gray-dark"
@@ -37,6 +39,13 @@ export default function Header() {
                         <Menu />
                     </Suspense>
                 </div>
+            </div>
+            <div className="absolute top-20 left-1/2">
+                {!isVisible && (
+                    <button className="" onClick={() => setIsVisible(true)}>
+                        <DropdownIcon />
+                    </button>
+                )}
             </div>
         </header>
     );

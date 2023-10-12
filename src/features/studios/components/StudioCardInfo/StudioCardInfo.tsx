@@ -1,7 +1,7 @@
 import { MapPinIcon, StarIcon } from '@/assets/icons';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
 import StudioCardImage2 from '@/assets/img/tattoo2.jpg';
-import ImageCarousel from '../ImageCarousel';
+import ImageCarousel from '@/components/ImageCarousel';
 export interface StudioCardInfoProps {
     studioInfo: {
         name: string;

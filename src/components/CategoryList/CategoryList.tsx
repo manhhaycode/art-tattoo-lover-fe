@@ -38,7 +38,7 @@ const isElementInBoxContainer = (element: HTMLElement, container: HTMLElement) =
     return rect.left >= 0 && rect.right <= (container.clientWidth || element.clientWidth);
 };
 
-export default function CategoryList() {
+export default function CategoryList({ isVisible = true }: { isVisible?: boolean }) {
     const [isSelect, setIsSelect] = useState('');
     const listRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0 });
@@ -92,12 +92,12 @@ export default function CategoryList() {
     }, [dimensions.width]);
 
     return (
-        <div className="relative w-full flex px-4">
+        <div className="relative w-full flex h-full">
             <div
                 ref={listRef}
-                className="grid grid-flow-col gap-x-8 items-center overflow-x-auto overscroll-contain w-full"
+                className="grid grid-flow-col gap-x-8 items-center overflow-x-auto overscroll-contain w-full h-full"
             >
-                <div className="h-fit flex items-center ">
+                <div className="h-full flex items-center ">
                     <button
                         onClick={() => setIsSelect('')}
                         className="flex flex-col gap-y-3 items-center font-sans text-sm"
@@ -138,56 +138,60 @@ export default function CategoryList() {
                 })}
             </div>
 
-            <CustomRightArrow
-                onClick={() => {
-                    const list = listRef.current;
+            {isVisible && (
+                <>
+                    <CustomRightArrow
+                        onClick={() => {
+                            const list = listRef.current;
 
-                    let positionNext =
-                        position === 0
-                            ? numberItemInView >= 6
-                                ? position + ((numberItemInView - 1) * 2 - 1)
-                                : position + (numberItemInView * 2 - 1)
-                            : position + (numberItemInView - 1);
+                            let positionNext =
+                                position === 0
+                                    ? numberItemInView >= 6
+                                        ? position + ((numberItemInView - 1) * 2 - 1)
+                                        : position + (numberItemInView * 2 - 1)
+                                    : position + (numberItemInView - 1);
 
-                    if (list) {
-                        if (positionNext >= list.children.length - 1) {
-                            positionNext = list.children.length - 1;
-                            setTimeout(() => {
-                                setIsEnd(true);
-                            }, 250);
-                        }
-                        list.children[positionNext].scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'nearest',
-                            inline: 'end',
-                        });
-                        setPosition(positionNext);
-                        setIsStart(false);
-                    }
-                }}
-                {...(isEnd && { style: { display: 'none' } })}
-            />
-            <CustomLeftArrow
-                onClick={() => {
-                    const list = listRef.current;
-                    if (position === 0) return;
-                    let positionNext = position - (numberItemInView - 1);
-                    if (list) {
-                        if (positionNext <= numberItemInView) positionNext = 0;
-                        list.children[positionNext].scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'nearest',
-                            inline: 'end',
-                        });
-                        setTimeout(() => {
-                            setPosition(positionNext);
-                            setIsEnd(false);
-                            setIsStart(false);
-                        }, 250);
-                    }
-                }}
-                {...((position === 0 || isStart) && { style: { display: 'none' } })}
-            />
+                            if (list) {
+                                if (positionNext >= list.children.length - 1) {
+                                    positionNext = list.children.length - 1;
+                                    setTimeout(() => {
+                                        setIsEnd(true);
+                                    }, 250);
+                                }
+                                list.children[positionNext].scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'nearest',
+                                    inline: 'end',
+                                });
+                                setPosition(positionNext);
+                                setIsStart(false);
+                            }
+                        }}
+                        {...(isEnd && { style: { display: 'none' } })}
+                    />
+                    <CustomLeftArrow
+                        onClick={() => {
+                            const list = listRef.current;
+                            if (position === 0) return;
+                            let positionNext = position - (numberItemInView - 1);
+                            if (list) {
+                                if (positionNext <= numberItemInView) positionNext = 0;
+                                list.children[positionNext].scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'nearest',
+                                    inline: 'end',
+                                });
+                                setTimeout(() => {
+                                    setPosition(positionNext);
+                                    setIsEnd(false);
+                                    setIsStart(false);
+                                }, 250);
+                            }
+                        }}
+                        {...((position === 0 || isStart) && { style: { display: 'none' } })}
+                    />
+                </>
+            )}
         </div>
     );
 }

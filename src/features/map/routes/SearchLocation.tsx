@@ -1,10 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
 import { useSearchLocationStore } from '@/store/componentStore';
-// import { StudioListLocation } from '../components';
 import CategoryList from '@/components/CategoryList';
 const GoogleMap = lazy(() => import('../components/GoogleMap'));
-const StudioListLocation = lazy(() => import('../components/StudioListLocation'));
+const StudioListLocation = lazy(() => import('@/features/studios/components/StudioListLocation'));
 
 export default function SearchLocation() {
     const { search } = useLocation();
@@ -27,8 +26,10 @@ export default function SearchLocation() {
     }, []);
     return (
         <>
-            <div className="list-category h-20 flex items-center w-full sticky top-20 z-[1001] bg-gray-dark category-list-wrapper">
-                <CategoryList />
+            <div className="list-category h-20 flex items-center w-full sticky top-20 z-[1001] bg-gray-dark category-list-wrapper ">
+                <div className="w-full px-4">
+                    <CategoryList />
+                </div>
             </div>
             <div id="content" className="content-wrapper">
                 <div className="flex relative">
