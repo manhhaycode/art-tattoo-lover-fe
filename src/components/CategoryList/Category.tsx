@@ -5,6 +5,7 @@ export interface ICategory {
     id: string;
     name: string;
     icon?: React.ReactNode;
+    image?: string;
 }
 
 const Category = forwardRef(function (

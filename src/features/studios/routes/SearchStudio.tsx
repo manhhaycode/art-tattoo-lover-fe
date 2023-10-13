@@ -1,35 +1,27 @@
-import CategoryList from '@/components/CategoryList';
-import { useDropdownStore } from '@/store/componentStore';
-import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useWindowScroll } from 'react-use';
+import CustomListCategory from '../components/CustomListCategory';
+import { FilterForm, SortForm } from '../components/FilterForm';
+import ListStudioIntro from '../components/ListStudioIntro';
 
 export default function SearchStudio() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
-    const { isVisible, setIsVisible } = useDropdownStore();
-    const scroll = useWindowScroll();
-
-    useEffect(() => {
-        if (scroll.y >= 80) {
-            setIsVisible(false);
-        } else setIsVisible(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [scroll.y]);
-
-    useEffect(() => {
-        return () => setIsVisible(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <>
-            <div
-                className="list-category h-20 flex flex-col items-center w-full sticky top-20 z-[1001] opacity-100 bg-gray-dark category-list-wrapper transition-all duration-200 ease-in-out"
-                {...(!isVisible && { style: { top: '-80px', opacity: 0 } })}
-            >
-                <div className="xl:w-[1372px] mx-auto h-full">
-                    <CategoryList isVisible={isVisible} />
+            <CustomListCategory />
+            <div id="content" className="xl:w-[1372px] mx-auto">
+                <SortForm />
+                <div className="flex gap-x-8">
+                    <div className="w-[30%] h-[calc(100vh-160px)] sticky flex flex-col top-24">
+                        <p className="text-xl font-medium">Tìm thấy: 45 kết quả</p>
+                        <div className="mt-5">
+                            <FilterForm />
+                        </div>
+                    </div>
+                    <div className="w-[70%] flex flex-col gap-y-6">
+                        <ListStudioIntro />
+                    </div>
                 </div>
             </div>
 
