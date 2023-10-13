@@ -67,15 +67,8 @@ export default function Login() {
                             onChange() {
                                 if (loginMutation.isError) loginMutation.reset();
                             },
-                            // pattern: {
-                            //     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,20}$/,
-                            //     message: 'Sai mật khẩu',
-                            // },
                             required: 'Mật khẩu không được để trống',
                         })}
-                        // type="password"
-                        // typeinput="header"
-                        // className="h-11 rounded-lg"
                         placeholder="Mật khẩu"
                     ></PasswordInput>
                     {errors.password && (

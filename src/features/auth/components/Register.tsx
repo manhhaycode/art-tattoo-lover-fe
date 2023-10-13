@@ -3,33 +3,52 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Input, { stylePasswordInput } from '@/components/common/Input';
 
 import Button from '@/components/common/Button';
-import { PasswordInput } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Loader, PasswordInput } from '@mantine/core';
 import { SecureIcon } from '@/assets/icons';
 import CountDown from '@/components/CountDown';
 import { useState } from 'react';
-interface IRegister {
-    name: string;
-    email: string;
-    password: string;
-    rePassword: string;
-    codeActive: string;
-}
+import { useRegisterMutation, useVerifyEmailMutation } from '../api';
+import { RegisterCredentials } from '../types';
+import { toast } from 'react-toastify';
+
 export default function Register() {
     const { setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
-    const [visible, { toggle }] = useDisclosure(false);
-    // const [isCountDown, setIsCountDown] = useState(false);
     const [countDownTime, setCountDownTime] = useState<Date | null>(null);
+    const verifyEmailMutation = useVerifyEmailMutation({
+        onSuccess: () => {
+            toast('Mã xác thực đã được gửi về email của bạn', { type: 'success', theme: 'dark' });
+        },
+        onError: () => {
+            toast('Email đã tồn tại', { type: 'error', theme: 'dark' });
+        },
+    });
+    const registerMutation = useRegisterMutation({
+        onSuccess: () => {
+            toast('Đăng ký thành công, đăng nhập ngay để trải nghiệm', { type: 'success', theme: 'dark' });
+            setIsRegisterModalVisible(false);
+            setIsLoginModalVisible(true);
+        },
+        onError: (error) => {
+            let message = '';
+            if (error.message.includes('mail')) message = 'Email đã tồn tại';
+            else if (error.message.includes('phone')) message = 'Số điện thoại đã tồn tại';
+            else if (error.message.includes('code')) message = 'Mã xác thực không đúng';
+            else message = 'Đã có lỗi xảy ra';
+
+            toast(message, { type: 'error', theme: 'dark' });
+        },
+    });
     const {
         handleSubmit,
         register,
-        formState: { errors, isValid, dirtyFields },
+        formState: { errors, isValid },
         trigger,
         watch,
-    } = useForm<IRegister>();
-    const onSubmit: SubmitHandler<IRegister> = () => {};
-    const isEmailValid = !errors.email && dirtyFields.email;
-
+    } = useForm<RegisterCredentials>();
+    const onSubmit: SubmitHandler<RegisterCredentials> = (credentials) => {
+        registerMutation.mutate(credentials);
+    };
+    const isEmailValid = !errors.email && !!watch('email') && watch('email') !== '';
     return (
         <div className="flex flex-col justify-between overflow-auto h-full w-[800px]">
             <div className="px-4 mt-10 mb-24">
@@ -39,20 +58,22 @@ export default function Register() {
                         <div className="flex flex-col gap-y-3 w-1/2">
                             <label className="text-white font-medium text-sm">Nhập họ tên</label>
                             <Input
-                                {...register('name', {
+                                disabled={registerMutation.isLoading}
+                                {...register('fullName', {
                                     required: 'Tên không được để trống',
                                 })}
                                 typeinput="header"
                                 className="h-11 rounded-lg"
                                 placeholder="Tên của bạn"
                             ></Input>
-                            {errors.name && (
-                                <label className="text-sm font-semibold text-red-500">{errors.name.message}</label>
+                            {errors.fullName && (
+                                <label className="text-sm font-semibold text-red-500">{errors.fullName.message}</label>
                             )}
                         </div>
                         <div className="flex flex-col gap-y-3 w-1/2">
                             <label className="text-white font-medium text-sm">Nhập địa chỉ Email</label>
                             <Input
+                                disabled={registerMutation.isLoading}
                                 {...register('email', {
                                     pattern: {
                                         value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
@@ -81,8 +102,7 @@ export default function Register() {
                             <PasswordInput
                                 variant="unstyled"
                                 classNames={stylePasswordInput}
-                                visible={visible}
-                                onVisibilityChange={toggle}
+                                disabled={registerMutation.isLoading}
                                 {...register('password', {
                                     pattern: {
                                         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,20}$/,
@@ -104,27 +124,26 @@ export default function Register() {
                         </div>
 
                         <div className="flex flex-col gap-y-3 w-1/2">
-                            <label className="text-white font-medium text-sm">Nhập lại mật khẩu</label>
-                            <PasswordInput
-                                variant="unstyled"
-                                classNames={stylePasswordInput}
-                                {...register('rePassword', {
-                                    validate: (value) => value === watch('password') || 'Mật khẩu không trùng khớp',
-                                    required: 'Mật khẩu không được để trống',
-                                    onChange: () => {
-                                        trigger('rePassword');
+                            <label className="text-white font-medium text-sm">Nhập Số điện thoại</label>
+                            <Input
+                                disabled={registerMutation.isLoading}
+                                {...register('phoneNumber', {
+                                    pattern: {
+                                        value: /^[0-9]{8,15}$/,
+                                        message: 'Số điện thoại không hợp lệ',
                                     },
+                                    required: 'Số điện thoại không được để trống',
                                     onBlur: () => {
-                                        trigger('rePassword');
+                                        trigger('phoneNumber');
                                     },
+                                    disabled: registerMutation.isLoading,
                                 })}
-                                visible={visible}
-                                onVisibilityChange={toggle}
-                                placeholder="Mật khẩu"
-                            ></PasswordInput>
-                            {errors.rePassword && (
+                                typeinput="header"
+                                className="h-11 rounded-lg"
+                            />
+                            {errors.phoneNumber && (
                                 <label className="text-sm font-semibold text-red-500">
-                                    {errors.rePassword.message}
+                                    {errors.phoneNumber.message}
                                 </label>
                             )}
                         </div>
@@ -134,7 +153,8 @@ export default function Register() {
                         <div className="flex flex-col gap-y-3 w-1/2">
                             <label className="text-white font-medium text-sm">Xác thực email đăng ký</label>
                             <Input
-                                {...register('codeActive', {
+                                disabled={registerMutation.isLoading}
+                                {...register('verifyCode', {
                                     minLength: {
                                         value: 6,
                                         message: 'Mã xác thực phải có ít nhất 6 ký tự',
@@ -144,14 +164,15 @@ export default function Register() {
                                         message: 'Mã xác thực có tối đa 6 ký tự',
                                     },
                                     required: 'Mã xác thực không được để trống',
+                                    disabled: registerMutation.isLoading,
                                 })}
                                 typeinput="header"
                                 className="h-11 rounded-lg"
                                 placeholder="Nhập mã gửi về email"
                             ></Input>
-                            {errors.codeActive && (
+                            {errors.verifyCode && (
                                 <label className="text-sm font-semibold text-red-500">
-                                    {errors.codeActive.message}
+                                    {errors.verifyCode.message}
                                 </label>
                             )}
                         </div>
@@ -162,7 +183,10 @@ export default function Register() {
                             isAnimate={true}
                             whileTap={isEmailValid && !countDownTime ? { scale: 0.9 } : {}}
                             onClick={() => {
-                                if (isEmailValid) setCountDownTime(new Date(Date.now() + 60000));
+                                if (isEmailValid) {
+                                    setCountDownTime(new Date(Date.now() + 60000));
+                                    verifyEmailMutation.mutate(watch('email'));
+                                }
                             }}
                             className={
                                 'h-12 !min-w-[180px] ' +
@@ -173,7 +197,7 @@ export default function Register() {
                                     : countDownTime
                                     ? '!bg-transparent text-white shadow-shadow-dropdown cursor-not-allowed '
                                     : 'bg-disable text-placeholder-gray cursor-not-allowed ') +
-                                (errors.codeActive ? 'self-center' : 'self-end')
+                                (errors.verifyCode ? 'self-center' : 'self-end')
                             }
                         >
                             {countDownTime === null && (
@@ -195,12 +219,16 @@ export default function Register() {
                     </div>
                     <Button
                         className={'mt-4 ' + (!isValid && '!bg-disable text-placeholder-gray')}
-                        disabled={!isValid}
+                        disabled={!isValid || registerMutation.isLoading}
                         type="submit"
                         isAnimate={true}
-                        whileTap={isValid ? { scale: 0.9 } : {}}
+                        whileTap={isValid && !registerMutation.isLoading ? { scale: 0.9 } : {}}
                     >
-                        <p className="justify-self-center font-semibold text-base leading-none">Đăng Ký</p>
+                        {registerMutation.isLoading ? (
+                            <Loader size={20} color="#fff" />
+                        ) : (
+                            <p className="justify-self-center font-semibold text-base leading-5">Đăng Ký</p>
+                        )}
                     </Button>
                 </form>
             </div>
