@@ -1,7 +1,16 @@
 import * as httpRequest from '@/lib/axios';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
-import { ILogin, ILogout, IRefreshToken, ISession, LoginCredentials } from '../types';
+import {
+    ILogin,
+    ILogout,
+    IRefreshToken,
+    IRegister,
+    ISession,
+    IVerifyEmail,
+    LoginCredentials,
+    RegisterCredentials,
+} from '../types';
 
 const login = async (credentials: LoginCredentials): Promise<ILogin> => {
     try {
@@ -60,6 +69,24 @@ const getSession = async (): Promise<ISession> => {
         });
         sessionStorage.setItem('tattus-session', resSession.sessionId);
         return resSession;
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+const verifyEmail = async (email: string): Promise<IVerifyEmail> => {
+    try {
+        const resVerify: IVerifyEmail = await httpRequest.post('/auth/require-verify', { email });
+        return resVerify;
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+const register = async (credential: RegisterCredentials): Promise<IRegister> => {
+    try {
+        const resRegister: IRegister = await httpRequest.post('/auth/register', credential);
+        return resRegister;
     } catch (e) {
         throw new Error(e.error);
     }
@@ -130,5 +157,31 @@ export const useGetSessionMutation = (
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
         retry,
+    });
+};
+
+export const useVerifyEmailMutation = (handleFn: {
+    onError?: (error: Error, variables: unknown, context: unknown) => void;
+    onSuccess?: (data: IVerifyEmail, variables: unknown, context: unknown) => void;
+    onMutate?: (variables: string) => Promise<IVerifyEmail>;
+}) => {
+    return useMutation({
+        mutationFn: (email: string) => verifyEmail(email),
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
+    });
+};
+
+export const useRegisterMutation = (handleFn: {
+    onError?: (error: Error, variables: RegisterCredentials, context: unknown) => void;
+    onSuccess?: (data: IRegister, variables: RegisterCredentials, context: unknown) => void;
+    onMutate?: (variables: RegisterCredentials) => Promise<IRegister>;
+}) => {
+    return useMutation({
+        mutationFn: (credentials: RegisterCredentials) => register(credentials),
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
     });
 };

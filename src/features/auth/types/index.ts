@@ -26,3 +26,15 @@ export interface ISession {
     roleId: string;
     sessionId: string;
 }
+
+export interface RegisterCredentials {
+    fullName: string;
+    email: string;
+    password: string;
+    verifyCode: string;
+    phoneNumber: string;
+}
+
+export interface IRegister extends ILogout {}
+
+export interface IVerifyEmail extends ILogout {}

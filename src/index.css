@@ -202,3 +202,11 @@ html *::-webkit-scrollbar {
     font-weight: 500;
     color: rgba(176, 179, 184, 0.7);
 }
+
+.Toastify {
+    position: relative;
+    z-index: 100000;
+}
+.Toastify__toast-theme--dark {
+    box-shadow: 0 0 0 1px #393a3b;
+}
