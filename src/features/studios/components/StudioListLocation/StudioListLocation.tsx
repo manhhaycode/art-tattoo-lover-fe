@@ -1,13 +1,10 @@
-// import { FilterIcon } from '@/assets/icons';
 import { FilterIcon } from '@/assets/icons';
-// import StudioCardInfo from '@/components/StudioCardInfo';
 import Button from '@/components/common/Button';
-// import Button from '@/components/common/Button';
 import { convertAdressComponents } from '@/lib/helper/googleMapHelper';
 import { useGoogleMapStore } from '@/store/componentStore';
 import { Suspense, lazy } from 'react';
 
-const StudioCardInfo = lazy(() => import('@/features/studios/components/StudioCardInfo'));
+const StudioCardInfo = lazy(() => import('./StudioCardInfo'));
 
 export default function StudioListLocation() {
     const { placeDetail } = useGoogleMapStore();

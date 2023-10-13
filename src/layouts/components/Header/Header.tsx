@@ -42,7 +42,7 @@ export default function Header() {
             </div>
             <div className="absolute top-20 left-1/2">
                 {!isVisible && (
-                    <button className="" onClick={() => setIsVisible(true)}>
+                    <button onClick={() => setIsVisible(true)}>
                         <DropdownIcon />
                     </button>
                 )}

@@ -13,7 +13,7 @@ export default function Button({
 } & HTMLMotionProps<'button'>) {
     const stytleType = {
         primary:
-            'flex gap-x-2 p-[14px] items-center justify-center bg-button-primary rounded-lg min-w-fit font-semibold text-base leading-none ',
+            'flex gap-x-2 p-[14px] items-center justify-center bg-button-primary rounded-lg min-w-fit font-sans font-semibold text-base leading-none ',
         secondary: 'rounded-full px-4 py-2 text-white text-sm font-medium bg-secondary hover:bg-secondary-light ',
     };
     props.transition = isAnimate

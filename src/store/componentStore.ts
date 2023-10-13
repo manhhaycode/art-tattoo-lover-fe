@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceData } from '@googlemaps/google-maps-services-js';
+import { IFilter } from '@/features/studios';
 interface SearchLocationState {
     placeChoose: Partial<google.maps.places.AutocompletePrediction> | null;
     setPlaceChoose: (placeId: Partial<google.maps.places.AutocompletePrediction> | null) => void;
@@ -69,4 +70,18 @@ interface DropdownState {
 export const useDropdownStore = create<DropdownState>((set) => ({
     isVisible: true,
     setIsVisible: (isVisible: boolean) => set({ isVisible }),
+}));
+
+interface FilterFormState {
+    filterData: IFilter | null;
+    isQuery: boolean;
+    setFilterData: (filterData: IFilter | null) => void;
+    setIsQuery: (isQuery: boolean) => void;
+}
+
+export const useFilterFormStore = create<FilterFormState>((set) => ({
+    filterData: null,
+    isQuery: false,
+    setIsQuery: (isQuery: boolean) => set({ isQuery }),
+    setFilterData: (filterData: IFilter | null) => set({ filterData }),
 }));

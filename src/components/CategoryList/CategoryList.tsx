@@ -1,5 +1,5 @@
 import { db } from '@/assets/data';
-import Category from './Category';
+import Category, { ICategory } from './Category';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon, HomeIcon } from '@/assets/icons';
 
@@ -38,7 +38,13 @@ const isElementInBoxContainer = (element: HTMLElement, container: HTMLElement) =
     return rect.left >= 0 && rect.right <= (container.clientWidth || element.clientWidth);
 };
 
-export default function CategoryList({ isVisible = true }: { isVisible?: boolean }) {
+export default function CategoryList({
+    isVisible = true,
+    onClickCategory,
+}: {
+    isVisible?: boolean;
+    onClickCategory?: (category: ICategory) => void;
+}) {
     const [isSelect, setIsSelect] = useState('');
     const listRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0 });
@@ -124,6 +130,7 @@ export default function CategoryList({ isVisible = true }: { isVisible?: boolean
                         <Category
                             onClick={() => {
                                 setIsSelect(category.id);
+                                onClickCategory && onClickCategory(category);
                             }}
                             key={category.id}
                             category={category}
