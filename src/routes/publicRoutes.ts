@@ -1,6 +1,6 @@
 import config from '@/config';
 import { SearchLocation } from '@/features/map/routes';
-import { SearchStudio } from '@/features/studios';
+import { SearchStudio, Studio } from '@/features/studios';
 import { Discover, BecomeStudio, TopArtist, NewsFeed, Home } from '@/features/misc';
 import DefaultLayout from '@/layouts/DefaultLayout';
 //Public routes
@@ -12,6 +12,7 @@ const publicRoutes = [
     { path: config.routes.newsFeed, component: NewsFeed, layout: DefaultLayout },
     { path: config.routes.searchStudio, component: SearchStudio, layout: DefaultLayout },
     { path: config.routes.searchLocation, component: SearchLocation, layout: DefaultLayout },
+    { path: config.routes.studio, component: Studio, layout: DefaultLayout },
 ];
 
 export { publicRoutes };

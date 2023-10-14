@@ -9,7 +9,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
     const { isModalVisible, reset } = useModalStore();
 
     return (
-        <div className="bg-dark-theme h-[4000px]">
+        <div className="bg-dark-theme min-h-screen">
             <Header />
             {children}
             <Modal animate={isModalVisible} onClose={() => reset()} />
