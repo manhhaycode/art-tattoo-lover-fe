@@ -17,7 +17,16 @@ export const getBoundsZoomLevel = (bounds: google.maps.LatLngBounds, mapSize: { 
 
     const ne = bounds.getNorthEast();
     const sw = bounds.getSouthWest();
-
+    console.log({
+        ne: {
+            lat: ne.lat(),
+            lng: ne.lng(),
+        },
+        sw: {
+            lat: sw.lat(),
+            lng: sw.lng(),
+        },
+    });
     const latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
 
     const lngDiff = ne.lng() - sw.lng();

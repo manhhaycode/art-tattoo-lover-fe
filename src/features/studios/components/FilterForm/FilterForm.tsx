@@ -12,7 +12,7 @@ export default function FilterForm() {
     const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
 
     const onSubmit: SubmitHandler<IFilter> = async (data) => {
-        setFilterData({ ...filterData, ...data });
+        setFilterData({ ...filterData, ...data, rating: value.map((item) => Number(item)) });
         setIsQuery(true);
     };
 
@@ -21,7 +21,7 @@ export default function FilterForm() {
             <div className="flex flex-col gap-y-3">
                 <label className="text-placeholder-gray font-medium text-lg">Tìm kiếm theo tên studio</label>
                 <Input
-                    {...register('name')}
+                    {...register('searchKeyword')}
                     typeinput="header"
                     className="h-11 rounded-lg"
                     placeholder="Nhập tên studio"
@@ -31,12 +31,9 @@ export default function FilterForm() {
                 <label className="text-placeholder-gray font-medium text-lg">Tìm kiếm theo đánh giá</label>
                 <Checkbox.Group
                     value={value}
-                    {...(register('rating'),
-                    {
-                        onChange: (value) => {
-                            setValue(value);
-                        },
-                    })}
+                    onChange={(values) => {
+                        setValue(values);
+                    }}
                 >
                     <div className="flex flex-col gap-y-4">
                         <div className="flex gap-x-3 items-center text-sm font-medium font-sans">

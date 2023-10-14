@@ -1,3 +1,4 @@
 import SearchStudio from './SearchStudio';
+import Studio from './Studio';
 
-export { SearchStudio };
+export { SearchStudio, Studio };

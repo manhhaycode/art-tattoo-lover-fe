@@ -3,7 +3,7 @@ import SearchBarLocation from '@/features/map/components/SearchBarLocation';
 
 export default function Home() {
     return (
-        <div id="content" className="pt-6 w-full">
+        <div id="content" className="pt-6 w-full h-[3000px]">
             <div className="mx-auto w-full mb-9 xl:w-[1372px]">
                 <div className="h-[504px] relative" style={{ backgroundImage: `url(${Slider1})` }}>
                     <div className="absolute top-11 w-full font-serif-slide text-white text-center">

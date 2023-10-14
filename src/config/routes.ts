@@ -7,6 +7,7 @@ const routes = {
     artist: '/@:artistId',
     searchLocation: '/search-location',
     searchStudio: '/search-studio',
+    studio: '/studio/:slugStudio/:studioId',
     userProfile: '/@:userId',
 };
 

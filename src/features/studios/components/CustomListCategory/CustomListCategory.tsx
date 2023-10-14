@@ -2,20 +2,17 @@ import CategoryList from '@/components/CategoryList';
 import { ICategory } from '@/features/studios';
 import { useDropdownStore, useFilterFormStore } from '@/store/componentStore';
 import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useWindowScroll } from 'react-use';
 
 export default function CustomListCategory() {
     const { isVisible, setIsVisible } = useDropdownStore();
     const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
     const scroll = useWindowScroll();
-    const navigator = useNavigate();
 
     const handleSelectCategory = useCallback(
         (category: ICategory) => {
             setFilterData({ ...filterData, category: category.id });
             setIsQuery(true);
-            navigator(`/search-studio?studioName=${filterData?.name || ''}&service=${category.name}`);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [filterData],

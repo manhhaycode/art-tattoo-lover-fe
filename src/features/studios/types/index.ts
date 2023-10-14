@@ -6,20 +6,26 @@ export interface IMedia {
 }
 
 export interface IFilter {
-    name?: string;
+    searchKeyword?: string;
     category?: string;
-    rating?: number;
-    location?: {
-        latitude: number;
-        longtitude: number;
+    rating?: number[];
+    viewPortNE?: {
+        lat: number;
+        lng: number;
     };
+    viewPortSW?: {
+        lat: number;
+        lng: number;
+    };
+    page?: number;
+    pageSize?: number;
     sort?: string;
 }
 
 export interface IWorkingTime {
     dayOfWeek: number;
-    closeAt: Date;
-    openAt: Date;
+    closeAt: string;
+    openAt: string;
 }
 
 export interface ICategory {
@@ -27,6 +33,13 @@ export interface ICategory {
     name: string;
     icon?: React.ReactNode;
     image?: string;
+}
+
+export interface IPaginationStudio {
+    data: IStudio[];
+    page: number;
+    pageSize: number;
+    total: number;
 }
 
 export interface IStudio {

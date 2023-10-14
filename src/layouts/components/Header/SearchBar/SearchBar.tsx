@@ -233,7 +233,10 @@ export default function SearchBar({
                                 onTap={() => {
                                     handleCloseSearchBigBar();
                                     navigate(
-                                        '/search-studio?studioName=' + studioName + '&service=' + serviceChoose.name,
+                                        '/search-studio?searchKeyword=' +
+                                            studioName +
+                                            '&category=' +
+                                            serviceChoose.name,
                                     );
                                 }}
                                 onClick={() => console.log('abcv')}

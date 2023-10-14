@@ -3,14 +3,27 @@ import { CalendarIcon, FacebookIcon, InstagramIcon, MapPinIcon, PhoneCallIcon, W
 import Button from '@/components/common/Button';
 import { ImageSlider } from '@/components/common/Image';
 import { IStudio } from '@/features/studios';
+import { convertSlugURL } from '@/lib/helper';
 import { Rating } from '@mantine/core';
+import { Link, useNavigate } from 'react-router-dom';
+import StudioCardImage from '@/assets/img/studio-card.jpg';
 
 export default function StudioIntroCard({ studio, callButton }: { studio: Partial<IStudio>; callButton?: boolean }) {
+    const navigator = useNavigate();
+
     return (
         <div className="w-full px-6 py-4 bg-gray-dark flex items-start gap-x-6 rounded-[20px] shadow-shadow-dropdown relative">
-            <div className="flex flex-col gap-y-3 w-1/3">
-                <ImageSlider src={studio.logo} alt="" />
-                <Button className="py-[10px]">
+            <div className="flex flex-col gap-y-3 w-1/3 max-w-[300px]">
+                <ImageSlider
+                    className="cursor-pointer rounded-xl"
+                    onClick={() => navigator(`/studio/${convertSlugURL(studio.name!)}/${studio.id}`)}
+                    src={studio.logo || StudioCardImage}
+                    alt=""
+                />
+                <Button
+                    onClick={() => navigator(`/studio/${convertSlugURL(studio.name!)}/${studio.id}`)}
+                    className="py-[10px]"
+                >
                     <CalendarIcon />
                     <p>Đặt lịch xăm ngay</p>
                 </Button>
@@ -22,7 +35,9 @@ export default function StudioIntroCard({ studio, callButton }: { studio: Partia
                 )}
             </div>
             <div className="flex flex-col gap-y-3 w-2/3 h-full justify-center font-medium text-white text-sm">
-                <h1 className="font-bold text-xl">{studio.name}</h1>
+                <Link to={`/studio/${convertSlugURL(studio.name!)}/${studio.id}`} className="font-bold text-xl">
+                    {studio.name}
+                </Link>
                 <p>{studio.slogan}</p>
                 <div className="flex items-center">
                     <MapPinIcon styles={{ height: '16px', width: '16px' }} />
