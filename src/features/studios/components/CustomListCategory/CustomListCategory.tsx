@@ -6,13 +6,12 @@ import { useWindowScroll } from 'react-use';
 
 export default function CustomListCategory() {
     const { isVisible, setIsVisible } = useDropdownStore();
-    const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
+    const { filterData, setFilterData } = useFilterFormStore();
     const scroll = useWindowScroll();
 
     const handleSelectCategory = useCallback(
         (category: ICategory) => {
             setFilterData({ ...filterData, category: category.id });
-            setIsQuery(true);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [filterData],
@@ -34,8 +33,14 @@ export default function CustomListCategory() {
             className="list-category h-20 flex flex-col items-center w-full sticky top-20 z-[1001] opacity-100 bg-gray-dark category-list-wrapper transition-all duration-200 ease-in-out"
             {...(!isVisible && { style: { top: '-80px', opacity: 0 } })}
         >
-            <div className="xl:w-[1372px] mx-auto h-full">
-                <CategoryList isVisible={isVisible} onClickCategory={handleSelectCategory} />
+            <div className="2xl:w-[1372px] mx-auto w-[calc(100%-4rem)]  h-full">
+                <CategoryList
+                    isVisible={isVisible}
+                    onClickCategory={handleSelectCategory}
+                    onClickAll={() => {
+                        setFilterData({ ...filterData, category: undefined });
+                    }}
+                />
             </div>
         </div>
     );

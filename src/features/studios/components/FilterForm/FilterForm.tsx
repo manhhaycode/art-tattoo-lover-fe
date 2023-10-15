@@ -9,11 +9,10 @@ import { useFilterFormStore } from '@/store/componentStore';
 export default function FilterForm() {
     const [value, setValue] = useState<string[]>([]);
     const { handleSubmit, register } = useForm<IFilter>();
-    const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
+    const { filterData, setFilterData } = useFilterFormStore();
 
     const onSubmit: SubmitHandler<IFilter> = async (data) => {
         setFilterData({ ...filterData, ...data, rating: value.map((item) => Number(item)) });
-        setIsQuery(true);
     };
 
     return (

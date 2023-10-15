@@ -41,9 +41,11 @@ const isElementInBoxContainer = (element: HTMLElement, container: HTMLElement) =
 export default function CategoryList({
     isVisible = true,
     onClickCategory,
+    onClickAll,
 }: {
     isVisible?: boolean;
     onClickCategory?: (category: ICategory) => void;
+    onClickAll?: () => void;
 }) {
     const [isSelect, setIsSelect] = useState('');
     const listRef = useRef<HTMLDivElement>(null);
@@ -105,7 +107,10 @@ export default function CategoryList({
             >
                 <div className="h-full flex items-center ">
                     <button
-                        onClick={() => setIsSelect('')}
+                        onClick={() => {
+                            setIsSelect('');
+                            onClickAll && onClickAll();
+                        }}
                         className="flex flex-col gap-y-3 items-center font-sans text-sm"
                     >
                         <HomeIcon

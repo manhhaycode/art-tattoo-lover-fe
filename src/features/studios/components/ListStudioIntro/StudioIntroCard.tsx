@@ -7,12 +7,21 @@ import { convertSlugURL } from '@/lib/helper';
 import { Rating } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
+import ListServiceOfStudio from '@/components/ListServiceOfStudio';
+import { db } from '@/assets/data';
 
-export default function StudioIntroCard({ studio, callButton }: { studio: Partial<IStudio>; callButton?: boolean }) {
+export default function StudioIntroCard({
+    studio,
+    callButton, // maxLineIntro,
+}: {
+    studio: Partial<IStudio>;
+    callButton?: boolean;
+    // maxLineIntro?: number;
+}) {
     const navigator = useNavigate();
 
     return (
-        <div className="w-full px-6 py-4 bg-gray-dark flex items-start gap-x-6 rounded-[20px] shadow-shadow-dropdown relative">
+        <div className="w-full px-6 py-4 bg-gray-dark flex gap-x-6 rounded-[20px] shadow-shadow-dropdown relative">
             <div className="flex flex-col gap-y-3 w-1/3 max-w-[300px]">
                 <ImageSlider
                     className="cursor-pointer rounded-xl"
@@ -34,7 +43,7 @@ export default function StudioIntroCard({ studio, callButton }: { studio: Partia
                     </Button>
                 )}
             </div>
-            <div className="flex flex-col gap-y-3 w-2/3 h-full justify-center font-medium text-white text-sm">
+            <div className="flex flex-col gap-y-3 mt-auto w-2/3 h-full justify-end font-medium text-white text-sm">
                 <Link to={`/studio/${convertSlugURL(studio.name!)}/${studio.id}`} className="font-bold text-xl">
                     {studio.name}
                 </Link>
@@ -43,8 +52,9 @@ export default function StudioIntroCard({ studio, callButton }: { studio: Partia
                     <MapPinIcon styles={{ height: '16px', width: '16px' }} />
                     <p className="ml-2">{studio.address}</p>
                 </div>
-                <p className="line-clamp-4">{studio.introduction}</p>
-                {/* {studio.listCategory && <CategoryOfStudio listCategory={studio.listCategory} />} */}
+                {!studio.listCategory && <p className={'line-clamp-3'}>{studio.introduction}</p>}
+                {studio.workingTimes && <ListServiceOfStudio listWorkingTime={studio.workingTimes} />}
+                {studio.listCategory && <ListServiceOfStudio listCategory={db.servicesTattoo} />}
             </div>
             <div className="absolute right-6 font-medium">
                 <div className="flex flex-col gap-y-3 items-end">
