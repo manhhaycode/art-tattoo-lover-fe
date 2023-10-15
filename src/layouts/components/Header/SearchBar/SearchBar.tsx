@@ -1,5 +1,5 @@
 import { SearchIcon } from '@/assets/icons';
-import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Input from '@/components/common/Input';
 import { DropdownImage } from '@/components/Dropdown';
@@ -22,7 +22,6 @@ export default function SearchBar({
     const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
     const searchSmallRef = useRef<HTMLDivElement>(null);
     const searchBigRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
     const serviceRef = useRef<HTMLButtonElement>(null);
     const [serviceChoose, setServiceChoose] = useState<IService>({});
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -30,43 +29,19 @@ export default function SearchBar({
     const location = useLocation();
     const navigate = useNavigate();
 
-    const handleClickSearchSmallBar = useCallback(
-        (e: MouseEvent<HTMLDivElement>) => {
-            if (searchBigRef.current && searchSmallRef.current) {
-                e.stopPropagation();
-                if (!isSearchBarVisible) {
-                    searchBigRef.current.classList.toggle('transform-scale-search-big');
-                    searchSmallRef.current.classList.toggle('transform-scale-search-small');
-                    document.getElementsByTagName('header')[0].classList.toggle('scale-header');
-                    setIsSearchBarVisible(true);
-                }
-            }
-        },
-        [isSearchBarVisible],
-    );
+    const handleCloseSearchBigBar = () => {
+        document.getElementsByTagName('header')[0].classList.remove('scale-header');
+        setIsSearchBarVisible(false);
+        setIsDropdownVisible(false);
+    };
 
-    const handleCloseSearchBigBar = useCallback(() => {
-        if (searchBigRef.current && searchSmallRef.current) {
-            if (isSearchBarVisible) {
-                searchBigRef.current.classList.toggle('transform-scale-search-big');
-                searchSmallRef.current.classList.toggle('transform-scale-search-small');
-                inputRef.current?.classList.remove('!bg-[rgb(80,82,83)]');
-                serviceRef.current?.classList.remove('!bg-[rgb(80,82,83)]');
-                document.getElementsByTagName('header')[0].classList.toggle('scale-header');
-                setIsSearchBarVisible(false);
-                setIsDropdownVisible(false);
-            }
+    const handleCloseSearchBigBarWhenClickOutside = (e: globalThis.MouseEvent) => {
+        if (!document.getElementsByTagName('header')[0].contains(e.target as Node)) {
+            document.getElementsByTagName('header')[0].classList.remove('scale-header');
+            setIsSearchBarVisible(false);
+            setIsDropdownVisible(false);
         }
-    }, [isSearchBarVisible]);
-
-    const handleCloseSearchBigBarWhenClickOutside = useCallback(
-        (e: globalThis.MouseEvent) => {
-            if (!document.getElementsByTagName('header')[0].contains(e.target as Node)) {
-                handleCloseSearchBigBar();
-            }
-        },
-        [handleCloseSearchBigBar],
-    );
+    };
 
     useEffect(() => {
         document.addEventListener('click', handleCloseSearchBigBarWhenClickOutside);
@@ -75,16 +50,7 @@ export default function SearchBar({
             document.removeEventListener('click', handleCloseSearchBigBarWhenClickOutside);
             document.removeEventListener('scroll', handleCloseSearchBigBar);
         };
-    }, [handleCloseSearchBigBar, handleCloseSearchBigBarWhenClickOutside]);
-
-    useEffect(() => {
-        if (isDropdownVisible) {
-            inputRef.current?.classList.remove('!bg-[rgb(80,82,83)]');
-            serviceRef.current?.classList.add('!bg-[rgb(80,82,83)]');
-        } else {
-            serviceRef.current?.classList.remove('!bg-[rgb(80,82,83)]');
-        }
-    }, [isDropdownVisible, isSearchBarVisible]);
+    }, []);
 
     useEffect(() => {
         if (clickOutside) {
@@ -95,7 +61,6 @@ export default function SearchBar({
 
     useEffect(() => {
         handleCloseSearchBigBar();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
     return (
@@ -110,15 +75,19 @@ export default function SearchBar({
         >
             <div
                 ref={searchSmallRef}
-                className="h-[50px] rounded-3xl bg-search-gray-dark flex h- px-6 gap-x-[20px] items-center cursor-pointer animation-search-small-bar relative"
+                className={
+                    'h-[50px] rounded-3xl bg-search-gray-dark flex h- px-6 gap-x-[20px] items-center cursor-pointer animation-search-small-bar relative ' +
+                    (isSearchBarVisible ? 'transform-scale-search-small' : '')
+                }
             >
                 <div className="flex gap-x-[10px] h-full items-center">
                     <div
                         className="font-medium text-placeholder-gray h-full flex items-center"
                         onClick={(e) => {
-                            setIsDropdownVisible(false);
-                            handleClickSearchSmallBar(e);
-                            inputRef.current?.classList.add('!bg-[rgb(80,82,83)]');
+                            // setIsDropdownVisible(false);
+                            e.stopPropagation();
+                            setIsSearchBarVisible(true);
+                            document.getElementsByTagName('header')[0].classList.add('scale-header');
                         }}
                     >
                         <p>Tìm kiếm Tattoo Studio</p>
@@ -127,8 +96,10 @@ export default function SearchBar({
                     <div
                         className="font-medium text-placeholder-gray h-full flex items-center"
                         onClick={(e) => {
+                            e.stopPropagation();
                             setIsDropdownVisible(true);
-                            handleClickSearchSmallBar(e);
+                            setIsSearchBarVisible(true);
+                            document.getElementsByTagName('header')[0].classList.add('scale-header');
                         }}
                     >
                         <p>Dịch vụ bất kỳ</p>
@@ -140,7 +111,11 @@ export default function SearchBar({
             </div>
             <div
                 ref={searchBigRef}
-                className="absolute top-0 left-0 z-0 w-full origin-[50%_0%] animation-search-big-bar transform-scale-search-big px-20 pointer-events-none"
+                //
+                className={
+                    'absolute top-0 left-0 z-0 w-full origin-[50%_0%] animation-search-big-bar px-20 pointer-events-none ' +
+                    (!isSearchBarVisible ? 'transform-scale-search-big' : '')
+                }
             >
                 <div className="pb-3 pointer-events-none">
                     <div className="max-w-[850px] mx-auto pointer-events-none">
@@ -156,10 +131,12 @@ export default function SearchBar({
                             <div className="flex items-center w-full">
                                 <Input
                                     typeinput="header"
-                                    onClick={() => {
-                                        inputRef.current?.classList.add('!bg-[rgb(80,82,83)]');
+                                    onFocus={(e) => {
+                                        e.target.classList.add('!bg-[rgb(80,82,83)]');
                                     }}
-                                    ref={inputRef}
+                                    onBlur={(e) => {
+                                        e.target.classList.remove('!bg-[rgb(80,82,83)]');
+                                    }}
                                     value={studioName || ''}
                                     onChange={(e) => {
                                         if (e.target.value !== ' ') setStudioName(e.target.value);
@@ -174,7 +151,8 @@ export default function SearchBar({
                                         setIsDropdownVisible(true);
                                     }}
                                     className={
-                                        'font-medium font-sans text-placeholder-gray hover:bg-[rgb(80,82,83)] w-2/5 h-12 flex items-center rounded-3xl pl-4 relative'
+                                        'font-medium font-sans text-placeholder-gray hover:bg-[rgb(80,82,83)] w-2/5 h-12 flex items-center rounded-3xl pl-4 relative ' +
+                                        (isDropdownVisible ? '!bg-[rgb(80,82,83)]' : '')
                                     }
                                 >
                                     {serviceChoose.name ? (
@@ -200,14 +178,6 @@ export default function SearchBar({
                                                             onClick={() => {
                                                                 setServiceChoose(service);
                                                                 setIsDropdownVisible(false);
-                                                                serviceRef.current?.classList.add(
-                                                                    '!bg-[rgb(58,59,60)]',
-                                                                );
-                                                                setTimeout(() => {
-                                                                    serviceRef.current?.classList.remove(
-                                                                        '!bg-[rgb(58,59,60)]',
-                                                                    );
-                                                                }, 350);
                                                             }}
                                                             style={
                                                                 serviceChoose.id === service.id
@@ -230,7 +200,7 @@ export default function SearchBar({
                             <Button
                                 isAnimate={true}
                                 whileTap={{ scale: 0.8 }}
-                                onTap={() => {
+                                onClick={() => {
                                     handleCloseSearchBigBar();
                                     navigate(
                                         '/search-studio?searchKeyword=' +
@@ -239,7 +209,6 @@ export default function SearchBar({
                                             serviceChoose.name,
                                     );
                                 }}
-                                onClick={() => console.log('abcv')}
                                 className="!rounded-3xl ml-3"
                             >
                                 <SearchIcon styles={{ stroke: '#fff', strokeWidth: '3', width: '20', height: '20' }} />

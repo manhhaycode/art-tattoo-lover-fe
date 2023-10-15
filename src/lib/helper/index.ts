@@ -1,3 +1,5 @@
+import { IWorkingTime } from '@/features/studios';
+
 /* eslint-disable no-useless-escape */
 export const encodeStringtoURI = (str: string) => {
     const replaceStr = str.replace(/[,\s]/g, '-');
@@ -35,4 +37,39 @@ export const createSearchParams = (searchParams: any) => {
         }
     }
     return searchQuery.join('&');
+};
+
+export const convertTimeToDisplayFormat = (timeString: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [hours, minutes, second] = timeString.split(':').map(Number);
+    second;
+    if (!isNaN(hours)) {
+        let displayTime = `${hours}h`;
+
+        if (!isNaN(minutes)) {
+            if (minutes < 10) {
+                if (minutes === 0) return displayTime;
+                displayTime += `0${minutes}`;
+            } else {
+                displayTime += `${minutes}`;
+            }
+        }
+
+        return displayTime;
+    }
+
+    return 'Invalid time format';
+};
+
+export const convertWorkingTimeToDisplayFormat = (listWorkingTime: IWorkingTime[]) => {
+    let listWorkingTimeDisplay = [];
+    const listDayOfWeeks = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+    const workingTimeList = listWorkingTime.sort((a, b) => a.dayOfWeek - b.dayOfWeek);
+    listWorkingTimeDisplay = workingTimeList.map((workingTime) => {
+        const dayOfWeek = listDayOfWeeks[workingTime.dayOfWeek];
+        const startTime = convertTimeToDisplayFormat(workingTime.openAt);
+        const endTime = convertTimeToDisplayFormat(workingTime.closeAt);
+        return `${dayOfWeek} ${startTime} - ${endTime}`;
+    });
+    return listWorkingTimeDisplay;
 };

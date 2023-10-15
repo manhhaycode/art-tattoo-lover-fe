@@ -19,7 +19,7 @@ export default function Header() {
             }}
         >
             <div id="header" className="header-wrapper w-full bg-gray-dark h-20 relative z-[2]">
-                <div className="header-container flex h-20 mx-auto 2xl:w-[1372px] justify-between items-center">
+                <div className="header-container flex h-20 mx-auto 2xl:w-[1372px] w-[calc(100%-4rem)] justify-between items-center">
                     <div className="flex gap-x-[60px] items-center">
                         <Link to="/">
                             <LogoIcon styles={{ fill: '#fff' }} />

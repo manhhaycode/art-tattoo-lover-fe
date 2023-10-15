@@ -26,7 +26,7 @@ export default function Studio() {
             {data && (
                 <div className="my-6 mx-auto xl:w-[1372px] grid grid-flow-row gap-y-6">
                     <ImageListStudio listImage={[ImageLogo, ImageStudio, ImageStudio, ImageStudio, ImageStudio]} />
-                    <StudioIntroCard callButton={true} studio={data} />
+                    <StudioIntroCard callButton={true} studio={{ ...data, listCategory: [] }} />
                 </div>
             )}
         </div>
