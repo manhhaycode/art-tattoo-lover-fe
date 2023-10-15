@@ -1,12 +1,12 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { IFilter } from '@/features/studios';
 import Input from '@/components/common/Input';
-import { Checkbox, Rating } from '@mantine/core';
+import { Checkbox, Loader, Rating } from '@mantine/core';
 import { useState } from 'react';
 import Button from '@/components/common/Button';
 import { useFilterFormStore } from '@/store/componentStore';
 
-export default function FilterForm() {
+export default function FilterForm({ isLoading }: { isLoading?: boolean }) {
     const [value, setValue] = useState<string[]>([]);
     const { handleSubmit, register } = useForm<IFilter>();
     const { filterData, setFilterData } = useFilterFormStore();
@@ -94,13 +94,13 @@ export default function FilterForm() {
                 </Checkbox.Group>
             </div>
             <Button
+                disabled={isLoading}
                 type="submit"
                 typeStyle="primary"
-                isAnimate={true}
-                whileTap={{ scale: 0.9 }}
+                isAnimate={false}
                 className="bg-white text-black"
             >
-                Áp dụng bộ lọc
+                {isLoading ? <Loader size={20} color="#000" /> : <p className="leading-5">Áp dụng bộ lọc</p>}
             </Button>
         </form>
     );

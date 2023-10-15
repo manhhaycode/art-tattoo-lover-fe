@@ -8,22 +8,35 @@ const httpRequest = axios.create({
     baseURL: config.API.API_URL,
 });
 
-httpRequest.interceptors.response.use(undefined, async (error: AxiosError) => {
-    const refreshTokenString = Cookies.get('tattus-rft');
-    if (error.response) {
-        if (!error.request.responseURL.includes('/auth/refresh') && refreshTokenString) {
-            const res: IRefreshToken = await refreshToken();
-            res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
-        } else {
-            Cookies.remove('tattus-rft');
-            Cookies.remove('tattus-at');
-            sessionStorage.removeItem('tattus-session');
+export const sleep = (ms = 2000): Promise<void> => {
+    console.log('Kindly remember to remove `sleep`');
+    return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+httpRequest.interceptors.response.use(
+    async (response) => {
+        if (process.env.NODE_ENV === 'development') {
+            await sleep();
         }
-        return Promise.reject(error.response.data);
-    } else {
-        throw new Error('Network Error');
-    }
-});
+        return response;
+    },
+    async (error: AxiosError) => {
+        const refreshTokenString = Cookies.get('tattus-rft');
+        if (error.response) {
+            if (!error.request.responseURL.includes('/auth/refresh') && refreshTokenString) {
+                const res: IRefreshToken = await refreshToken();
+                res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+            } else {
+                Cookies.remove('tattus-rft');
+                Cookies.remove('tattus-at');
+                sessionStorage.removeItem('tattus-session');
+            }
+            return Promise.reject(error.response.data);
+        } else {
+            throw new Error('Network Error');
+        }
+    },
+);
 
 export const get = async (path: string, options?: AxiosRequestConfig<object>) => {
     const response = await httpRequest.get(path, options);

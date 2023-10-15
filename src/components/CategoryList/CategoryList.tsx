@@ -2,6 +2,7 @@ import { db } from '@/assets/data';
 import Category, { ICategory } from './Category';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon, HomeIcon } from '@/assets/icons';
+import { SkeletonLoader } from '../SkeletonLoader';
 
 const CustomRightArrow = ({ onClick, style }: { onClick?: () => void; style?: React.CSSProperties }) => {
     return (
@@ -42,7 +43,9 @@ export default function CategoryList({
     isVisible = true,
     onClickCategory,
     onClickAll,
+    isLoading,
 }: {
+    isLoading?: boolean;
     isVisible?: boolean;
     onClickCategory?: (category: ICategory) => void;
     onClickAll?: () => void;
@@ -130,24 +133,37 @@ export default function CategoryList({
                     <div className="border-[1px] border-solid border-[#B0B3B8] h-12 ml-8"></div>
                 </div>
 
-                {db.servicesTattoo.map((category) => {
-                    return (
-                        <Category
-                            onClick={() => {
-                                setIsSelect(category.id);
-                                onClickCategory && onClickCategory(category);
-                            }}
-                            key={category.id}
-                            category={category}
-                            {...(isSelect === category.id && {
-                                styleSelect: {
-                                    icon: { stroke: '#FF3B5C' },
-                                    text: { color: '#FF3B5C' },
-                                },
-                            })}
-                        />
-                    );
-                })}
+                {isLoading && (
+                    <>
+                        {[...Array(10)].map(() => {
+                            return (
+                                <div className="w-[130px] h-[63px]">
+                                    <SkeletonLoader />
+                                </div>
+                            );
+                        })}
+                    </>
+                )}
+
+                {!isLoading &&
+                    db.servicesTattoo.map((category) => {
+                        return (
+                            <Category
+                                onClick={() => {
+                                    setIsSelect(category.id);
+                                    onClickCategory && onClickCategory(category);
+                                }}
+                                key={category.id}
+                                category={category}
+                                {...(isSelect === category.id && {
+                                    styleSelect: {
+                                        icon: { stroke: '#FF3B5C' },
+                                        text: { color: '#FF3B5C' },
+                                    },
+                                })}
+                            />
+                        );
+                    })}
             </div>
 
             {isVisible && (
