@@ -35,6 +35,16 @@ export interface RegisterCredentials {
     phoneNumber: string;
 }
 
+export interface ResetPasswordCredentials {
+    email: string;
+    code: string;
+    password: string;
+}
+
+export interface IResetPassword extends ILogout {}
+
 export interface IRegister extends ILogout {}
 
 export interface IVerifyEmail extends ILogout {}
+
+export interface IRequestCode extends ILogout {}

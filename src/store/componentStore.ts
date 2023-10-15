@@ -41,6 +41,8 @@ interface ModalState {
     setIsLoginModalVisible: (isLoginModalVisible: boolean) => void;
     isRegisterModalVisible: boolean;
     setIsRegisterModalVisible: (isRegisterModalVisible: boolean) => void;
+    isResetPasswordModalVisible: boolean;
+    setIsResetPasswordModalVisible: (isResetPasswordModalVisible: boolean) => void;
     isModalVisible: boolean;
     setIsModalVisible: (isModalVisible: boolean) => void;
     reset: () => void;
@@ -51,6 +53,8 @@ export const useModalStore = create<ModalState>((set) => ({
     setIsLoginModalVisible: (isLoginModalVisible) => set({ isLoginModalVisible }),
     isRegisterModalVisible: false,
     setIsRegisterModalVisible: (isRegisterModalVisible) => set({ isRegisterModalVisible }),
+    isResetPasswordModalVisible: false,
+    setIsResetPasswordModalVisible: (isResetPasswordModalVisible) => set({ isResetPasswordModalVisible }),
     isModalVisible: false,
     setIsModalVisible: (isModalVisible) => set({ isModalVisible }),
     reset: () => {
@@ -58,6 +62,7 @@ export const useModalStore = create<ModalState>((set) => ({
             isLoginModalVisible: false,
             isRegisterModalVisible: false,
             isModalVisible: false,
+            isResetPasswordModalVisible: false,
         });
     },
 }));

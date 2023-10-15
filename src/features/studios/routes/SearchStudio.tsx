@@ -30,7 +30,7 @@ export default function SearchStudio() {
     // if (isLoading) return <div>Loading...</div>;
     return (
         <div className="pb-16">
-            <CustomListCategory isLoading={isFetching} />
+            <CustomListCategory />
             <div id="content" className="2xl:w-[1372px] mx-auto w-[calc(100%-4rem)] ">
                 <SortForm />
                 <div className="flex gap-x-8">

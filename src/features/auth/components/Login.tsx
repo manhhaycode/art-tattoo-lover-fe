@@ -5,13 +5,15 @@ import { useAuthStore } from '@/store/authStore';
 import { useLoginMutation } from '../api/authAPI';
 import { Loader, PasswordInput } from '@mantine/core';
 import Button from '@/components/common/Button';
+import { Link } from 'react-router-dom';
 interface ILogin {
     email: string;
     password: string;
 }
 
 export default function Login() {
-    const { setIsLoginModalVisible, setIsRegisterModalVisible, reset } = useModalStore();
+    const { setIsLoginModalVisible, setIsRegisterModalVisible, setIsResetPasswordModalVisible, reset } =
+        useModalStore();
     const { setIsAuth, setAccountType } = useAuthStore();
     const loginMutation = useLoginMutation({
         onSuccess: (data) => {
@@ -77,7 +79,16 @@ export default function Login() {
                     <label className="text-sm font-semibold text-red-500 min-h-[20px]">
                         {loginMutation.isError ? 'Sai email hoặc mật khẩu' : ''}
                     </label>
-                    <p className="text-[13px] font-bold text-gray-400 mt-2">Quên mật khẩu?</p>
+                    <Link
+                        to={'/'}
+                        onClick={() => {
+                            setIsResetPasswordModalVisible(true);
+                            setIsLoginModalVisible(false);
+                        }}
+                        className="text-[13px] font-bold text-gray-400 mt-2 hover:underline"
+                    >
+                        Quên mật khẩu?
+                    </Link>
                     <Button
                         isAnimate={true}
                         disabled={loginMutation.isLoading || !isValid}
