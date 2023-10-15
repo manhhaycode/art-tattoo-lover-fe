@@ -6,10 +6,13 @@ import {
     ILogout,
     IRefreshToken,
     IRegister,
+    IRequestCode,
+    IResetPassword,
     ISession,
     IVerifyEmail,
     LoginCredentials,
     RegisterCredentials,
+    ResetPasswordCredentials,
 } from '../types';
 
 const login = async (credentials: LoginCredentials): Promise<ILogin> => {
@@ -87,6 +90,24 @@ const register = async (credential: RegisterCredentials): Promise<IRegister> => 
     try {
         const resRegister: IRegister = await httpRequest.post('/auth/register', credential);
         return resRegister;
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+export const resetPassword = async (credential: ResetPasswordCredentials): Promise<IResetPassword> => {
+    try {
+        const resReset: IResetPassword = await httpRequest.post('/auth/reset-password', credential);
+        return resReset;
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+export const requestCode = async (email: string): Promise<IVerifyEmail> => {
+    try {
+        const resRequestCode: IVerifyEmail = await httpRequest.post('/auth/request-code', { email });
+        return resRequestCode;
     } catch (e) {
         throw new Error(e.error);
     }
@@ -180,6 +201,32 @@ export const useRegisterMutation = (handleFn: {
 }) => {
     return useMutation({
         mutationFn: (credentials: RegisterCredentials) => register(credentials),
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
+    });
+};
+
+export const useResestPasswordMutation = (handleFn: {
+    onError?: (error: Error, variables: ResetPasswordCredentials, context: unknown) => void;
+    onSuccess?: (data: IRegister, variables: ResetPasswordCredentials, context: unknown) => void;
+    onMutate?: (variables: ResetPasswordCredentials) => Promise<IResetPassword>;
+}) => {
+    return useMutation({
+        mutationFn: (credentials: ResetPasswordCredentials) => resetPassword(credentials),
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
+    });
+};
+
+export const useRequestCodeMutation = (handleFn: {
+    onError?: (error: Error, variables: string, context: unknown) => void;
+    onSuccess?: (data: IRequestCode, variables: string, context: unknown) => void;
+    onMutate?: (variables: string) => Promise<IRequestCode>;
+}) => {
+    return useMutation({
+        mutationFn: (email: string) => requestCode(email),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
