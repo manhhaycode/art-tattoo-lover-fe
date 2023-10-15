@@ -1,7 +1,6 @@
 import React from 'react';
 import { HTMLMotionProps, Variants, m } from 'framer-motion';
 import { CloseIcon } from '@/assets/icons';
-import { ToastContainer } from 'react-toastify';
 export default function Modal({
     onClose,
     ...props
@@ -66,7 +65,6 @@ export default function Modal({
                 >
                     <CloseIcon styles={{ width: '24px', height: '24px' }} />
                 </button>
-                <ToastContainer autoClose={3000} />
             </m.div>
         </m.div>
     );
