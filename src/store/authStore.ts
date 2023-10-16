@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { create } from 'zustand';
 
 interface IAuth {
@@ -16,8 +15,6 @@ interface IAuth {
     };
 }
 
-// const session = sessionStorage.getItem('tattus-session');
-
 interface AuthState {
     accountType: IAuth | null;
     setAccountType: (accountType: IAuth | null) => void;
@@ -29,7 +26,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
     accountType: null,
     setAccountType: (accountType) => set({ accountType }),
-    isAuth: Cookies.get('tattus-at') ? true : false,
+    isAuth: false,
     setIsAuth: (isAuth) => set({ isAuth }),
     reset: () => set({ accountType: null, isAuth: false }),
 }));

@@ -11,7 +11,8 @@ export default function Logout({ onSuccess }: { onSuccess?: () => void }) {
             if (onSuccess) onSuccess();
         },
         onError: () => {
-            alert('Đăng xuất thất bại, vui lòng thử lại sau');
+            reset();
+            if (onSuccess) onSuccess();
         },
     });
     return (
@@ -21,6 +22,10 @@ export default function Logout({ onSuccess }: { onSuccess?: () => void }) {
             onClick={() => {
                 const rft = Cookies.get('tattus-rft');
                 if (rft) logoutMutation.mutate(rft);
+                else {
+                    reset();
+                    if (onSuccess) onSuccess();
+                }
             }}
             className="w-full"
         >
