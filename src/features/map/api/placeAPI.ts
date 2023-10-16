@@ -37,6 +37,7 @@ export const placeDetail = async (
             const response: PlaceDetailsResponseData = await mapPlaceRequest.get('/details/json', {
                 params: {
                     ...rest,
+                    fields: 'address_components,adr_address,business_status,formatted_address,geometry,name,place_id,plus_code,type,url,utc_offset,vicinity,wheelchair_accessible_entrance',
                     placeid,
                     sessiontoken: option.sessionToken,
                 },

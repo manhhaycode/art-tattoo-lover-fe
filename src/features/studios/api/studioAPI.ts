@@ -13,7 +13,7 @@ const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
         data: [],
         page: 0,
         pageSize: 0,
-        total: 5,
+        total: 0,
     };
 };
 
@@ -43,6 +43,6 @@ export const useGetListStudio = (filter: IFilter) => {
         queryKey: ['studios', filter],
         queryFn: () => getListStudio(filter),
         staleTime: Infinity,
-        keepPreviousData: true,
+        // keepPreviousData: true,
     });
 };
