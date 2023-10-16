@@ -1,5 +1,6 @@
 import { HTMLMotionProps, m } from 'framer-motion';
 import { ButtonHTMLAttributes } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export default function Button({
     children,
@@ -23,7 +24,7 @@ export default function Button({
             : { type: 'spring', stiffness: 200, damping: 25 }
         : {};
     return (
-        <m.button {...props} className={stytleType[typeStyle] + props.className}>
+        <m.button {...props} className={twMerge(stytleType[typeStyle], props.className)}>
             {children}
         </m.button>
     );

@@ -19,16 +19,17 @@ export default function Login() {
         onSuccess: (data) => {
             setIsAuth(true);
             setAccountType({
-                role: { id: data.session.roleId, name: 'Member' },
+                role: { id: data.user.roleId, name: 'Member' },
                 permissions: [],
                 user: {
-                    id: data.session.userId,
-                    name: 'Mạnh Nguyễn',
+                    id: data.user.id,
+                    fullName: data.user.fullName,
                 },
             });
             reset();
         },
     });
+
     const {
         handleSubmit,
         register,

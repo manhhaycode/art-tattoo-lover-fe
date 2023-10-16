@@ -7,11 +7,12 @@ import { useClickOutside } from '@mantine/hooks';
 import { useModalStore } from '@/store/componentStore';
 import { Logout } from '@/features/auth/components';
 import Button from '@/components/common/Button';
+import { AvartarIcon } from '@/features/users';
 export default function Menu() {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const { setIsModalVisible, setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
     const menuRef = useClickOutside<HTMLDivElement>(() => setIsOpenMenu(false));
-    const { isAuth } = useAuthStore();
+    const { isAuth, accountType } = useAuthStore();
     return (
         <div ref={menuRef} className="relative">
             <Button
@@ -22,10 +23,10 @@ export default function Menu() {
                     setIsOpenMenu(true);
                 }}
                 // className="bg-button-primary hover:bg-hover-button-primary flex gap-x-4 items-center pl-3 pr-2 py-[1px] rounded-[30px]"
-                className="pl-3 pr-2 py-[1px] !rounded-[30px]"
+                className="pl-3 pr-2 py-1 gap-x-3 !rounded-[30px]"
             >
                 <MenuIcon />
-                <UserStatus />
+                {isAuth && accountType ? <AvartarIcon fullName={accountType.user.fullName} /> : <UserStatus />}
             </Button>
             <Dropdown animate={isOpenMenu} className="right-0 !max-w-[240px] rounded-lg mt-4">
                 <div className="flex flex-col -mx-2 -mb-2  text-[15px]">

@@ -9,9 +9,17 @@ export const MenuIcon = ({ styles }: { styles?: CSSProperties }) => (
 );
 
 export const UserStatus = ({ styles }: { styles?: CSSProperties }) => (
-    <svg style={styles} xmlns="http://www.w3.org/2000/svg" width="34" height="36" viewBox="0 0 34 36" fill="none">
+    <svg
+        style={styles}
+        className="relative"
+        xmlns="http://www.w3.org/2000/svg"
+        width="36"
+        height="36"
+        viewBox="0 0 36 36"
+        fill="none"
+    >
         <circle cx="17" cy="19" r="15" fill="#0A1117" />
-        <circle cx="28" cy="6" r="5.5" fill="#3CFF38" stroke="white" />
+        <circle className="absolute" cx="28" cy="6" r="5.5" fill="#3A3B3C" stroke="white" />
         <mask
             id="mask0_261_78"
             style={{ maskType: 'alpha' }}
