@@ -9,11 +9,13 @@ import {
     IRequestCode,
     IResetPassword,
     ISession,
+    ISessionUser,
     IVerifyEmail,
     LoginCredentials,
     RegisterCredentials,
     ResetPasswordCredentials,
 } from '../types';
+import { IUser, getUser } from '@/features/users';
 
 const login = async (credentials: LoginCredentials): Promise<ILogin> => {
     try {
@@ -24,8 +26,9 @@ const login = async (credentials: LoginCredentials): Promise<ILogin> => {
         Cookies.set('tattus-at', resLogin.token.accessToken, {
             expires: new Date(resLogin.token.accessTokenExp * 1000),
         });
-        const resSession: ISession = await getSession();
-        return { ...resLogin, session: resSession };
+        const resSessionUser = await getSessionUser();
+
+        return { ...resLogin, session: resSessionUser.session, user: resSessionUser.user };
     } catch (e) {
         throw new Error(e.error);
     }
@@ -63,15 +66,17 @@ export const refreshToken = async (): Promise<IRefreshToken> => {
     }
 };
 
-const getSession = async (): Promise<ISession> => {
+const getSessionUser = async (): Promise<ISessionUser> => {
     try {
-        const resSession: ISession = await httpRequest.get('/auth/session', {
+        const sessionPromise: Promise<ISession> = httpRequest.get('/auth/session', {
             headers: {
                 Authorization: `Bearer ${Cookies.get('tattus-at')}`,
             },
         });
+        const userPromise: Promise<IUser> = getUser();
+        const [resSession, resUser] = await Promise.all([sessionPromise, userPromise]);
         sessionStorage.setItem('tattus-session', resSession.sessionId);
-        return resSession;
+        return { session: resSession, user: resUser };
     } catch (e) {
         throw new Error(e.error);
     }
@@ -164,16 +169,16 @@ export const useRefreshTokenMutation = (
     });
 };
 
-export const useGetSessionMutation = (
+export const useGetSessionUserMutation = (
     handleFn: {
         onError?: (error: unknown, variables: unknown, context: unknown) => void;
-        onSuccess?: (data: ISession, variables: unknown, context: unknown) => void;
-        onMutate?: (variables: unknown) => Promise<unknown>;
+        onSuccess?: (data: ISessionUser, variables: unknown, context: unknown) => void;
+        onMutate?: (variables: unknown) => Promise<ISessionUser>;
     },
     retry?: number,
 ) => {
     return useMutation({
-        mutationFn: getSession,
+        mutationFn: getSessionUser,
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,

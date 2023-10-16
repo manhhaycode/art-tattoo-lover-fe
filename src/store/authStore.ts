@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 interface IAuth {
     role: {
-        id: string;
+        id: number;
         name: string;
     };
     permissions: {
@@ -12,7 +12,7 @@ interface IAuth {
     }[];
     user: {
         id: string;
-        name: string;
+        fullName: string;
     };
 }
 

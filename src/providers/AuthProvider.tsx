@@ -1,4 +1,4 @@
-import { useGetSessionMutation, useRefreshTokenMutation } from '@/features/auth/api';
+import { useGetSessionUserMutation, useRefreshTokenMutation } from '@/features/auth/api';
 import { useAuthStore } from '@/store/authStore';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
@@ -7,17 +7,17 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     const { isAuth, setAccountType, setIsAuth } = useAuthStore();
     const refreshTokenMutation = useRefreshTokenMutation({
         onSuccess: () => {
-            sessionMutation.mutate({});
+            sessionUserMutation.mutate({});
         },
     });
 
-    const sessionMutation = useGetSessionMutation(
+    const sessionUserMutation = useGetSessionUserMutation(
         {
             onSuccess: (data) => {
                 setAccountType({
-                    role: { id: data.roleId, name: 'Member' },
+                    role: { id: data.user.roleId, name: 'Member' },
                     permissions: [],
-                    user: { id: data.userId, name: 'Mạnh Nguyễn' },
+                    user: { id: data.user.id, fullName: data.user.fullName },
                 });
                 setIsAuth(true);
             },
@@ -29,7 +29,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         const rft = Cookies.get('tattus-rft');
 
         if (isAuth) {
-            sessionMutation.mutate({});
+            sessionUserMutation.mutate({});
         } else {
             if (rft) {
                 refreshTokenMutation.mutate({});
