@@ -37,15 +37,7 @@ const login = async (credentials: LoginCredentials): Promise<ILogin> => {
 const logout = async (): Promise<ILogout> => {
     try {
         const refreshToken = Cookies.get('tattus-rft');
-        const res: ILogout = await httpRequest.post(
-            '/auth/logout',
-            { refreshToken },
-            {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('tattus-at')}`,
-                },
-            },
-        );
+        const res: ILogout = await httpRequest.post('/auth/logout', { refreshToken });
         Cookies.remove('tattus-rft');
         Cookies.remove('tattus-at');
         sessionStorage.removeItem('tattus-session');
@@ -68,13 +60,12 @@ export const refreshToken = async (): Promise<IRefreshToken> => {
 
 const getSessionUser = async (): Promise<ISessionUser> => {
     try {
-        const sessionPromise: Promise<ISession> = httpRequest.get('/auth/session', {
+        const resSession: ISession = await httpRequest.get('/auth/session', {
             headers: {
                 Authorization: `Bearer ${Cookies.get('tattus-at')}`,
             },
         });
-        const userPromise: Promise<IUser> = getUser();
-        const [resSession, resUser] = await Promise.all([sessionPromise, userPromise]);
+        const resUser: IUser = await getUser();
         sessionStorage.setItem('tattus-session', resSession.sessionId);
         return { session: resSession, user: resUser };
     } catch (e) {

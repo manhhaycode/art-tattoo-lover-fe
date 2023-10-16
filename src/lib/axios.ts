@@ -23,16 +23,19 @@ httpRequest.interceptors.response.use(
     async (error: AxiosError) => {
         const refreshTokenString = Cookies.get('tattus-rft');
         if (error.response) {
-            if (!error.request.responseURL.includes('/auth/refresh') && refreshTokenString) {
+            if (
+                !error.request.responseURL.includes('/auth/refresh') &&
+                !error.request.responseURL.includes('/auth/logout') &&
+                error.response.status === 401 &&
+                refreshTokenString
+            ) {
                 const res: IRefreshToken = await refreshToken();
                 res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+                return;
             } else {
                 Cookies.remove('tattus-rft');
                 Cookies.remove('tattus-at');
                 sessionStorage.removeItem('tattus-session');
-            }
-            if (process.env.NODE_ENV === 'development') {
-                await sleep();
             }
             return Promise.reject(error.response.data);
         } else {
