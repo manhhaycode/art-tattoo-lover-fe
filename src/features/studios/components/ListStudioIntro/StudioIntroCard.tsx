@@ -26,7 +26,7 @@ export default function StudioIntroCard({
                 <ImageSlider
                     className="cursor-pointer rounded-xl"
                     onClick={() => navigator(`/studio/${convertSlugURL(studio.name!)}/${studio.id}`)}
-                    src={studio.logo || StudioCardImage}
+                    src={studio.logo?.includes('http') ? studio.logo : StudioCardImage}
                     alt=""
                 />
                 <Button

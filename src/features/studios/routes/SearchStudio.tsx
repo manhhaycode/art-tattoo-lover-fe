@@ -5,6 +5,7 @@ import ListStudioIntro from '../components/ListStudioIntro';
 import { useGetListStudio } from '../api/studioAPI';
 import { useEffect } from 'react';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
+import { useFilterFormStore } from '@/store/componentStore';
 
 export default function SearchStudio() {
     const [searchParams] = useSearchParams();
@@ -12,6 +13,7 @@ export default function SearchStudio() {
     const category = searchParams.get('category');
     const rating = searchParams.get('rating');
     const sort = searchParams.get('sort') || 'rating';
+    const { reset } = useFilterFormStore();
     const { data, isFetching } = useGetListStudio({
         searchKeyword: searchKeyword || undefined,
         category: category || undefined,
@@ -26,6 +28,13 @@ export default function SearchStudio() {
             console.log(data);
         }
     }, [data]);
+
+    useEffect(() => {
+        return () => {
+            reset();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // if (isLoading) return <div>Loading...</div>;
     return (

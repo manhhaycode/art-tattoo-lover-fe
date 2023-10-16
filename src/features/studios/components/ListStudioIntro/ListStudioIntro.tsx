@@ -18,7 +18,7 @@ export default function ListStudioIntro({ listStudio }: { listStudio: IStudio[] 
     }, [filterData]);
     return (
         <>
-            {listStudio.length > 0 &&
+            {/* {listStudio.length > 0 &&
                 [...Array(24)].map((_item, index) => {
                     return (
                         <StudioIntroCard
@@ -26,6 +26,17 @@ export default function ListStudioIntro({ listStudio }: { listStudio: IStudio[] 
                             callButton={true}
                             key={index}
                             studio={listStudio.find((item) => item.name === 'SaiGon Tattoo Club') as IStudio}
+                        />
+                    );
+                })} */}
+            {listStudio &&
+                listStudio.map((studio) => {
+                    return (
+                        <StudioIntroCard
+                            // maxLineIntro={3}
+                            callButton={true}
+                            key={studio.id}
+                            studio={studio}
                         />
                     );
                 })}

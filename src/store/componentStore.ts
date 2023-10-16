@@ -82,6 +82,7 @@ interface FilterFormState {
     isQuery: boolean;
     setFilterData: (filterData: IFilter | null) => void;
     setIsQuery: (isQuery: boolean) => void;
+    reset: () => void;
 }
 
 export const useFilterFormStore = create<FilterFormState>((set) => ({
@@ -89,4 +90,7 @@ export const useFilterFormStore = create<FilterFormState>((set) => ({
     isQuery: false,
     setIsQuery: (isQuery: boolean) => set({ isQuery }),
     setFilterData: (filterData: IFilter | null) => set({ filterData }),
+    reset: () => {
+        set({ filterData: null, isQuery: false });
+    },
 }));

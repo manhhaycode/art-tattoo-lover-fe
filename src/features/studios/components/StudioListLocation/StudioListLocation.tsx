@@ -1,13 +1,35 @@
 import { FilterIcon } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import { convertAdressComponents } from '@/lib/helper/googleMapHelper';
-import { useGoogleMapStore } from '@/store/componentStore';
-import { Suspense, lazy } from 'react';
+import { useFilterFormStore, useGoogleMapStore } from '@/store/componentStore';
+import { Suspense, lazy, useEffect } from 'react';
+import { useGetListStudio } from '@/features/studios';
 
 const StudioCardInfo = lazy(() => import('./StudioCardInfo'));
 
 export default function StudioListLocation() {
     const { placeDetail } = useGoogleMapStore();
+    const { filterData, setIsQuery, reset } = useFilterFormStore();
+    const { data, isLoading } = useGetListStudio(
+        filterData
+            ? {
+                  ...filterData,
+                  page: 0,
+                  pageSize: 10,
+              }
+            : {},
+    );
+
+    useEffect(() => {
+        setIsQuery(isLoading);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading]);
+
+    useEffect(() => {
+        return () => reset();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
             <div className="flex items-center w-full mb-4">
@@ -24,21 +46,7 @@ export default function StudioListLocation() {
 
             <div className="grid grid-cols-3 item-center gap-y-5 gap-x-5 ">
                 <Suspense fallback={<div></div>}>
-                    {[...Array(24)].map((_item, index) => {
-                        return (
-                            <StudioCardInfo
-                                key={index}
-                                studioInfo={{
-                                    description: 'Studio Tattoo nhận được tài trợ từ các hãng lớn của Đức và Mỹ',
-                                    address: 'Phường 12, Q. Phú Nhuận, TPHCM',
-                                    img: [''],
-                                    name: 'SaiGon Tattoo Club',
-                                    rating: 4.87,
-                                    voteCount: 326,
-                                }}
-                            />
-                        );
-                    })}
+                    {data && data.data.map((studio) => <StudioCardInfo key={studio.id} studio={studio} />)}
                 </Suspense>
             </div>
         </>
