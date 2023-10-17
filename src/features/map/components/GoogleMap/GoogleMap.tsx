@@ -17,6 +17,7 @@ export default function GoogleMap() {
         googleMapsApiKey: config.API.API_KEY,
     });
     const [isFirstIdle, setIsFirstIdle] = useState(false);
+    const [isLoadfull, setIsLoadFull] = useState(false);
     const { sessionToken, placeChoose, setSessionToken } = useSearchLocationStore();
     const { data } = usePlaceDetail({ placeId: placeChoose?.place_id || '', sessionToken });
     const [isOpen, setIsOpen] = useState(false);
@@ -45,9 +46,9 @@ export default function GoogleMap() {
     return (
         <div id="google-map" className="sticky top-[160px] h-[calc(100vh-160px)] w-full">
             <div className="relative w-full h-full">
-                {!isFirstIdle && <SkeletonLoader className="absolute top-0 left-0 z-10" />}
+                {!isLoadfull && <SkeletonLoader className="absolute top-0 left-0 z-10" />}
 
-                {isFirstIdle && isQuery && (
+                {isLoadfull && isQuery && (
                     <div className="absolute left-1/2 top-2 z-[997] p-4 bg-white rounded-lg">
                         <Loader variant="dots" size={'md'} color="dark" />
                     </div>
@@ -85,7 +86,9 @@ export default function GoogleMap() {
                             onUnmount={() => setMap(null)}
                             onLoad={(map) => {
                                 setMap(map);
-                                // setIsLoadFull(true);
+                            }}
+                            onTilesLoaded={() => {
+                                setIsLoadFull(true);
                             }}
                             onIdle={() => {
                                 let bounds: google.maps.LatLngBounds | undefined;
@@ -106,10 +109,11 @@ export default function GoogleMap() {
                                         },
                                     });
                                 }
-                                setIsOpen(false);
                                 if (!isFirstIdle) {
                                     setIsFirstIdle(true);
                                 }
+                                scrollTo({ top: 0 });
+                                setIsOpen(false);
                             }}
                             options={{
                                 gestureHandling: 'greedy',
