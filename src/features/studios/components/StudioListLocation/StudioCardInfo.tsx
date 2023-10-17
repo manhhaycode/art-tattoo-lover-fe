@@ -3,11 +3,17 @@ import StudioCardImage from '@/assets/img/studio-card.jpg';
 import StudioCardImage2 from '@/assets/img/tattoo2.jpg';
 import ImageCarousel from '@/components/ImageCarousel';
 import { IStudio } from '@/features/studios';
+import { convertSlugURL } from '@/lib/helper';
+import { useNavigate } from 'react-router-dom';
 
 export default function StudioCardInfo({ studio }: { studio: IStudio }) {
+    const navigate = useNavigate();
     return (
         <div className="w-full bg-studio-card-gray-dark shadow-shadow-dropdown rounded-2xl">
-            <div className="p-3 flex flex-col w-full gap-y-2 font-medium text-sm">
+            <div
+                onClick={() => navigate(`/studio/${convertSlugURL(studio.name)}/${studio.id}`)}
+                className="p-3 flex flex-col w-full gap-y-2 font-medium text-sm cursor-pointer"
+            >
                 <ImageCarousel
                     listSrc={[
                         StudioCardImage,

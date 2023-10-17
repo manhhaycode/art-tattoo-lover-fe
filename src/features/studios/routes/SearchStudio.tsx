@@ -1,45 +1,14 @@
-import { useSearchParams } from 'react-router-dom';
 import CustomListCategory from '../components/CustomListCategory';
 import { FilterForm, SortForm } from '../components/FilterForm';
 import ListStudioIntro from '../components/ListStudioIntro';
-import { useGetListStudio } from '../api/studioAPI';
-import { useEffect } from 'react';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
-import { useFilterFormStore } from '@/store/componentStore';
+import useSearchStudioMangeState from '../hooks/useSearchStudioManageState';
 
 export default function SearchStudio() {
-    const [searchParams] = useSearchParams();
-    const searchKeyword = searchParams.get('searchKeyword');
-    const category = searchParams.get('category');
-    const rating = searchParams.get('rating');
-    const sort = searchParams.get('sort') || 'rating';
-    const { reset } = useFilterFormStore();
-    const { data, isFetching } = useGetListStudio({
-        searchKeyword: searchKeyword || undefined,
-        category: category || undefined,
-        rating: rating?.split(',').map((item) => Number(item)) || undefined,
-        sort: sort || undefined,
-        pageSize: 10,
-        page: 0,
-    });
-
-    useEffect(() => {
-        if (data) {
-            console.log(data);
-        }
-    }, [data]);
-
-    useEffect(() => {
-        return () => {
-            reset();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    // if (isLoading) return <div>Loading...</div>;
+    const { data, isFetching, params } = useSearchStudioMangeState();
     return (
         <div className="pb-16">
-            <CustomListCategory initChoose={category || ''} />
+            <CustomListCategory initChoose={params.category || ''} />
             <div id="content" className="2xl:w-[1372px] mx-auto w-[calc(100%-4rem)] ">
                 <SortForm />
                 <div className="flex gap-x-8">

@@ -2,7 +2,7 @@ import { db } from '@/assets/data';
 import Category, { ICategory } from './Category';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon, HomeIcon } from '@/assets/icons';
-import { SkeletonLoader } from '../SkeletonLoader';
+// import { SkeletonLoader } from '../SkeletonLoader';
 
 const CustomRightArrow = ({ onClick, style }: { onClick?: () => void; style?: React.CSSProperties }) => {
     return (
@@ -56,9 +56,9 @@ export default function CategoryList({
     const listRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0 });
     const [numberItemInView, setNumberItemInView] = useState(0);
-    const [position, setPosition] = useState(0);
+    const [position, setPosition] = useState(db.servicesTattoo.findIndex((item) => item.id === initChooose) + 1 || 0);
     const [isEnd, setIsEnd] = useState(false);
-    const [isStart, setIsStart] = useState(true);
+    const [isStart, setIsStart] = useState(false);
 
     const handleResize = () => {
         setTimeout(() => {
@@ -70,12 +70,11 @@ export default function CategoryList({
 
     useEffect(() => {
         if (listRef.current) {
-            listRef.current.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: 'smooth',
+            listRef.current.children[position].scrollIntoView({
+                block: 'nearest',
+                inline: 'end',
             });
-            setDimensions({ width: listRef.current.clientWidth });
+            setDimensions({ width: listRef.current!.clientWidth });
         }
 
         window.addEventListener('resize', handleResize);
@@ -83,14 +82,19 @@ export default function CategoryList({
         return () => {
             window.removeEventListener('resize', handleResize);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        if (listRef.current) {
+        if (listRef.current && dimensions.width !== 0) {
             let indexLastInView = 0;
             let countElementInView = 0;
             const arrayChild = Array.from(listRef.current.children);
-            if (isElementInBoxContainer(arrayChild[0] as HTMLElement, listRef.current as HTMLElement)) setIsStart(true);
+            if (isElementInBoxContainer(arrayChild[0] as HTMLElement, listRef.current as HTMLElement)) {
+                setIsStart(true);
+                console.log(arrayChild[0].getBoundingClientRect());
+                console.log('setIsStart(true)');
+            }
             arrayChild.forEach((child, index) => {
                 if (isElementInBoxContainer(child as HTMLElement, listRef.current as HTMLElement)) {
                     countElementInView++;
@@ -135,7 +139,7 @@ export default function CategoryList({
                     <div className="border-[1px] border-solid border-[#B0B3B8] h-12 ml-8"></div>
                 </div>
 
-                {isLoading && (
+                {/* {isLoading && (
                     <>
                         {[...Array(10)].map(() => {
                             return (
@@ -145,27 +149,26 @@ export default function CategoryList({
                             );
                         })}
                     </>
-                )}
+                )} */}
 
-                {!isLoading &&
-                    db.servicesTattoo.map((category) => {
-                        return (
-                            <Category
-                                onClick={() => {
-                                    setIsSelect(category.id);
-                                    onClickCategory && onClickCategory(category);
-                                }}
-                                key={category.id}
-                                category={category}
-                                {...(isSelect === category.id && {
-                                    styleSelect: {
-                                        icon: { stroke: '#FF3B5C' },
-                                        text: { color: '#FF3B5C' },
-                                    },
-                                })}
-                            />
-                        );
-                    })}
+                {db.servicesTattoo.map((category) => {
+                    return (
+                        <Category
+                            onClick={() => {
+                                setIsSelect(category.id);
+                                onClickCategory && onClickCategory(category);
+                            }}
+                            key={category.id}
+                            category={category}
+                            {...(isSelect === category.id && {
+                                styleSelect: {
+                                    icon: { stroke: '#FF3B5C' },
+                                    text: { color: '#FF3B5C' },
+                                },
+                            })}
+                        />
+                    );
+                })}
             </div>
 
             {isVisible && (
@@ -197,7 +200,7 @@ export default function CategoryList({
                                 setIsStart(false);
                             }
                         }}
-                        {...(isEnd && { style: { display: 'none' } })}
+                        {...((isEnd || isLoading) && { style: { display: 'none' } })}
                     />
                     <CustomLeftArrow
                         onClick={() => {
@@ -218,7 +221,7 @@ export default function CategoryList({
                                 }, 250);
                             }
                         }}
-                        {...((position === 0 || isStart) && { style: { display: 'none' } })}
+                        {...((position === 0 || isStart || isLoading) && { style: { display: 'none' } })}
                     />
                 </>
             )}

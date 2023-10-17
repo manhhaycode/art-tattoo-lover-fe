@@ -9,7 +9,7 @@ export default function SearchLocation() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
     const { placeChoose, setPlaceChoose } = useSearchLocationStore();
-    const { setFilterData, filterData } = useFilterFormStore();
+    const { setFilterData, filterData, isQuery } = useFilterFormStore();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,11 +28,13 @@ export default function SearchLocation() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams.get('location'), searchParams.get('placeId'), searchParams.get('category')]);
+
     return (
         <>
             <div className="list-category h-20 flex items-center w-full sticky top-20 z-[998] bg-gray-dark category-list-wrapper ">
                 <div className="w-full px-4">
                     <CategoryList
+                        isLoading={isQuery}
                         initChooose={searchParams.get('category') || ''}
                         onClickAll={() => {
                             navigate(

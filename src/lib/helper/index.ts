@@ -1,4 +1,4 @@
-import { IWorkingTime } from '@/features/studios';
+import { IFilter, IWorkingTime } from '@/features/studios';
 
 /* eslint-disable no-useless-escape */
 export const encodeStringtoURI = (str: string) => {
@@ -72,4 +72,11 @@ export const convertWorkingTimeToDisplayFormat = (listWorkingTime: IWorkingTime[
         return `${dayOfWeek} ${startTime} - ${endTime}`;
     });
     return listWorkingTimeDisplay;
+};
+
+export const checkFilterEmpty = (filter: IFilter) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { sort, ...rest } = filter;
+    const restFilter = Object.values(rest);
+    return restFilter.some((value) => value !== undefined);
 };

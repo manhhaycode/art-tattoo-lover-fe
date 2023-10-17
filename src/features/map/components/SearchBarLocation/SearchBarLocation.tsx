@@ -201,7 +201,9 @@ export default function SearchBarLocation() {
                                     '&service=' +
                                     (serviceChoose.name || '') +
                                     '&placeId=' +
-                                    navigateData.place_id,
+                                    navigateData.place_id +
+                                    '&category=' +
+                                    (serviceChoose.id ? serviceChoose.id : ''),
                             );
                         }
                     }}

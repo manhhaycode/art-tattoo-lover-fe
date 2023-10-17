@@ -2,7 +2,7 @@ import { useFilterFormStore } from '@/store/componentStore';
 import { Select } from '@mantine/core';
 
 export default function SortForm({ isLoading }: { isLoading?: boolean }) {
-    const { filterData, setFilterData } = useFilterFormStore();
+    const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
     return (
         <div className="h-[80px] flex items-center justify-end font-medium ">
             <div className="w-fit flex items-center gap-x-4">
@@ -15,9 +15,11 @@ export default function SortForm({ isLoading }: { isLoading?: boolean }) {
                         rightSection: 'hidden',
                     }}
                     size="sm"
+                    value={filterData?.sort || 'rating'}
                     onChange={(value) => {
                         if (value) {
                             setFilterData({ ...filterData, sort: value });
+                            setIsQuery(true);
                         }
                     }}
                     placeholder="Pick one"

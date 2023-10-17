@@ -20,6 +20,7 @@ const CustomRightArrow = ({ onClick }: { onClick?: () => void }) => {
             onClick={(e) => {
                 if (onClick) onClick();
                 e.preventDefault();
+                e.stopPropagation();
             }}
             className="absolute right-3 p-[10px] rounded-[50%] bg-black hidden group-hover:!block"
         >
@@ -34,6 +35,7 @@ const CustomLeftArrow = ({ onClick }: { onClick?: () => void }) => {
             onClick={(e) => {
                 if (onClick) onClick();
                 e.preventDefault();
+                e.stopPropagation();
             }}
             className="absolute left-3 p-[10px] rounded-[50%] bg-black hidden group-hover:!block"
         >
