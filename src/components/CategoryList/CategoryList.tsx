@@ -40,17 +40,19 @@ const isElementInBoxContainer = (element: HTMLElement, container: HTMLElement) =
 };
 
 export default function CategoryList({
+    initChooose = '',
     isVisible = true,
     onClickCategory,
     onClickAll,
     isLoading,
 }: {
+    initChooose?: string;
     isLoading?: boolean;
     isVisible?: boolean;
     onClickCategory?: (category: ICategory) => void;
     onClickAll?: () => void;
 }) {
-    const [isSelect, setIsSelect] = useState('');
+    const [isSelect, setIsSelect] = useState(initChooose);
     const listRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0 });
     const [numberItemInView, setNumberItemInView] = useState(0);

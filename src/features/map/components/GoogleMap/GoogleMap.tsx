@@ -19,7 +19,6 @@ export default function GoogleMap() {
     const [isFirstIdle, setIsFirstIdle] = useState(false);
     const { sessionToken, placeChoose, setSessionToken } = useSearchLocationStore();
     const { data } = usePlaceDetail({ placeId: placeChoose?.place_id || '', sessionToken });
-    const [isIdle, setIsIdle] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const { map, setMap, setPlaceDetail } = useGoogleMapStore();
     const navigate = useNavigate();
@@ -43,36 +42,12 @@ export default function GoogleMap() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isFirstIdle, data?.place_id]);
 
-    useEffect(() => {
-        let bounds: google.maps.LatLngBounds | undefined;
-        if (map) {
-            bounds = map.getBounds();
-        }
-        if (isIdle && bounds) {
-            setFilterData({
-                category: filterData?.category,
-                sort: filterData?.sort,
-                viewPortNE: {
-                    lat: bounds.getNorthEast().lat(),
-                    lng: bounds.getNorthEast().lng(),
-                },
-                viewPortSW: {
-                    lat: bounds.getSouthWest().lat(),
-                    lng: bounds.getSouthWest().lng(),
-                },
-            });
-        }
-        setIsIdle(false);
-        setIsOpen(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isIdle, filterData?.category, filterData?.sort]);
-
     return (
-        <div id="google-map" className="sticky top-[163px] h-[calc(100vh-162px)] w-full">
+        <div id="google-map" className="sticky top-[160px] h-[calc(100vh-160px)] w-full">
             <div className="relative w-full h-full">
                 {!isFirstIdle && <SkeletonLoader className="absolute top-0 left-0 z-10" />}
 
-                {isQuery && (
+                {isFirstIdle && isQuery && (
                     <div className="absolute left-1/2 top-2 z-[997] p-4 bg-white rounded-lg">
                         <Loader variant="dots" size={'md'} color="dark" />
                     </div>
@@ -112,11 +87,26 @@ export default function GoogleMap() {
                                 setMap(map);
                                 // setIsLoadFull(true);
                             }}
-                            onZoomChanged={() => {
-                                console.log(map?.getZoom());
-                            }}
                             onIdle={() => {
-                                setIsIdle(true);
+                                let bounds: google.maps.LatLngBounds | undefined;
+                                if (map) {
+                                    bounds = map.getBounds();
+                                }
+                                if (bounds) {
+                                    setFilterData({
+                                        category: filterData?.category,
+                                        sort: filterData?.sort,
+                                        viewPortNE: {
+                                            lat: bounds.getNorthEast().lat(),
+                                            lng: bounds.getNorthEast().lng(),
+                                        },
+                                        viewPortSW: {
+                                            lat: bounds.getSouthWest().lat(),
+                                            lng: bounds.getSouthWest().lng(),
+                                        },
+                                    });
+                                }
+                                setIsOpen(false);
                                 if (!isFirstIdle) {
                                     setIsFirstIdle(true);
                                 }
