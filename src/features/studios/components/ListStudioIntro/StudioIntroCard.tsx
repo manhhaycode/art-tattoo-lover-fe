@@ -50,7 +50,7 @@ export default function StudioIntroCard({
                 <p>{studio.slogan}</p>
                 <div className="flex items-center">
                     <MapPinIcon styles={{ height: '16px', width: '16px' }} />
-                    <p className="ml-2">{studio.address}</p>
+                    <p className="ml-2 max-w-[calc(100%-160px)] truncate">{studio.address}</p>
                 </div>
                 {!studio.listCategory && <p className={'line-clamp-3'}>{studio.introduction}</p>}
                 {studio.workingTimes && <ListServiceOfStudio listWorkingTime={studio.workingTimes} />}

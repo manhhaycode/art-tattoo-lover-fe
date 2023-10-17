@@ -1,26 +1,37 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { IFilter } from '@/features/studios';
 import Input from '@/components/common/Input';
 import { Checkbox, Loader, Rating } from '@mantine/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
 import { useFilterFormStore } from '@/store/componentStore';
 
 export default function FilterForm({ isLoading }: { isLoading?: boolean }) {
     const [value, setValue] = useState<string[]>([]);
-    const { handleSubmit, register } = useForm<IFilter>();
-    const { filterData, setFilterData } = useFilterFormStore();
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
 
-    const onSubmit: SubmitHandler<IFilter> = async (data) => {
-        setFilterData({ ...filterData, ...data, rating: value.map((item) => Number(item)) });
-    };
+    useEffect(() => {
+        setSearchKeyword(filterData?.searchKeyword || '');
+    }, [filterData?.searchKeyword]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                e.nativeEvent.preventDefault();
+                setFilterData({ ...filterData, searchKeyword, rating: value.map((item) => Number(item)) });
+                setIsQuery(true);
+            }}
+            className="flex flex-col gap-y-5"
+        >
             <div className="flex flex-col gap-y-3">
                 <label className="text-placeholder-gray font-medium text-lg">Tìm kiếm theo tên studio</label>
                 <Input
-                    {...register('searchKeyword')}
+                    value={searchKeyword}
+                    onChange={(e) => {
+                        if (e.target.value !== ' ') {
+                            setSearchKeyword(e.target.value);
+                        }
+                    }}
                     typeinput="header"
                     className="h-11 rounded-lg"
                     placeholder="Nhập tên studio"

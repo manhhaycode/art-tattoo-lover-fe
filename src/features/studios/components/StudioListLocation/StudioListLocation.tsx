@@ -11,7 +11,7 @@ export default function StudioListLocation() {
     const { placeDetail } = useGoogleMapStore();
     const { filterData, setIsQuery, reset } = useFilterFormStore();
     const { data, isLoading } = useGetListStudio(
-        filterData
+        filterData?.viewPortNE && filterData?.viewPortSW
             ? {
                   ...filterData,
                   page: 0,

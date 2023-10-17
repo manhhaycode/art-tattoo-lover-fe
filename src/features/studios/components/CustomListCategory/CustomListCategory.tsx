@@ -6,12 +6,13 @@ import { useWindowScroll } from 'react-use';
 
 export default function CustomListCategory({ isLoading, initChoose }: { isLoading?: boolean; initChoose: string }) {
     const { isVisible, setIsVisible } = useDropdownStore();
-    const { filterData, setFilterData } = useFilterFormStore();
+    const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
     const scroll = useWindowScroll();
 
     const handleSelectCategory = useCallback(
         (category: ICategory) => {
             setFilterData({ ...filterData, category: category.id });
+            setIsQuery(true);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [filterData],

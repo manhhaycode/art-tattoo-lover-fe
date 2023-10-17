@@ -3,6 +3,13 @@ import { IFilter, IPaginationStudio, IStudio } from '../types';
 import { useQuery } from '@tanstack/react-query';
 
 const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
+    if (Object.keys(filter).length === 0)
+        return {
+            data: [],
+            page: 0,
+            pageSize: 0,
+            total: 0,
+        };
     try {
         const response: IPaginationStudio = await httpRequest.post('/studios', filter);
         return response;

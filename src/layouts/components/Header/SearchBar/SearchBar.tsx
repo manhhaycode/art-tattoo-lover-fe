@@ -6,6 +6,7 @@ import { DropdownImage } from '@/components/Dropdown';
 import { db } from '@/assets/data';
 import Image from '@/components/common/Image';
 import Button from '@/components/common/Button';
+import { useFilterFormStore } from '@/store/componentStore';
 interface IService {
     id?: string;
     name?: string;
@@ -26,6 +27,7 @@ export default function SearchBar({
     const [serviceChoose, setServiceChoose] = useState<IService>({});
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [studioName, setStudioName] = useState('');
+    const { reset } = useFilterFormStore();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -202,10 +204,13 @@ export default function SearchBar({
                                 whileTap={{ scale: 0.8 }}
                                 onClick={() => {
                                     handleCloseSearchBigBar();
+                                    setStudioName('');
+                                    setServiceChoose({});
+                                    reset();
                                     navigate(
                                         '/search-studio?searchKeyword=' +
                                             studioName +
-                                            +(serviceChoose.name ? '&category=' + serviceChoose.name : ''),
+                                            (serviceChoose.id ? '&category=' + serviceChoose.id : ''),
                                     );
                                 }}
                                 className="!rounded-3xl ml-3"
