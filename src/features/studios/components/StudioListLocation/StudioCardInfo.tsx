@@ -19,18 +19,18 @@ export default function StudioCardInfo({ studio }: { studio: IStudio }) {
                     ]}
                 />
                 <div className="flex items-center justify-between font-semibold text-[15px]">
-                    <p className="name-studio">{studio.name}</p>
-                    <div className="flex items-center ml-3">
+                    <p className="name-studio truncate max-w-[65%]">{studio.name}</p>
+                    <div className="flex items-center">
                         <StarIcon />
                         <p className="ml-1 font-medium text-sm">
                             {(Math.random() * 5).toFixed(2) + ' (' + Math.round(Math.random() * 999) + ')'}
                         </p>
                     </div>
                 </div>
-                <p>{studio.introduction || 'test nhé'}</p>
+                <p className="line-clamp-2">{studio.introduction || 'test nhé'}</p>
                 <div className="flex items-center">
-                    <MapPinIcon styles={{ width: '20px', height: '20px', stroke: '#B0B3B8' }} />
-                    <p className="ml-2">{studio.address || 'Việt Nam'}</p>
+                    <MapPinIcon styles={{ minWidth: '20px', minHeight: '20px', stroke: '#B0B3B8' }} />
+                    <p className="ml-2 line-clamp-1">{studio.address || 'Việt Nam'}</p>
                 </div>
             </div>
         </div>

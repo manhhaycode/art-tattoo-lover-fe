@@ -205,8 +205,7 @@ export default function SearchBar({
                                     navigate(
                                         '/search-studio?searchKeyword=' +
                                             studioName +
-                                            '&category=' +
-                                            serviceChoose.name,
+                                            +(serviceChoose.name ? '&category=' + serviceChoose.name : ''),
                                     );
                                 }}
                                 className="!rounded-3xl ml-3"

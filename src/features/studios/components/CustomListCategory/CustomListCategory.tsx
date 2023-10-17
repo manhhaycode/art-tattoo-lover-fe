@@ -4,7 +4,7 @@ import { useDropdownStore, useFilterFormStore } from '@/store/componentStore';
 import { useCallback, useEffect } from 'react';
 import { useWindowScroll } from 'react-use';
 
-export default function CustomListCategory({ isLoading }: { isLoading?: boolean }) {
+export default function CustomListCategory({ isLoading, initChoose }: { isLoading?: boolean; initChoose: string }) {
     const { isVisible, setIsVisible } = useDropdownStore();
     const { filterData, setFilterData } = useFilterFormStore();
     const scroll = useWindowScroll();
@@ -35,6 +35,7 @@ export default function CustomListCategory({ isLoading }: { isLoading?: boolean 
         >
             <div className="2xl:w-[1372px] mx-auto w-[calc(100%-4rem)]  h-full">
                 <CategoryList
+                    initChooose={initChoose}
                     isLoading={isLoading}
                     isVisible={isVisible}
                     onClickCategory={handleSelectCategory}
