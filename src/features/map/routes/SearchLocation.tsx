@@ -53,7 +53,7 @@ export default function SearchLocation() {
                     />
                 </div>
             </div>
-            <div id="content" className="content-wrapper min-h-[calc(100vh+180px)]">
+            <div id="content" className="content-wrapper min-h-[calc(100vh-158px)]">
                 <div className="flex relative">
                     <div className="p-4 w-[63%]">
                         <Suspense fallback={<div>Loading...</div>}>

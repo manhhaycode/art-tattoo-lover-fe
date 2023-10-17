@@ -6,7 +6,7 @@ export const SkeletonLoader = ({ ...props }: SkeletonProps) => (
         height={'100%'}
         baseColor="#18191A"
         highlightColor="#505253"
-        duration={2}
+        duration={1}
         {...props}
     ></Skeleton>
 );

@@ -28,7 +28,7 @@ export default function Menu() {
                 <MenuIcon />
                 {isAuth && accountType ? <AvartarIcon fullName={accountType.user.fullName} /> : <UserStatus />}
             </Button>
-            <Dropdown animate={isOpenMenu} className="right-0 !max-w-[240px] rounded-lg mt-4">
+            <Dropdown animate={isOpenMenu} className="right-0 max-w-[240px] rounded-lg mt-4 origin-[100%_0%]">
                 <div className="flex flex-col -mx-2 -mb-2  text-[15px]">
                     {!isAuth ? (
                         <>
