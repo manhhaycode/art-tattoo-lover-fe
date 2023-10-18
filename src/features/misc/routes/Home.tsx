@@ -15,7 +15,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            //An code từ đây
+            {/* An code từ đây */}
         </div>
     );
 }
