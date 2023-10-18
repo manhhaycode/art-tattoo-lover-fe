@@ -44,6 +44,7 @@ export default function Header() {
                 {!isVisible && (
                     <button onClick={() => setIsVisible(true)}>
                         <DropdownIcon />
+                        <>{console.log('test')}</>
                     </button>
                 )}
             </div>
