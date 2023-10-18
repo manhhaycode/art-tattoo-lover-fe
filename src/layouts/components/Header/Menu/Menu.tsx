@@ -8,11 +8,13 @@ import { useModalStore } from '@/store/componentStore';
 import { Logout } from '@/features/auth/components';
 import Button from '@/components/common/Button';
 import { AvartarIcon } from '@/features/users';
+import { useNavigate } from 'react-router-dom';
 export default function Menu() {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const { setIsModalVisible, setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
     const menuRef = useClickOutside<HTMLDivElement>(() => setIsOpenMenu(false));
     const { isAuth, accountType } = useAuthStore();
+    const navigate = useNavigate();
     return (
         <div ref={menuRef} className="relative">
             <Button
@@ -55,17 +57,39 @@ export default function Menu() {
                         </>
                     ) : (
                         <>
-                            <button className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]">
+                            <button
+                                onClick={() => {
+                                    setIsOpenMenu(false);
+                                    navigate('/user/profile');
+                                }}
+                                className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
+                            >
                                 Thông Tin Cá Nhân
                             </button>
-                            <button className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]">
-                                Xem lịch tattoo
+                            <button
+                                onClick={() => {
+                                    setIsOpenMenu(false);
+                                    navigate('/user/book-tracking');
+                                }}
+                                className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
+                            >
+                                Theo dõi lịch booking
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setIsOpenMenu(false);
+                                    navigate('/user/history');
+                                }}
+                                className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
+                            >
+                                Xem lịch sử xăm tại studio
                             </button>
                             <div className="border-[1px] border-stroke-gray"></div>
                             <div className="p-4">
                                 <Logout
                                     onSuccess={() => {
                                         setIsModalVisible(false);
+                                        setIsOpenMenu(false);
                                     }}
                                 />
                             </div>

@@ -8,7 +8,9 @@ const routes = {
     searchLocation: '/search-location',
     searchStudio: '/search-studio',
     studio: '/studio/:slugStudio/:studioId',
-    userProfile: '/@:userId',
+    userProfile: '/user/profile',
+    userBooking: '/user/book-tracking',
+    userHistory: '/user/history',
 };
 
 export default routes;
