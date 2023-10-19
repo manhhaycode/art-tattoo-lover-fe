@@ -7,34 +7,21 @@ import AuthProvider from './AuthProvider';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { useThemeStore } from '@/store/componentStore';
 
 // const logError = (error: Error, info: { componentStack: string }) => {
 //     console.error(error, info);
 // };
 
 export default function AppProvider({ children }: { children: React.ReactNode }) {
+    const { theme } = useThemeStore();
     return (
         <ErrorBoundary fallback={<Error />}>
             <MantineProvider
                 withNormalizeCSS
-                // theme={{
-                //     colorScheme: 'dark',
-                //     colors: {
-                //         // override dark colors to change them for all components
-                //         dark: [
-                //             'black',
-                //             '#acaebf',
-                //             '#8c8fa3',
-                //             '#666980',
-                //             '#4d4f66',
-                //             '#34354a',
-                //             'white',
-                //             '#1d1e30',
-                //             '#0c0d21',
-                //             '#01010a',
-                //         ],
-                //     },
-                // }}
+                theme={{
+                    colorScheme: theme === 'light' ? 'light' : 'dark',
+                }}
             >
                 <Suspense fallback={<div className="h-screen w-screen bg-dark-theme"></div>}>
                     <LazyMotion features={domAnimation}>

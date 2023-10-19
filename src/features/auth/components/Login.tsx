@@ -14,18 +14,16 @@ interface ILogin {
 export default function Login() {
     const { setIsLoginModalVisible, setIsRegisterModalVisible, setIsResetPasswordModalVisible, reset } =
         useModalStore();
-    const { setIsAuth, setAccountType } = useAuthStore();
+    const { setIsAuth, setAccountType, setIsLogout } = useAuthStore();
     const loginMutation = useLoginMutation({
         onSuccess: (data) => {
             setIsAuth(true);
             setAccountType({
                 role: { id: data.user.roleId, name: 'Member' },
                 permissions: [],
-                user: {
-                    id: data.user.id,
-                    fullName: data.user.fullName,
-                },
+                user: data.user,
             });
+            setIsLogout(false);
             reset();
         },
     });

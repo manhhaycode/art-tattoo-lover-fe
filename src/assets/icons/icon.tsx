@@ -808,3 +808,32 @@ export const UserIcon = ({ styles }: { styles?: CSSProperties }) => (
         <circle cx="12" cy="7" r="4" />
     </svg>
 );
+
+export const HistoryIcon = ({ styles }: { styles?: CSSProperties }) => (
+    <svg
+        style={styles}
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        width="24"
+        height="24"
+        x="0"
+        y="0"
+        viewBox="0 0 24 24"
+        xmlSpace="preserve"
+        fill="white"
+    >
+        <g>
+            <path
+                d="M13.1 1A10.927 10.927 0 0 0 2.566 9.223l-.732-1.107a1 1 0 1 0-1.668 1.1l2.2 3.334a1.084 1.084 0 0 0 .634.425 1.024 1.024 0 0 0 .756-.145l3.3-2.223a1 1 0 1 0-1.115-1.659L4.44 9.96A8.909 8.909 0 1 1 13.1 21a8.892 8.892 0 0 1-7.281-3.822 1 1 0 1 0-1.64 1.143A10.881 10.881 0 0 0 24 12 10.963 10.963 0 0 0 13.1 1z"
+                opacity="1"
+                data-original="#000000"
+            ></path>
+            <path
+                d="M13 5.95a1 1 0 0 0-1 1V12a1.04 1.04 0 0 0 .293.707l3 3.027a1.013 1.013 0 0 0 1.414.007 1 1 0 0 0 .006-1.414L14 11.589V6.95a1 1 0 0 0-1-1z"
+                opacity="1"
+                data-original="#000000"
+            ></path>
+        </g>
+    </svg>
+);

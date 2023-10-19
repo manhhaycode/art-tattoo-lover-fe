@@ -13,7 +13,7 @@ export default function Menu() {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const { setIsModalVisible, setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
     const menuRef = useClickOutside<HTMLDivElement>(() => setIsOpenMenu(false));
-    const { isAuth, accountType } = useAuthStore();
+    const { isAuth, accountType, setIsLogout } = useAuthStore();
     const navigate = useNavigate();
     return (
         <div ref={menuRef} className="relative">
@@ -28,7 +28,13 @@ export default function Menu() {
                 className="pl-3 pr-2 py-1 gap-x-3 !rounded-[30px]"
             >
                 <MenuIcon />
-                {isAuth && accountType ? <AvartarIcon fullName={accountType.user.fullName} /> : <UserStatus />}
+                {isAuth && accountType ? (
+                    <div className="h-9 w-9">
+                        <AvartarIcon fullName={accountType.user.fullName} />
+                    </div>
+                ) : (
+                    <UserStatus />
+                )}
             </Button>
             <Dropdown animate={isOpenMenu} className="right-0 max-w-[240px] rounded-lg mt-4 origin-[100%_0%]">
                 <div className="flex flex-col -mx-2 -mb-2  text-[15px]">
@@ -88,8 +94,9 @@ export default function Menu() {
                             <div className="p-4">
                                 <Logout
                                     onSuccess={() => {
-                                        setIsModalVisible(false);
+                                        // setIsModalVisible(false);
                                         setIsOpenMenu(false);
+                                        setIsLogout(true);
                                     }}
                                 />
                             </div>

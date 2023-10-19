@@ -1,6 +1,6 @@
 export default function AvartarIcon({ logo, fullName }: { logo?: string; fullName: string }) {
     return (
-        <div className="h-9 w-9 rounded-[50%] bg-black text-white flex items-center justify-center relative">
+        <div className="h-full w-full rounded-[50%] bg-black text-white flex items-center justify-center relative">
             {logo ? (
                 <></>
             ) : (

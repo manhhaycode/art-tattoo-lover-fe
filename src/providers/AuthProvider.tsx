@@ -18,7 +18,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             setAccountType({
                 role: { id: data.user.roleId, name: 'Member' },
                 permissions: [],
-                user: { id: data.user.id, fullName: data.user.fullName },
+                user: data.user,
             });
             setIsAuth(true);
             reset();

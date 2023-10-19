@@ -22,6 +22,9 @@ httpRequest.interceptors.response.use(
     async (error: AxiosError) => {
         const refreshTokenString = Cookies.get('tattus-rft');
         if (error.response) {
+            if (error.request.responseURL.includes('/users/password')) {
+                return Promise.reject(error.response.data);
+            }
             if (
                 !error.request.responseURL.includes('/auth/refresh') &&
                 !error.request.responseURL.includes('/auth/logout') &&
@@ -55,6 +58,11 @@ export const post = async (path: string, data?: object, options?: AxiosRequestCo
 
 export const patch = async (path: string, data: object, options?: AxiosRequestConfig<object>) => {
     const response = await httpRequest.patch(path, data, options);
+    return response.data;
+};
+
+export const put = async (path: string, data: object, options?: AxiosRequestConfig<object>) => {
+    const response = await httpRequest.put(path, data, options);
     return response.data;
 };
 

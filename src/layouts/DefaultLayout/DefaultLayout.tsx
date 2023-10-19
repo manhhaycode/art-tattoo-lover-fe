@@ -8,7 +8,6 @@ const PortalModal = lazy(() => import('@/components/Portal/PortalModal'));
 
 export default function DefaultLayout() {
     const { isModalVisible, reset } = useModalStore();
-
     return (
         <div className="bg-dark-theme min-h-screen">
             <Header />
