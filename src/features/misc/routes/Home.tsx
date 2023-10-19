@@ -15,7 +15,14 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            //An code từ đây
+            <div className="pt-20">
+            <h1 className="text-left text-white text-5xl font-sans">Client stories</h1></div>
+           <div className="pt-8">
+            <h2 className="text-left text-white text-2xl font-sans">See more reviews on Tattus</h2>
+            </div>
+            
+                
+            
         </div>
     );
 }
