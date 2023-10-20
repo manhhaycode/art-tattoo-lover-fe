@@ -27,11 +27,11 @@ export default function AppProvider({ children }: { children: React.ReactNode })
                     <LazyMotion features={domAnimation}>
                         <QueryClientProvider client={queryClient}>
                             <AuthProvider>{children}</AuthProvider>
-                            <ToastContainer autoClose={3000} />
                         </QueryClientProvider>
                     </LazyMotion>
                 </Suspense>
             </MantineProvider>
+            <ToastContainer autoClose={3000} />
         </ErrorBoundary>
     );
 }

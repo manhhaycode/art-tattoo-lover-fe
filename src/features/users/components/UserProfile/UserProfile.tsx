@@ -3,11 +3,11 @@ import BasicInfoForm from './BasicInfoForm';
 import ChangePasswordForm from './ChangePasswordForm';
 
 export default function UserProfile() {
-    const { data, isLoading } = useUserProfileManageState();
-    if (isLoading) return <div>Loading...</div>;
+    const { isLoading, accountType, onMount } = useUserProfileManageState();
+    if (isLoading || !accountType) return <div>Loading...</div>;
     return (
         <>
-            {data && (
+            {accountType && onMount && (
                 <div className="flex flex-col gap-y-8 py-4 px-6 flex-1">
                     <div className="flex flex-col gap-y-8">
                         <h1 className="font-semibold text-2xl">Thông tin cá nhân</h1>

@@ -7,19 +7,18 @@ export interface IUser {
     email: string;
     fullName: string;
     phone: string;
-    address: string;
-    avatar: string;
-    birthday: string;
+    address: string | null;
+    avatar: string | null;
+    birthday: string | null;
     roleId: number;
 }
 
 export interface UserCredentials {
-    email?: string;
-    fullName?: string;
-    phone?: string;
-    address?: string;
-    avatar?: string;
-    birthday?: string;
+    fullName: string;
+    phone: string;
+    address: string | null;
+    avatar: string | null;
+    birthday: string | null;
 }
 
 export interface UserPasswordCredentials {
