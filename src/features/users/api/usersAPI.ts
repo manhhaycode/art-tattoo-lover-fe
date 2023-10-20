@@ -1,15 +1,10 @@
-import * as httpRequest from '@/lib/axios';
-import Cookies from 'js-cookie';
+import * as httpAuth from '@/lib/axios-auth';
 import { IUpdateUser, IUser, UserCredentials, UserPasswordCredentials } from '../types';
 import { useMutation } from '@tanstack/react-query';
 
 export const getUser = async (): Promise<IUser> => {
     try {
-        const resUser = await httpRequest.get(`/users/profile`, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('tattus-at')}`,
-            },
-        });
+        const resUser = await httpAuth.get(`/users/profile`);
         return resUser;
     } catch (e) {
         throw new Error(e.error);
@@ -18,11 +13,7 @@ export const getUser = async (): Promise<IUser> => {
 
 export const updateBasicInfo = async (data: UserCredentials): Promise<IUpdateUser> => {
     try {
-        const resUpdate = await httpRequest.put(`/users/profile`, data, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('tattus-at')}`,
-            },
-        });
+        const resUpdate = await httpAuth.put(`/users/profile`, data);
         return resUpdate;
     } catch (e) {
         throw new Error(e.error);
@@ -31,11 +22,7 @@ export const updateBasicInfo = async (data: UserCredentials): Promise<IUpdateUse
 
 export const changePasswordUser = async (data: UserPasswordCredentials): Promise<IUpdateUser> => {
     try {
-        const resUpdate = await httpRequest.put(`/users/password`, data, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('tattus-at')}`,
-            },
-        });
+        const resUpdate = await httpAuth.put(`/users/password`, data);
         return resUpdate;
     } catch (e) {
         throw new Error(e.error);

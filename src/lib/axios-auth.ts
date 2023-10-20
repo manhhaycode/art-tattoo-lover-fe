@@ -1,6 +1,9 @@
 import config from '@/config';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
+import { IRefreshToken } from '@/features/auth/types';
+import { refreshToken } from '@/features/auth/api';
+import { ErrorAuth } from './error';
 
 const httpRequest = axios.create({
     baseURL: config.API.API_URL,
@@ -10,6 +13,23 @@ export const sleep = (ms = 500): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+httpRequest.interceptors.request.use(async (value) => {
+    const at = Cookies.get('tattus-at');
+    const rf = Cookies.get('tattus-rft');
+    if (!at || (at && at.length === 0)) {
+        if (rf && rf.length > 0) {
+            const res: IRefreshToken = await refreshToken();
+            res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+        } else {
+            Cookies.remove('tattus-rft');
+            Cookies.remove('tattus-at');
+            throw new Error(ErrorAuth.AT_RT_INVALID);
+        }
+    }
+    value.headers['Authorization'] = `Bearer ${Cookies.get('tattus-at')}`;
+    return value;
+});
+
 httpRequest.interceptors.response.use(
     async (response) => {
         if (process.env.NODE_ENV === 'development') {
@@ -17,12 +37,22 @@ httpRequest.interceptors.response.use(
         }
         return response;
     },
-    async (error: AxiosError) => {
-        if (error.response) {
-            if (error.response.status === 401) {
-                Cookies.remove('tattus-rft');
-                Cookies.remove('tattus-at');
-                sessionStorage.removeItem('tattus-session');
+    async (error) => {
+        if (error instanceof Error && !(error instanceof AxiosError)) {
+            return Promise.reject({ error: error.message });
+        }
+
+        if (error instanceof AxiosError && error.response) {
+            if (error.request.responseURL.includes('/users/password')) {
+                return Promise.reject(error.response.data);
+            }
+            try {
+                if (error.response.status === 401) {
+                    const res: IRefreshToken = await refreshToken();
+                    res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+                }
+            } catch (e) {
+                return Promise.reject({ error: (e as Error).message });
             }
             return Promise.reject(error.response.data);
         } else {

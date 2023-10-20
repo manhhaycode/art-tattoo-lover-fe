@@ -1,4 +1,5 @@
 import * as httpRequest from '@/lib/axios';
+import * as httpAuth from '@/lib/axios-auth';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import {
@@ -60,11 +61,7 @@ export const refreshToken = async (): Promise<IRefreshToken> => {
 
 const getSessionUser = async (): Promise<ISessionUser> => {
     try {
-        const resSession: ISession = await httpRequest.get('/auth/session', {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('tattus-at')}`,
-            },
-        });
+        const resSession: ISession = await httpAuth.get('/auth/session');
         const resUser: IUser = await getUser();
         sessionStorage.setItem('tattus-session', resSession.sessionId);
         return { session: resSession, user: resUser };

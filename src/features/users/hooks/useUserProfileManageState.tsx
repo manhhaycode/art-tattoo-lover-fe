@@ -1,23 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetUserMutation } from '../api';
 import { useAuthStore } from '@/store/authStore';
-import Cookies from 'js-cookie';
+import { ErrorAuth } from '@/lib/error';
 const useUserProfileManageState = () => {
     const { setAccountType, accountType, isChange, setIsChange } = useAuthStore();
+    const [onMount, setOnMount] = useState(false);
     const getProfileMutation = useGetUserMutation({
         onSuccess: (data) => {
             setAccountType({ ...accountType, user: data });
             if (isChange) setIsChange(false);
         },
-        onError: () => {
-            if (Cookies.get('tattus-at')) {
+        onError: (error) => {
+            if (error.message === ErrorAuth.AT_INVALID) {
                 getProfileMutation.mutate({});
             }
         },
     });
 
     useEffect(() => {
-        getProfileMutation.mutate({});
+        if (accountType) {
+            getProfileMutation.mutate({});
+        }
+        setOnMount(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -26,7 +30,7 @@ const useUserProfileManageState = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isChange]);
 
-    return getProfileMutation;
+    return { ...getProfileMutation, accountType, onMount };
 };
 
 export default useUserProfileManageState;

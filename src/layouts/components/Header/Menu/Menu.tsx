@@ -9,6 +9,7 @@ import { Logout } from '@/features/auth/components';
 import Button from '@/components/common/Button';
 import { AvartarIcon } from '@/features/users';
 import { useNavigate } from 'react-router-dom';
+import Image from '@/components/common/Image';
 export default function Menu() {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const { setIsModalVisible, setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
@@ -30,7 +31,23 @@ export default function Menu() {
                 <MenuIcon />
                 {isAuth && accountType ? (
                     <div className="h-9 w-9">
-                        <AvartarIcon fullName={accountType.user.fullName} />
+                        {accountType.user.avatar ? (
+                            <div className="w-full h-full relative">
+                                <Image src={accountType.user.avatar} className="rounded-[50%]" />
+                                <svg
+                                    className="absolute top-[-2px] right-0 z-10"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="34"
+                                    height="36"
+                                    viewBox="0 0 34 36"
+                                    fill="none"
+                                >
+                                    <circle cx="28" cy="6" r="5.5" fill="#3CFF38" stroke="white" />
+                                </svg>
+                            </div>
+                        ) : (
+                            <AvartarIcon fullName={accountType.user.fullName} />
+                        )}
                     </div>
                 ) : (
                     <UserStatus />
