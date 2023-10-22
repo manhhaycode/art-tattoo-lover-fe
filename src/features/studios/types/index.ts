@@ -56,7 +56,7 @@ export interface IStudio {
     website: string;
     address: string;
     latitude: number;
-    longtitude: number;
+    longitude: number;
     status: number;
     created_at: Date;
     updated_at: Date;

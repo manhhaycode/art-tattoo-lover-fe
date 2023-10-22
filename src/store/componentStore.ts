@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceData } from '@googlemaps/google-maps-services-js';
-import { IFilter } from '@/features/studios';
+import { IFilter, IStudio } from '@/features/studios';
+import { EPositionOverlayView } from '@/features/map/types';
 interface SearchLocationState {
     placeChoose: Partial<google.maps.places.AutocompletePrediction> | null;
     setPlaceChoose: (placeId: Partial<google.maps.places.AutocompletePrediction> | null) => void;
@@ -80,6 +81,8 @@ export const useDropdownStore = create<DropdownState>((set) => ({
 interface FilterFormState {
     filterData: IFilter | null;
     isQuery: boolean;
+    listStudio: IStudio[] | null;
+    setListStudio: (listStudio: IStudio[] | null) => void;
     setFilterData: (filterData: IFilter | null) => void;
     setIsQuery: (isQuery: boolean) => void;
     reset: () => void;
@@ -88,11 +91,27 @@ interface FilterFormState {
 export const useFilterFormStore = create<FilterFormState>((set) => ({
     filterData: null,
     isQuery: false,
+    listStudio: null,
+    setListStudio: (listStudio: IStudio[] | null) => set({ listStudio }),
     setIsQuery: (isQuery: boolean) => set({ isQuery }),
     setFilterData: (filterData: IFilter | null) => set({ filterData }),
     reset: () => {
         set({ filterData: null, isQuery: false });
     },
+}));
+
+interface StuidoPinState {
+    studioPin: IStudio | null;
+    positionInfo: EPositionOverlayView;
+    setPositionInfo: (positionInfo: EPositionOverlayView) => void;
+    setStudioPin: (studioPin: IStudio | null) => void;
+}
+
+export const useStudioPinStore = create<StuidoPinState>((set) => ({
+    studioPin: null,
+    positionInfo: EPositionOverlayView.CENTER,
+    setPositionInfo: (positionInfo: EPositionOverlayView) => set({ positionInfo }),
+    setStudioPin: (studioPin: IStudio | null) => set({ studioPin }),
 }));
 
 interface ThemeState {

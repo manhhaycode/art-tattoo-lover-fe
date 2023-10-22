@@ -30,9 +30,9 @@ export default function Menu() {
             >
                 <MenuIcon />
                 {isAuth && accountType ? (
-                    <div className="h-9 w-9">
+                    <div className="h-9 w-9 flex items-center">
                         {accountType.user.avatar ? (
-                            <div className="w-full h-full relative">
+                            <div className="w-8 h-8 relative">
                                 <Image src={accountType.user.avatar} className="rounded-[50%]" />
                                 <svg
                                     className="absolute top-[-2px] right-0 z-10"

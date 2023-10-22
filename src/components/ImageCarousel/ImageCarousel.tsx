@@ -1,6 +1,7 @@
 import Carousel, { CarouselProps } from 'react-multi-carousel';
-import Image from '../common/Image';
+import Image, { ImageSlider } from '../common/Image';
 import { ArrowRightIcon, ArrowLeftIcon } from '@/assets/icons';
+import { twMerge } from 'tailwind-merge';
 
 const CustomDot = ({ onClick, active }: { onClick?: () => void; active?: boolean }) => {
     return (
@@ -44,7 +45,11 @@ const CustomLeftArrow = ({ onClick }: { onClick?: () => void }) => {
     );
 };
 
-export default function ImageCarousel({ listSrc, ...props }: { listSrc: string[] } & Partial<CarouselProps>) {
+export default function ImageCarousel({
+    listSrc,
+    isSlide,
+    ...props
+}: { listSrc: string[]; isSlide: boolean } & Partial<CarouselProps>) {
     const responsive = {
         all: {
             breakpoint: { max: 4000, min: 0 },
@@ -53,7 +58,7 @@ export default function ImageCarousel({ listSrc, ...props }: { listSrc: string[]
     };
 
     return (
-        <div className="w-full pt-[100%] relative">
+        <div className={twMerge('w-full pt-[100%] relative', isSlide ? 'pt-[56.25%]' : '')}>
             <div className="absolute top-0 left-0 bottom-0 right-0">
                 <Carousel
                     dotListClass="mb-2"
@@ -64,11 +69,15 @@ export default function ImageCarousel({ listSrc, ...props }: { listSrc: string[]
                     customLeftArrow={<CustomLeftArrow />}
                     {...props}
                     responsive={props.responsive ? props.responsive : responsive}
-                    className="group h-full rounded-lg"
+                    className={twMerge('group h-full rounded-lg', props.className || '')}
                 >
-                    {listSrc.map((src, index) => (
-                        <Image className="cursor-pointer" draggable={false} key={index} src={src} />
-                    ))}
+                    {listSrc.map((src, index) => {
+                        if (!isSlide) {
+                            return <Image className="cursor-pointer" draggable={false} key={index} src={src} />;
+                        } else {
+                            return <ImageSlider className="cursor-pointer" draggable={false} key={index} src={src} />;
+                        }
+                    })}
                 </Carousel>
             </div>
         </div>

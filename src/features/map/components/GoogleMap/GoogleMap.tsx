@@ -1,6 +1,11 @@
 import { GoogleMap as GoogleMapReact, useJsApiLoader } from '@react-google-maps/api';
 import config from '@/config';
-import { useFilterFormStore, useGoogleMapStore, useSearchLocationStore } from '@/store/componentStore';
+import {
+    useFilterFormStore,
+    useGoogleMapStore,
+    useSearchLocationStore,
+    useStudioPinStore,
+} from '@/store/componentStore';
 import { usePlaceDetail } from '@/features/map/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
@@ -10,6 +15,7 @@ import { ArrowCloseIcon, ArrowOpenIcon } from '@/assets/icons';
 import { useNavigate } from 'react-router-dom';
 import { encodeStringtoURI } from '@/lib/helper';
 import { Loader } from '@mantine/core';
+import StudioListPin from '../StudioListPin';
 
 export default function GoogleMap() {
     const { isLoaded } = useJsApiLoader({
@@ -23,7 +29,8 @@ export default function GoogleMap() {
     const [isOpen, setIsOpen] = useState(false);
     const { map, setMap, setPlaceDetail } = useGoogleMapStore();
     const navigate = useNavigate();
-    const { filterData, setFilterData, isQuery } = useFilterFormStore();
+    const { filterData, setFilterData, isQuery, listStudio } = useFilterFormStore();
+    const { setStudioPin } = useStudioPinStore();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mapRef = useRef<any>(null);
 
@@ -87,6 +94,9 @@ export default function GoogleMap() {
                             onLoad={(map) => {
                                 setMap(map);
                             }}
+                            onClick={() => {
+                                setStudioPin(null);
+                            }}
                             onTilesLoaded={() => {
                                 setIsLoadFull(true);
                             }}
@@ -120,8 +130,11 @@ export default function GoogleMap() {
                                 mapTypeControl: false,
                                 streetViewControl: false,
                                 mapId: '4efdfc21c30d0be0',
+                                zoomControl: false,
                             }}
-                        ></GoogleMapReact>
+                        >
+                            {listStudio && <StudioListPin studios={listStudio} />}
+                        </GoogleMapReact>
                     </>
                 )}
             </div>
