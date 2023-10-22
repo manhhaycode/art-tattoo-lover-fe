@@ -92,8 +92,6 @@ export default function CategoryList({
             const arrayChild = Array.from(listRef.current.children);
             if (isElementInBoxContainer(arrayChild[0] as HTMLElement, listRef.current as HTMLElement)) {
                 setIsStart(true);
-                console.log(arrayChild[0].getBoundingClientRect());
-                console.log('setIsStart(true)');
             }
             arrayChild.forEach((child, index) => {
                 if (isElementInBoxContainer(child as HTMLElement, listRef.current as HTMLElement)) {

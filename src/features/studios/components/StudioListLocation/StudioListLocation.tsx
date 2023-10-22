@@ -9,7 +9,7 @@ const StudioCardInfo = lazy(() => import('./StudioCardInfo'));
 
 export default function StudioListLocation() {
     const { placeDetail } = useGoogleMapStore();
-    const { filterData, setIsQuery, reset } = useFilterFormStore();
+    const { filterData, setIsQuery, setListStudio, reset } = useFilterFormStore();
     const { data, isLoading } = useGetListStudio(
         filterData?.viewPortNE && filterData?.viewPortSW
             ? {
@@ -29,6 +29,11 @@ export default function StudioListLocation() {
         return () => reset();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (data) setListStudio(data.data);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data]);
 
     return (
         <>

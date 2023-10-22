@@ -1,3 +1,4 @@
+import { EPositionOverlayView } from '@/features/map/types';
 import { PlaceData, PlaceType2 } from '@googlemaps/google-maps-services-js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,16 +18,6 @@ export const getBoundsZoomLevel = (bounds: google.maps.LatLngBounds, mapSize: { 
 
     const ne = bounds.getNorthEast();
     const sw = bounds.getSouthWest();
-    console.log({
-        ne: {
-            lat: ne.lat(),
-            lng: ne.lng(),
-        },
-        sw: {
-            lat: sw.lat(),
-            lng: sw.lng(),
-        },
-    });
     const latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
 
     const lngDiff = ne.lng() - sw.lng();
@@ -92,4 +83,59 @@ export const convertAdressComponents = (addressComponent: PlaceData['address_com
         }
     });
     return result.slice(0, -2);
+};
+
+export const adjustPosition = (location: { lat: number; lng: number }, map: google.maps.Map): EPositionOverlayView => {
+    const overlay = new google.maps.OverlayView();
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    overlay.draw = function () {}; // empty function required
+    overlay.setMap(map);
+    const position: EPositionOverlayView[] = [];
+    const projection = overlay.getProjection();
+    if (!projection) return EPositionOverlayView.CENTER; // make sure projection exists
+
+    const point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(location.lat, location.lng));
+    const mapHeight = map.getDiv().offsetHeight;
+    const mapWidth = map.getDiv().offsetWidth;
+    if (!point) return EPositionOverlayView.CENTER;
+
+    const widthContainer = 320;
+    const heightContainer = 280;
+    const marginY = 20;
+    const marginX = 30;
+
+    if (
+        point.x + widthContainer + marginX < mapWidth &&
+        point.y + heightContainer / 2 < mapHeight &&
+        point.y - heightContainer / 2 > 0
+    ) {
+        position.push(EPositionOverlayView.RIGHT);
+    }
+
+    if (
+        point.x - (widthContainer + marginX) > 0 &&
+        point.y + heightContainer / 2 < mapHeight &&
+        point.y - heightContainer / 2 > 0
+    ) {
+        position.push(EPositionOverlayView.LEFT);
+    }
+
+    if (
+        point.x - widthContainer / 2 > 0 &&
+        point.x + widthContainer / 2 < mapWidth &&
+        point.y - (heightContainer + marginY) > 0
+    ) {
+        position.push(EPositionOverlayView.TOP);
+    }
+
+    if (
+        point.x - widthContainer / 2 > 0 &&
+        point.x + widthContainer / 2 < mapWidth &&
+        point.y + heightContainer + marginY < mapHeight
+    ) {
+        position.push(EPositionOverlayView.BOTTOM);
+    }
+
+    if (position.length > 0) return position[0];
+    else return EPositionOverlayView.CENTER;
 };

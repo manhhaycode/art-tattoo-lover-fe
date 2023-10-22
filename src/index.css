@@ -147,6 +147,49 @@
     .maintine-input-inner:disabled {
         opacity: 1;
     }
+
+    .studip-pin-container {
+        position: absolute;
+        transform: translate(calc(-50% + 0px), calc(50% + 0px));
+        left: 50%;
+    }
+
+    .studio-pin-container::before {
+        content: '';
+        position: absolute;
+        height: 50px;
+        width: 60px;
+        top: 50%;
+        left: 50%;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+    }
+
+    .studio-overlay-view {
+        bottom: 0px;
+        z-index: 0;
+        position: absolute;
+    }
+
+    .studio-overlay-view.bottom {
+        transform: translate(calc(-50% + 0px), calc(100% + 31.078px));
+    }
+
+    .studio-overlay-view.top {
+        transform: translate(calc(-50% + 0px), calc(0% + -31.078px));
+    }
+
+    .studio-overlay-view.center {
+        transform: translate(calc(-50% + 0px), calc(50% + 0px));
+    }
+
+    .studio-overlay-view.left {
+        transform: translate(calc(-100% + -37.8631px), calc(50% + 0px));
+    }
+
+    .studio-overlay-view.right {
+        transform: translate(calc(0% + 37.8631px), calc(50% + 0px));
+    }
 }
 
 :root {
