@@ -38,7 +38,7 @@ export default function Home() {
                             className='w-full h-full rounded-lg object-cover' />
                     </div>
                     <h3 className='text-center font-medium text-lg mb-3'> GREAT SERVICE</h3>
-                    <span className='block text-center text-white-200 text-sm mb-8'> “I like Tattoodo because you can see many artists and many different tattoo styles. It’s really easy to use.”</span>
+                    <span className='block text-center text-white-200 text-sm mb-8'> “I like Tattus because you can see many artists and many different tattoo styles. It’s really easy to use.”</span>
                     <h4 className='text-center font-medium text-lg '> Daniel</h4>
                 </div>
 
@@ -48,7 +48,7 @@ export default function Home() {
                             className='w-full h-full rounded-lg object-cover' />
                     </div>
                     <h3 className='text-center font-medium text-lg mb-3'> I LOVED THIS EXPERIENCE!</h3>
-                    <span className='block text-center text-white-200 text-sm mb-3'>“Tattoodo made it so simple for me to find an artist that would create a responably priced design for me and someone that I would get along with.” </span>
+                    <span className='block text-center text-white-200 text-sm mb-3'>“Tattus made it so simple for me to find an artist that would create a responably priced design for me and someone that I would get along with.” </span>
                     <h4 className='text-center font-medium text-lg '>Zaynab </h4>
                 </div>
             </div>
