@@ -15,7 +15,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            
+
             <div className="pt-12">
                 <h1 className="text-center text-white text-4xl font-semibold mb-5">Client stories</h1>
                 <h2 className="text-center text-white mb-10 text-xl font-light ">See more reviews on Tattus</h2>
@@ -37,7 +37,7 @@ export default function Home() {
                         <img src="https://d1kq2dqeox7x40.cloudfront.net/images/testimonials/e0ea195c88149cc9935c4.png?w=800" alt=''
                             className='w-full h-full rounded-lg object-cover' />
                     </div>
-                    <h3 className='text-center font-medium text-lg mb-3'> GREAT APP</h3>
+                    <h3 className='text-center font-medium text-lg mb-3'> GREAT SERVICE</h3>
                     <span className='block text-center text-white-200 text-sm mb-8'> “I like Tattoodo because you can see many artists and many different tattoo styles. It’s really easy to use.”</span>
                     <h4 className='text-center font-medium text-lg '> Daniel</h4>
                 </div>
@@ -53,7 +53,7 @@ export default function Home() {
                 </div>
             </div>
 
-            
+
         </div>
     );
 }
