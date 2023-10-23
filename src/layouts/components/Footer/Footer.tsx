@@ -1,6 +1,6 @@
 import { Facebook, Instagram, Pinterest, Twitter, YouTube } from '@mui/icons-material';
 import { Container, IconButton, Typography, styled } from '@mui/material';
-export function Footer(){
+export  default function Footer(){
 const FooterContainer = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
