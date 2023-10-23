@@ -15,10 +15,10 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className="pt-20">
-                <h1 className="text-center text-white text-5xl font-sans mb-5">Client stories</h1></div>
-            <div className="pt-8">
-                <h2 className="text-center text-white-500 mb-10 text-2xl font-sans ">See more reviews on Tattus</h2>
+            
+            <div className="pt-12">
+                <h1 className="text-center text-white text-4xl font-semibold mb-5">Client stories</h1>
+                <h2 className="text-center text-white mb-10 text-xl font-light ">See more reviews on Tattus</h2>
             </div>
 
             <div className='grid grid-cols-3 gap-x-8 max-w-7xl mx-auto'  >
