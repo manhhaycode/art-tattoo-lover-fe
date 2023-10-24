@@ -1,6 +1,5 @@
 import AppRoutes from './routes';
 import AppProvider from './providers';
-
 function App() {
     return (
         <div className="App">

@@ -1,6 +1,6 @@
 import * as httpRequest from '@/lib/axios';
 import { MediaCredentials } from '../types';
-import { IMedia } from '@/features/studios';
+import { IMedia } from '@/features/media';
 import { useMutation } from '@tanstack/react-query';
 
 const uploadMedia = async (media: MediaCredentials): Promise<IMedia> => {
