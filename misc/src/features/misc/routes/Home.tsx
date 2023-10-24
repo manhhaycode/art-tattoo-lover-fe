@@ -16,6 +16,7 @@ export default function Home() {
                 </div>
             </div>
             {/* An code từ đây */}
+            {/* check push codde */}
             <div className="pt-12">
                 <h1 className="text-center text-white text-4xl font-semibold mb-5">Client stories</h1>
                 <h2 className="text-center text-white mb-10 text-xl font-light ">See more reviews on Tattus</h2>
