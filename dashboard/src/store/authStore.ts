@@ -1,4 +1,4 @@
-import { IUser } from '@/features/users';
+import { EPermissionPermission } from '@/features/auth';
 import { create } from 'zustand';
 
 interface IAuth {
@@ -6,11 +6,7 @@ interface IAuth {
         id: number;
         name: string;
     };
-    permissions?: {
-        id: string;
-        name: string;
-    }[];
-    user: IUser;
+    permissions?: EPermissionPermission[];
 }
 
 interface AuthState {

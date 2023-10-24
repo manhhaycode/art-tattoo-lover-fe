@@ -1,5 +1,6 @@
 const routes = {
-    admin: '/admin',
+    studio: '/studio',
+    system: '/system',
 };
 
 export default routes;

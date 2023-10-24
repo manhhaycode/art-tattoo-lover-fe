@@ -1,6 +1,4 @@
-import Login from './Login';
-import Register from './Register';
+import AuthenticationTitle from './AuthenticationTitle';
 import Logout from './Logout';
-import ResetPassword from './ResetPassword';
 
-export { Login, Register, Logout, ResetPassword };
+export { AuthenticationTitle, Logout };
