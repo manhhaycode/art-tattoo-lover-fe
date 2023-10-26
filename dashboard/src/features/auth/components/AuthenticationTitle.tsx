@@ -22,7 +22,7 @@ export default function AuthenticationTitle() {
     const { setAccountType } = useAuthStore();
     const navigate = useNavigate();
     const at = Cookies.get('tattus-at');
-    const roleId = Number(sessionStorage.getItem('tattus-role')) || 6;
+    const roleId = Number(sessionStorage.getItem('tattus-role'));
     const loginMutation = useLoginMutation({
         onSuccess: (data) => {
             console.log(data);
@@ -46,7 +46,7 @@ export default function AuthenticationTitle() {
     };
     return (
         <>
-            {!(at && at.length > 0) ? (
+            {!(at && at.length > 0) || !roleId ? (
                 <BackgroundImage src={slider} className="h-screen">
                     <Container classNames={{ root: '!mt-0 pt-20' }} size={420} my={40}>
                         <form onSubmit={handleSubmit(onSubmit)}>
