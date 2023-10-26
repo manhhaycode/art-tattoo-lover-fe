@@ -9,8 +9,8 @@ export default function Login() {
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
-        if (location.state && location.state.messsage) {
-            toast(location.state.messsage, { type: 'error', theme: 'dark' });
+        if (location.state && location.state.message) {
+            toast(location.state.message, { type: 'error', theme: 'dark' });
             navigate('/login', { replace: true });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

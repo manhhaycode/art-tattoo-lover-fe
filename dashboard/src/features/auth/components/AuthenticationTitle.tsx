@@ -30,6 +30,7 @@ export default function AuthenticationTitle() {
                 role: { id: data.session.roleId, name: 'Member' },
                 permissions: data.session.permissions,
                 studioId: data.session.studioId,
+                user: { id: data.session.userId },
             });
             const roleId = data.session.roleId;
             if (roleId === 5 || roleId === 3 || roleId === 4) navigate('/studio/dashboard');

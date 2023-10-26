@@ -17,6 +17,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 role: { id: data.roleId, name: 'Member' },
                 permissions: data.permissions,
                 studioId: data.studioId,
+                user: { id: data.userId },
             });
         },
         onError: () => {

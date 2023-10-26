@@ -5,6 +5,9 @@ import { BiSun as IconSun, BiMoon as IconMoon } from 'react-icons/bi';
 import { MdOutlineColorLens as IconColorLens } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 import { useThemeStore } from '@/store/componentStore';
+import { AvartarIcon, useGetUserMutation } from '@/features/users';
+import { useAuthStore } from '@/store/authStore';
+import { ErrorAuth } from '@/lib/error';
 export default function Header() {
     const schema = useMantineColorScheme();
     const { setTheme, themeList } = useThemeStore();
@@ -13,12 +16,31 @@ export default function Header() {
     const listColors = ['light-blue', 'deep-orange'];
     const [index, setIndex] = useState(listColors.indexOf(theme.primaryColor));
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
-
+    const { accountType, setAccountType, reset } = useAuthStore();
+    const getProfileMutation = useGetUserMutation({
+        onSuccess: (data) => {
+            setAccountType({ ...accountType, user: data });
+        },
+        onError: (error) => {
+            if (error.message === ErrorAuth.RT_INVALID || error.message === ErrorAuth.AT_RT_INVALID) {
+                reset();
+            } else if (error.message === ErrorAuth.AT_INVALID) {
+                getProfileMutation.mutate({});
+            }
+        },
+    });
     useEffect(() => {
         setTheme(themeList[index]);
         localStorage.setItem('theme', index.toString());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
+
+    useEffect(() => {
+        if (accountType && accountType.user?.id) {
+            getProfileMutation.mutate({});
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accountType?.user?.id]);
 
     return (
         <Group justify="space-between" h="100%">
@@ -29,6 +51,15 @@ export default function Header() {
                 <div>Test menu</div>
             </Group>
             <Group gap="xs" mr="md">
+                {getProfileMutation.data &&
+                    (getProfileMutation.data.avatar ? (
+                        <AvartarIcon
+                            fullName={getProfileMutation.data.fullName}
+                            logo={getProfileMutation.data.avatar}
+                        />
+                    ) : (
+                        <AvartarIcon fullName={getProfileMutation.data.fullName} />
+                    ))}
                 <ActionIcon
                     onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
                     variant="default"

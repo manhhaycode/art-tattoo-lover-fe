@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/store/authStore';
 import { useLogoutMutation } from '../api';
 import Cookies from 'js-cookie';
-import Button from '@/components/common/Button';
+import { Button } from '@mantine/core';
 
 export default function Logout({ onSuccess }: { onSuccess?: () => void }) {
     const { reset } = useAuthStore();
@@ -17,8 +17,7 @@ export default function Logout({ onSuccess }: { onSuccess?: () => void }) {
     });
     return (
         <Button
-            isAnimate={true}
-            whileTap={{ scale: 0.8 }}
+            color="red.7"
             onClick={() => {
                 const rft = Cookies.get('tattus-rft');
                 if (rft) logoutMutation.mutate(rft);
