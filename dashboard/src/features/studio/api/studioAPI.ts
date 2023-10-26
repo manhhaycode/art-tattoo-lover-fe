@@ -1,5 +1,7 @@
 import * as httpRequest from '@/lib/axios';
-import { IFilter, IPaginationStudio, IStudio } from '../types';
+import * as httpAuth from '@/lib/axios-auth';
+
+import { IFilter, IPaginationStudio, IStudio, IUpdateStudio } from '../types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
@@ -33,12 +35,20 @@ const getStudio = async (id: string): Promise<IStudio> => {
     }
 };
 
+const updateStudio = async (data: IStudio): Promise<IUpdateStudio> => {
+    try {
+        const response: IUpdateStudio = await httpAuth.put(`/studios/${data.id}`, data);
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
 export const useGetStudio = (id: string) => {
     return useQuery({
         queryKey: ['studio', id],
         queryFn: () => getStudio(id),
-        staleTime: Infinity,
-        keepPreviousData: true,
+        staleTime: 0,
     });
 };
 
@@ -48,7 +58,7 @@ export const useGetStuidoMutation = (handleFn: {
     onMutate?: (variables: string) => Promise<IStudio | null>;
 }) => {
     return useMutation({
-        mutationFn: (email: string) => getStudio(email),
+        mutationFn: (id: string) => getStudio(id),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
@@ -61,5 +71,18 @@ export const useGetListStudio = (filter: IFilter) => {
         queryFn: () => getListStudio(filter),
         staleTime: Infinity,
         // keepPreviousData: true,
+    });
+};
+
+export const useUpdateStudioMutation = (handleFn: {
+    onError?: (error: Error, variables: IStudio, context: unknown) => void;
+    onSuccess?: (data: IUpdateStudio, variables: IStudio, context: unknown) => void;
+    onMutate?: (variables: IStudio) => Promise<IUpdateStudio>;
+}) => {
+    return useMutation({
+        mutationFn: (data: IStudio) => updateStudio(data),
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
     });
 };

@@ -2,6 +2,7 @@
 @import 'react-toastify/dist/ReactToastify.css';
 @import 'react-loading-skeleton/dist/skeleton.css';
 @import '@mantine/core/styles.css';
+@import '@mantine/dropzone/styles.css';
 
 @layer tailwind {
     @tailwind base;

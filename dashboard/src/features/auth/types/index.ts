@@ -24,6 +24,7 @@ export interface ILogout {
 export interface ISession {
     userId: string;
     roleId: number;
+    studioId?: string;
     sessionId: string;
     permissions: EPermissionPermission[];
 }

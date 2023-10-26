@@ -1,3 +1,5 @@
+import { ILogout } from '@/features/auth';
+
 export interface IMedia {
     id: string;
     url: string;
@@ -21,6 +23,8 @@ export interface IFilter {
     pageSize?: number;
     sort?: string;
 }
+
+export interface IUpdateStudio extends ILogout {}
 
 export interface IWorkingTime {
     dayOfWeek: number;

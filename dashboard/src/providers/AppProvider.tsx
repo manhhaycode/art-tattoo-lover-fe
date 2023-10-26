@@ -7,6 +7,8 @@ import AuthProvider from './AuthProvider';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
+import Error from '@/components/common/Error';
+import { useThemeStore } from '@/store/componentStore';
 
 // import { lightTheme } from '@/theme';
 
@@ -15,28 +17,10 @@ import { ToastContainer } from 'react-toastify';
 // };
 
 export default function AppProvider({ children }: { children: React.ReactNode }) {
+    const { theme } = useThemeStore();
     return (
-        <ErrorBoundary fallback={<div>Lỗi</div>}>
-            <MantineProvider
-                theme={{
-                    primaryColor: 'light-blue',
-                    primaryShade: 4,
-                    colors: {
-                        'light-blue': [
-                            '#e0fbff',
-                            '#cbf2ff',
-                            '#9ae2ff',
-                            '#64d2ff',
-                            '#3cc5fe',
-                            '#23bcfe',
-                            '#09b8ff',
-                            '#00a1e4',
-                            '#0090cd',
-                            '#007cb5',
-                        ],
-                    },
-                }}
-            >
+        <ErrorBoundary fallback={<Error />}>
+            <MantineProvider defaultColorScheme="dark" theme={theme}>
                 <Suspense fallback={<div className="h-screen w-screen bg-dark-theme"></div>}>
                     <LazyMotion features={domAnimation}>
                         <QueryClientProvider client={queryClient}>
@@ -45,7 +29,7 @@ export default function AppProvider({ children }: { children: React.ReactNode })
                     </LazyMotion>
                 </Suspense>
             </MantineProvider>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={3000} theme="colored" />
         </ErrorBoundary>
     );
 }
