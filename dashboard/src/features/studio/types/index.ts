@@ -1,4 +1,5 @@
 import { ILogout } from '@/features/auth';
+import { IUser } from '@/features/users';
 
 export interface IMedia {
     id: string;
@@ -25,6 +26,25 @@ export interface IFilter {
 }
 
 export interface IUpdateStudio extends ILogout {}
+
+export interface IUserListReq {
+    page: number;
+    pageSize: number;
+    searchKeyword?: string;
+}
+
+export interface IPaginationUserList {
+    data: {
+        id: string;
+        studioId: string;
+        userId: string;
+        isDisabled: string;
+        user: IUser;
+    };
+    page: number;
+    pageSize: number;
+    total: number;
+}
 
 export interface IWorkingTime {
     dayOfWeek: number;
