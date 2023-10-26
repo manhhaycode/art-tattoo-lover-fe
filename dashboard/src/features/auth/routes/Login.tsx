@@ -1,7 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthenticationTitle } from '../components';
-import { useEffect } from 'react';
+// import { AuthenticationTitle } from '../components';
+import { Suspense, lazy, useEffect } from 'react';
 import { toast } from 'react-toastify';
+
+const AuthenticationTitle = lazy(() => import('../components/AuthenticationTitle'));
 
 export default function Login() {
     const location = useLocation();
@@ -13,5 +15,9 @@ export default function Login() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
-    return <AuthenticationTitle />;
+    return (
+        <Suspense fallback={<div></div>}>
+            <AuthenticationTitle />
+        </Suspense>
+    );
 }
