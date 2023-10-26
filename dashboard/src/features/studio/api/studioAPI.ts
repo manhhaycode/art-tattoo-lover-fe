@@ -1,7 +1,7 @@
 import * as httpRequest from '@/lib/axios';
 import * as httpAuth from '@/lib/axios-auth';
 
-import { IFilter, IPaginationStudio, IStudio, IUpdateStudio } from '../types';
+import { IFilter, IPaginationStudio, IPaginationUserList, IStudio, IUpdateStudio, IUserListReq } from '../types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
@@ -29,6 +29,17 @@ const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
 const getStudio = async (id: string): Promise<IStudio> => {
     try {
         const response: IStudio = await httpRequest.get(`/studios/${id}`);
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+const getUserStudio = async (data: IUserListReq): Promise<IPaginationUserList> => {
+    try {
+        const response: IPaginationUserList = await httpAuth.get('/studios/user', {
+            params: data,
+        });
         return response;
     } catch (_error) {
         throw new Error(_error);
@@ -71,6 +82,15 @@ export const useGetListStudio = (filter: IFilter) => {
         queryFn: () => getListStudio(filter),
         staleTime: Infinity,
         // keepPreviousData: true,
+    });
+};
+
+export const useGetListUserStudio = (data: IUserListReq) => {
+    return useQuery({
+        queryKey: ['user-studio', data],
+        queryFn: () => getUserStudio(data),
+        staleTime: Infinity,
+        keepPreviousData: true,
     });
 };
 

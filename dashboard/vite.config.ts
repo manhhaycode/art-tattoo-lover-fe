@@ -21,7 +21,7 @@ export default defineConfig({
             },
             output: {
                 manualChunks(id) {
-                    const modules = ['mantine', 'query', 'carousel'];
+                    const modules = ['mantine', 'query', 'carousel', 'table'];
                     if (id.includes('map') || id.includes('google')) return;
                     if (!id.includes('node_modules')) return 'indexmin';
                     if (id.includes('node_modules')) {
