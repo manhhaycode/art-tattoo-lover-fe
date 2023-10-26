@@ -7,6 +7,7 @@ interface IAuth {
         name: string;
     };
     permissions?: EPermissionPermission[];
+    studioId?: string;
 }
 
 interface AuthState {

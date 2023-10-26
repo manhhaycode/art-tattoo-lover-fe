@@ -3,16 +3,18 @@ import { StudioIcon, UserIcon } from '@/assets/icons';
 import { Button, Group } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { VscDashboard } from 'react-icons/vsc';
+import { useColorScheme } from '@mantine/hooks';
 export default function StudioNav() {
     const location = useLocation();
     const navigate = useNavigate();
+    const colorScheme = useColorScheme();
     return (
         <Group gap={16}>
             <Button
                 fullWidth
                 mih={40}
                 {...(!location.pathname.includes('dashboard')
-                    ? { c: 'black', variant: 'subtle' }
+                    ? { ...{ ...(colorScheme === 'light' && { className: '!text-white' }) }, variant: 'subtle' }
                     : { variant: 'gradient' })}
                 onClick={() => {
                     navigate('/studio/dashboard');
@@ -26,7 +28,7 @@ export default function StudioNav() {
                 fullWidth
                 mih={40}
                 {...(!location.pathname.includes('manage-studio')
-                    ? { c: 'black', variant: 'subtle' }
+                    ? { ...{ ...(colorScheme === 'light' && { className: '!text-white' }) }, variant: 'subtle' }
                     : { variant: 'gradient' })}
                 onClick={() => {
                     navigate('/studio/manage-studio');
@@ -40,7 +42,7 @@ export default function StudioNav() {
                 fullWidth
                 mih={40}
                 {...(!location.pathname.includes('manage-user')
-                    ? { c: 'black', variant: 'subtle' }
+                    ? { ...{ ...(colorScheme === 'light' && { className: '!text-white' }) }, variant: 'subtle' }
                     : { variant: 'gradient' })}
                 onClick={() => {
                     navigate('/studio/manage-user');
