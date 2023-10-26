@@ -1,3 +1,3 @@
 export default function StudioMangeUser() {
-    return <div>StudioMangeUser</div>;
+    return <div>StudioManagerUser</div>;
 }
