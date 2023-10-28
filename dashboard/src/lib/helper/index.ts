@@ -1,3 +1,6 @@
+import { ERoleId } from '@/features/auth';
+import Cookies from 'js-cookie';
+
 /* eslint-disable no-useless-escape */
 export const encodeStringtoURI = (str: string) => {
     const replaceStr = str.replace(/[,\s]/g, '-');
@@ -57,4 +60,20 @@ export const convertTimeToDisplayFormat = (timeString: string) => {
     }
 
     return 'Invalid time format';
+};
+
+export const getRoleNameById = (id: number): string | undefined => {
+    for (const role in ERoleId) {
+        if (Number(ERoleId[role]) === id) {
+            return role;
+        }
+    }
+    return undefined; // Return undefined if no matching role is found
+};
+
+export const resetAuthStore = () => {
+    Cookies.remove('tattus-rft');
+    Cookies.remove('tattus-at');
+    sessionStorage.removeItem('tattus-session');
+    sessionStorage.removeItem('tattus-role');
 };

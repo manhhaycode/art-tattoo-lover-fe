@@ -13,7 +13,7 @@ import {
 import slider from '@/assets/img/sliderHome1.png';
 import { useLoginMutation } from '../api';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LoginCredentials } from '@/features/auth';
+import { ERoleId, LoginCredentials } from '@/features/auth';
 import { toast } from 'react-toastify';
 import { useAuthStore } from '@/store/authStore';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -25,7 +25,6 @@ export default function AuthenticationTitle() {
     const roleId = Number(sessionStorage.getItem('tattus-role'));
     const loginMutation = useLoginMutation({
         onSuccess: (data) => {
-            console.log(data);
             setAccountType({
                 role: { id: data.session.roleId, name: 'Member' },
                 permissions: data.session.permissions,
@@ -33,8 +32,13 @@ export default function AuthenticationTitle() {
                 user: { id: data.session.userId },
             });
             const roleId = data.session.roleId;
-            if (roleId === 5 || roleId === 3 || roleId === 4) navigate('/studio/dashboard');
-            if (roleId === 1 || roleId === 2) navigate('/system/dashboard');
+            if (
+                roleId === ERoleId['ARTIST'] ||
+                roleId === ERoleId['STUDIO_STAFF'] ||
+                roleId === ERoleId['STUDIO_MANAGER']
+            )
+                navigate('/studio/dashboard');
+            if (roleId === ERoleId['SYSTEM_STAFF'] || roleId === ERoleId['ADMIN']) navigate('/system/dashboard');
         },
         onError: () => {
             toast('Sai tài khoản hoặc mật khẩu hoặc không có quyền đăng nhập', { type: 'error' });
@@ -47,7 +51,7 @@ export default function AuthenticationTitle() {
     };
     return (
         <>
-            {!(at && at.length > 0) || !roleId ? (
+            {!(at && at.length > 0) || !roleId || (roleId && roleId >= 6) ? (
                 <BackgroundImage src={slider} className="h-screen">
                     <Container classNames={{ root: '!mt-0 pt-20' }} size={420} my={40}>
                         <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +87,13 @@ export default function AuthenticationTitle() {
                 </BackgroundImage>
             ) : (
                 <Navigate
-                    to={roleId === 5 || roleId === 3 || roleId === 4 ? '/studio/dashboard' : '/system/dashboard'}
+                    to={
+                        roleId === ERoleId['ARTIST'] ||
+                        roleId === ERoleId['STUDIO_STAFF'] ||
+                        roleId === ERoleId['STUDIO_MANAGER']
+                            ? '/studio/dashboard'
+                            : '/system/dashboard'
+                    }
                 />
             )}
         </>

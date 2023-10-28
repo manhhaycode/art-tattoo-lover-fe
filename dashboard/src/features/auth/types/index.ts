@@ -54,6 +54,45 @@ export enum EPermissionPermission {
     VIEW_OWNED_INVOICE = 'USR_I.R',
 }
 
+export enum ERole {
+    ADMIN = 'Admin',
+    SYSTEM_STAFF = 'System Staff',
+    STUDIO_MANAGER = 'Studio Manager',
+    STUDIO_STAFF = 'Studio Staff',
+    ARTIST = 'Artist',
+    MEMBER = 'Member',
+}
+
+export enum EStatus {
+    ACTIVE = 'Đang hoạt động',
+    INACTIVE = 'Tạm ngưng hoạt động',
+    DISABLED = 'Đã vô hiệu hóa',
+}
+
+export enum ERoleId {
+    ADMIN = 1,
+    SYSTEM_STAFF = 2,
+    STUDIO_MANAGER = 3,
+    STUDIO_STAFF = 4,
+    ARTIST = 5,
+    MEMBER = 6,
+}
+
+export const roleMap: Record<number, ERole> = {
+    1: ERole.ADMIN,
+    2: ERole.SYSTEM_STAFF,
+    3: ERole.STUDIO_MANAGER,
+    4: ERole.STUDIO_STAFF,
+    5: ERole.ARTIST,
+    6: ERole.MEMBER,
+};
+
+export const statusMap: Record<string, EStatus> = {
+    0: EStatus.ACTIVE,
+    1: EStatus.INACTIVE,
+    2: EStatus.DISABLED,
+};
+
 export interface RegisterCredentials {
     fullName: string;
     email: string;

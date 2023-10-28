@@ -26,21 +26,40 @@ export interface IFilter {
 }
 
 export interface IUpdateStudio extends ILogout {}
+export interface IUpdateUserStudio extends ILogout {}
+export interface ICreateUserStudio extends ILogout {}
+export interface IDeleteUserStudio extends ILogout {}
+export interface IDeleteUserStudioReq {
+    userId: string;
+}
+export interface ICreateUserStudioReq {
+    email: string;
+    roleId: number;
+    studioId: string;
+}
+export interface IUpdateUserStudioReq {
+    userId: string;
+    isDisabled?: boolean;
+    roleId?: number;
+}
 
 export interface IUserListReq {
+    studioId: string;
     page: number;
     pageSize: number;
     searchKeyword?: string;
 }
 
+export interface IUserStudio {
+    id: string;
+    studioId: string;
+    userId: string;
+    isDisabled: boolean;
+    user: IUser;
+}
+
 export interface IPaginationUserList {
-    data: {
-        id: string;
-        studioId: string;
-        userId: string;
-        isDisabled: string;
-        user: IUser;
-    };
+    data: IUserStudio[];
     page: number;
     pageSize: number;
     total: number;
