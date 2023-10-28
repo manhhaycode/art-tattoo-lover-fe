@@ -1,4 +1,5 @@
 import { useGetSessionMutation, useRefreshTokenMutation } from '@/features/auth/api';
+import { getRoleNameById } from '@/lib/helper';
 import { useAuthStore } from '@/store/authStore';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
@@ -14,7 +15,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     const sessionUserMutation = useGetSessionMutation({
         onSuccess: (data) => {
             setAccountType({
-                role: { id: data.roleId, name: 'Member' },
+                role: { id: data.roleId, name: getRoleNameById(data.roleId) as string },
                 permissions: data.permissions,
                 studioId: data.studioId,
                 user: { id: data.userId },

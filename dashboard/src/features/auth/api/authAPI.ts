@@ -15,6 +15,8 @@ import {
     RegisterCredentials,
     ResetPasswordCredentials,
 } from '../types';
+import { ErrorAuth } from '@/lib/error';
+import { resetAuthStore } from '@/lib/helper';
 
 const login = async (credentials: LoginCredentials): Promise<ILogin> => {
     try {
@@ -27,9 +29,7 @@ const login = async (credentials: LoginCredentials): Promise<ILogin> => {
         });
         const resSession = await getSession();
         if (resSession.roleId === 6) {
-            Cookies.remove('tattus-rft');
-            Cookies.remove('tattus-at');
-            sessionStorage.removeItem('tattus-session');
+            resetAuthStore();
             throw new Error('You are not allowed to access this page');
         }
         return { ...resLogin, session: resSession };
@@ -54,6 +54,10 @@ const logout = async (): Promise<ILogout> => {
 export const refreshToken = async (): Promise<IRefreshToken> => {
     try {
         const refreshToken = Cookies.get('tattus-rft');
+        if (!refreshToken) {
+            resetAuthStore();
+            throw new Error(ErrorAuth.AT_RT_INVALID);
+        }
         const res: IRefreshToken = await httpRequest.post('/auth/refresh', { refreshToken });
         Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
         return res;

@@ -12,8 +12,8 @@ export default function AppRoutes() {
         <Router>
             <ScrollToTop />
             <Routes>
+                <Route path="/" index element={<Navigate to={'/login'} />}></Route>
                 <Route path="/" element={<DefaultLayout />}>
-                    <Route index element={<Navigate to={'/login'} />}></Route>
                     <Route path="/system" element={<SystemLayout />}>
                         <Route index element={<Navigate to={'/system/dashboard'} />}></Route>
                         <Route path="/system/dashboard" element={<div>System dashboard</div>}></Route>
