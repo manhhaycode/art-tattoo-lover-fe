@@ -51,15 +51,18 @@ export default function Header() {
                 <div>Test menu</div>
             </Group>
             <Group gap="xs" mr="md">
-                {getProfileMutation.data &&
-                    (getProfileMutation.data.avatar ? (
-                        <AvartarIcon
-                            fullName={getProfileMutation.data.fullName}
-                            logo={getProfileMutation.data.avatar}
-                        />
-                    ) : (
-                        <AvartarIcon fullName={getProfileMutation.data.fullName} />
-                    ))}
+                {getProfileMutation.data && (
+                    <div className="h-9 w-9">
+                        {getProfileMutation.data.avatar ? (
+                            <AvartarIcon
+                                fullName={getProfileMutation.data.fullName}
+                                logo={getProfileMutation.data.avatar}
+                            />
+                        ) : (
+                            <AvartarIcon fullName={getProfileMutation.data.fullName} />
+                        )}
+                    </div>
+                )}
                 <ActionIcon
                     onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
                     variant="default"

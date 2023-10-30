@@ -1,8 +1,7 @@
 import { UserIcon } from '@/assets/icons';
 import { roleMap } from '@/features/auth';
 
-import { useAuthStore } from '@/store/authStore';
-import { Checkbox, Text, Group, AspectRatio, Image, rem, Button } from '@mantine/core';
+import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import {
@@ -13,46 +12,40 @@ import {
     getSortedRowModel,
     PaginationState,
 } from '@tanstack/react-table';
-import { useCallback, useMemo, useReducer, useState } from 'react';
-
-import { useGetListUserStudio, useUpdateUserStudioMutation } from '../../api';
-import { IUserStudio } from '@/features/studio';
-import { toast } from 'react-toastify';
-import AddNewUserStudio from '../AddNewUserStudio';
+import { useCallback, useMemo, useState } from 'react';
 import queryClient from '@/lib/react-query';
-import DeleteUserStudio from '../DeleteUserStudio';
+import { IUser } from '@/features/users';
+import { useGetListUserStudio, useUpdateUserMutation } from '@/features/system';
 import TableForm, { SelectCell } from '@/components/TableForm';
+import { toast } from 'react-toastify';
+import BasicUserInfo from '../BasicUserInfo';
 
-export default function ManageStaffStudio() {
-    const { accountType } = useAuthStore();
-    const rerender = useReducer(() => ({}), {})[1];
+export default function ManageUser() {
     const refreshData = useCallback(async () => {
-        await queryClient.invalidateQueries(['user-studio']);
+        await queryClient.invalidateQueries(['user-list']);
         setRowSelection({});
     }, []);
-    const [opened, { open, close }] = useDisclosure(false);
+    const editStateModal = useDisclosure(false);
+    const createStateModal = useDisclosure(false);
+
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
     const defaultData = useMemo(() => [], []);
 
-    const dataQuery = useGetListUserStudio({ page: pageIndex, pageSize, studioId: accountType?.studioId ?? '' });
+    const dataQuery = useGetListUserStudio({ page: pageIndex, pageSize });
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
 
-    const updateUserStudioMutation = useUpdateUserStudioMutation({
+    const updateUserMutation = useUpdateUserMutation({
         onSuccess: () => {
-            rerender();
             toast('Cập nhật thành công', { type: 'success' });
             dataQuery.refetch();
         },
-        onError: () => {
-            toast('Có lỗi xảy ra, vui lòng thử lại sau', { type: 'error' });
-        },
     });
 
-    const columns = useMemo<ColumnDef<IUserStudio>[]>(
+    const columns = useMemo<ColumnDef<IUser>[]>(
         () => [
             {
                 id: 'select',
@@ -71,53 +64,50 @@ export default function ManageStaffStudio() {
                 },
             },
             {
-                accessorKey: 'user.fullName',
+                accessorKey: 'fullName',
                 header: 'Họ và tên',
                 cell: ({ row }) => {
                     return (
-                        <Group wrap="nowrap" maw={250}>
+                        <Group wrap="nowrap" maw={240}>
                             <AspectRatio miw={rem(36)} mih={rem(36)} className="rounded-full overflow-hidden relative">
-                                {row.original.user.avatar ? (
-                                    <Image src={row.original.user.avatar} className="object-cover w-full h-full" />
+                                {row.original.avatar ? (
+                                    <Image src={row.original.avatar} className="object-cover w-full h-full" alt="" />
                                 ) : (
                                     <div>
                                         <UserIcon styles={{ height: '24px', width: '24px' }} />
                                     </div>
                                 )}
                             </AspectRatio>
-                            <Text className="text-sm font-semibold w-full">{row.original.user.fullName}</Text>
+                            <Text className="text-sm font-semibold max-w-[150px]">{row.original.fullName}</Text>
                         </Group>
                     );
                 },
             },
             {
-                accessorKey: 'user.email',
+                accessorKey: 'email',
                 header: 'Địa chỉ Email',
                 cell: ({ row }) => {
-                    return <Text className="text-sm font-semibold">{row.original.user.email}</Text>;
+                    return <Text className="text-sm font-semibold max-w-[250px] truncate">{row.original.email}</Text>;
                 },
             },
+            // {
+            //     accessorKey: 'phone',
+            //     header: 'Số điện thoại',
+            //     cell: ({ row }) => {
+            //         return <Text className="text-sm font-semibold">{row.original.phone}</Text>;
+            //     },
+            // },
             {
-                accessorKey: 'user.phone',
-                header: 'Số điện thoại',
-                cell: ({ row }) => {
-                    return <Text className="text-sm font-semibold">{row.original.user.phone}</Text>;
-                },
-            },
-            {
-                accessorKey: 'user.roleId',
+                accessorKey: 'roleId',
                 header: 'Vai trò',
                 cell: (cellContext) => {
                     return (
                         <SelectCell
                             cellContext={cellContext}
                             data={Object.entries(roleMap).map(([key, value]) => ({ value: key, label: value }))}
-                            onChange={(e, userStudio) => {
-                                if (e !== userStudio.user.roleId.toString()) {
-                                    updateUserStudioMutation.mutate({
-                                        userId: userStudio.id,
-                                        roleId: Number(e),
-                                    });
+                            onChange={(e, user) => {
+                                if (e !== user.roleId.toString()) {
+                                    updateUserMutation.mutate({ id: user.id, roleId: Number(e) });
                                 }
                             }}
                         />
@@ -125,7 +115,7 @@ export default function ManageStaffStudio() {
                 },
             },
             {
-                accessorKey: 'isDisabled',
+                accessorKey: 'status',
                 header: 'Trạng thái',
                 cell: (cellContext) => {
                     return (
@@ -133,21 +123,21 @@ export default function ManageStaffStudio() {
                             cellContext={cellContext}
                             data={[
                                 {
-                                    label: 'Đã kích hoạt',
-                                    value: 'false',
+                                    label: 'Chưa kích hoạt',
+                                    value: '0',
                                 },
                                 {
-                                    label: 'Đã tạm khóa',
-                                    value: 'true',
+                                    label: 'Kích hoạt',
+                                    value: '1',
+                                },
+                                {
+                                    label: 'Vô hiệu hóa',
+                                    value: '2',
                                 },
                             ]}
-                            onChange={(e, userStudio) => {
-                                if (e !== userStudio.isDisabled.toString()) {
-                                    updateUserStudioMutation.mutate({
-                                        userId: userStudio.id,
-                                        isDisabled: e === 'true',
-                                        roleId: userStudio.user.roleId,
-                                    });
+                            onChange={(e, user) => {
+                                if (e !== user.status.toString()) {
+                                    updateUserMutation.mutate({ id: user.id, status: Number(e) });
                                 }
                             }}
                         />
@@ -159,23 +149,15 @@ export default function ManageStaffStudio() {
                 header: 'Thao tác',
                 cell: ({ row }) => {
                     return (
-                        <Group maw={100}>
-                            {accountType?.role && (accountType.role.id === 1 || accountType?.role.id === 2) && (
-                                <Button
-                                    disabled={accountType?.role && accountType.role.id > 2}
-                                    className="text-sm font-semibold cursor-pointer"
-                                    onClick={() => console.log(row.original)}
-                                >
-                                    Sửa
-                                </Button>
-                            )}
+                        <Group maw={50}>
                             <Button
-                                color="red.6"
                                 className="text-sm font-semibold cursor-pointer"
-                                disabled={!row.getIsSelected()}
-                                onClick={open}
+                                onClick={() => {
+                                    editStateModal[1].open();
+                                    setRowSelection({ [row.index]: true });
+                                }}
                             >
-                                Xóa
+                                Sửa
                             </Button>
                         </Group>
                     );
@@ -209,9 +191,31 @@ export default function ManageStaffStudio() {
 
     return (
         <>
-            <AddNewUserStudio refreshData={refreshData} />
-            <TableForm handlePagination={setPagination} pageIndex={pageIndex} pageSize={pageSize} table={table} />
-            <DeleteUserStudio table={table} opened={opened} close={close} refreshData={refreshData} />
+            <Group justify="flex-end">
+                <Button onClick={createStateModal[1].open}>Thêm mới người dùng</Button>
+            </Group>
+            <TableForm table={table} handlePagination={setPagination} pageIndex={pageIndex} pageSize={pageSize} />
+            {/* <DeleteUserStudio table={table} opened={opened} close={close} refreshData={refreshData} /> */}
+            <Modal onClose={createStateModal[1].close} opened={createStateModal[0]} size="xl">
+                <BasicUserInfo
+                    onChangedOrCreate={() => {
+                        refreshData();
+                        createStateModal[1].close();
+                    }}
+                />
+            </Modal>
+
+            <Modal onClose={editStateModal[1].close} opened={editStateModal[0]} size="xl">
+                {Object.keys(rowSelection).length === 1 && (
+                    <BasicUserInfo
+                        userInfo={table.getRowModel().rows.filter((row) => row.getIsSelected())[0].original}
+                        onChangedOrCreate={() => {
+                            refreshData();
+                            editStateModal[1].close();
+                        }}
+                    />
+                )}
+            </Modal>
         </>
     );
 }
