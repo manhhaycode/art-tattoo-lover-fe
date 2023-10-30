@@ -9,7 +9,7 @@ import WithAuthencation from '@/hocs/withAuthencation';
 export default function DefaultLayout() {
     return (
         <WithAuthencation>
-            <AppShell header={{ height: 80 }} padding={'md'} navbar={{ width: 300, breakpoint: 'sm' }}>
+            <AppShell header={{ height: 80 }} padding={'md'} navbar={{ width: 320, breakpoint: 'sm' }}>
                 <AppShell.Header>
                     <Header />
                 </AppShell.Header>

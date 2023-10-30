@@ -3,6 +3,7 @@
 @import 'react-loading-skeleton/dist/skeleton.css';
 @import '@mantine/core/styles.css';
 @import '@mantine/dropzone/styles.css';
+@import '@mantine/dates/styles.css';
 
 @layer tailwind {
     @tailwind base;
@@ -215,25 +216,11 @@ html *::-webkit-scrollbar {
     background-color: transparent;
 } */
 
-.mantine-DatePickerInput-wrapper {
+/* .mantine-DatePickerInput-wrapper {
     height: 100%;
     font-size: inherit;
     font-weight: inherit;
-}
-
-.mantine-DatePickerInput-input {
-    height: inherit;
-    color: white;
-    font-size: 16px;
-    font-family: sans-serif;
-}
-
-.mantine-DatePickerInput-placeholder {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    color: rgba(176, 179, 184, 0.7);
-}
+} */
 
 .Toastify {
     position: relative;

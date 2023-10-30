@@ -55,12 +55,12 @@ export enum EPermissionPermission {
 }
 
 export enum ERole {
-    ADMIN = 'Admin',
-    SYSTEM_STAFF = 'System Staff',
-    STUDIO_MANAGER = 'Studio Manager',
-    STUDIO_STAFF = 'Studio Staff',
-    ARTIST = 'Artist',
-    MEMBER = 'Member',
+    ADMIN = 'Quản trị viên',
+    SYSTEM_STAFF = 'Nhân viên hệ thống',
+    STUDIO_MANAGER = 'Quản lý Studio',
+    STUDIO_STAFF = 'Nhân viên Studio',
+    ARTIST = 'Nghệ sĩ Studio',
+    MEMBER = 'Người dùng',
 }
 
 export enum EStatus {
