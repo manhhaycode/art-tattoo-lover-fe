@@ -17,7 +17,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             setAccountType({
                 role: { id: data.roleId, name: getRoleNameById(data.roleId) as string },
                 permissions: data.permissions,
-                studioId: data.studioId,
+                studioId: data.studioId || sessionStorage.getItem('tattus-studioId') || undefined,
                 user: { id: data.userId },
             });
         },

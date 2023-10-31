@@ -18,8 +18,10 @@ import { Id, toast } from 'react-toastify';
 import { IStudio, useGetListStudio, useUpdateStudioMutation } from '@/features/studio';
 import DeleteStudios from './DeleteStudios';
 import CreateStudio from './CreateStudio';
+import { useNavigate } from 'react-router-dom';
 
 export default function ManageStudios() {
+    const navigate = useNavigate();
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
@@ -131,6 +133,8 @@ export default function ManageStudios() {
                                 className="text-sm font-semibold cursor-pointer"
                                 onClick={() => {
                                     setRowSelection({ [row.id]: true });
+                                    sessionStorage.setItem('tattus-studio', row.id);
+                                    navigate('/studio/dashboard');
                                 }}
                             >
                                 Sửa
