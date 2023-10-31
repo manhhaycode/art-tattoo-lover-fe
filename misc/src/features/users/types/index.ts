@@ -11,6 +11,7 @@ export interface IUser {
     avatar: string | null;
     birthday: string | null;
     roleId: number;
+    status: number;
 }
 
 export interface UserCredentials {

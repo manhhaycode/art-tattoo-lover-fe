@@ -1,4 +1,5 @@
 import { IFilter, IWorkingTime } from '@/features/studios';
+import Cookies from 'js-cookie';
 
 /* eslint-disable no-useless-escape */
 export const encodeStringtoURI = (str: string) => {
@@ -79,4 +80,10 @@ export const checkFilterEmpty = (filter: IFilter) => {
     const { sort, ...rest } = filter;
     const restFilter = Object.values(rest);
     return restFilter.some((value) => value !== undefined);
+};
+
+export const resetAuthStore = () => {
+    Cookies.remove('tattus-rft');
+    Cookies.remove('tattus-at');
+    sessionStorage.removeItem('tattus-session');
 };

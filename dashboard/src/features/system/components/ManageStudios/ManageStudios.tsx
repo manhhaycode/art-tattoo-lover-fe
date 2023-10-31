@@ -1,7 +1,6 @@
-import { UserIcon } from '@/assets/icons';
-import { roleMap } from '@/features/auth';
+import { StudioIcon } from '@/assets/icons';
 
-import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Modal } from '@mantine/core';
+import { Checkbox, Text, Group, AspectRatio, Image, rem, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import {
@@ -12,73 +11,65 @@ import {
     getSortedRowModel,
     PaginationState,
 } from '@tanstack/react-table';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import queryClient from '@/lib/react-query';
-import { IUser } from '@/features/users';
-import { useGetListUser, useUpdateUserMutation } from '@/features/system';
 import TableForm, { SelectCell } from '@/components/TableForm';
 import { Id, toast } from 'react-toastify';
-import BasicUserInfo from '../BasicUserInfo';
-import { useAuthStore } from '@/store/authStore';
+import { IStudio, useGetListStudio, useUpdateStudioMutation } from '@/features/studio';
+import DeleteStudios from './DeleteStudios';
+import CreateStudio from './CreateStudio';
 
-export default function ManageUser() {
-    const editStateModal = useDisclosure(false);
-    const createStateModal = useDisclosure(false);
-    const { accountType } = useAuthStore();
-
+export default function ManageStudios() {
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
     const defaultData = useMemo(() => [], []);
-
-    const dataQuery = useGetListUser({ page: pageIndex, pageSize });
-    const [dataUpdate, setDataUpdate] = useState<Partial<IUser> | null>(null);
+    const dataQuery = useGetListStudio({ page: pageIndex, pageSize });
+    const [dataUpdate, setDataUpdate] = useState<Partial<IStudio | null>>(null);
+    const [dataDelete, setDataDelete] = useState<IStudio[]>([]);
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
+    const [opened, { open, close }] = useDisclosure(false);
 
-    const updateUserMutation = useUpdateUserMutation({});
+    const updateStudioMutation = useUpdateStudioMutation({});
 
-    const columns = useMemo<ColumnDef<IUser>[]>(
+    const columns = useMemo<ColumnDef<IStudio>[]>(
         () => [
             {
                 id: 'select',
                 header: ({ table }) => {
                     return (
                         <Checkbox
-                            checked={table.getIsAllPageRowsSelected()}
-                            indeterminate={table.getIsSomePageRowsSelected()}
+                            checked={table.getIsAllRowsSelected()}
+                            indeterminate={table.getIsSomeRowsSelected()}
                             onChange={table.getToggleAllRowsSelectedHandler()}
                         />
                     );
                 },
                 enableSorting: false,
                 cell: ({ row }) => {
-                    return (
-                        <Checkbox
-                            disabled={accountType?.role?.id ? accountType.role.id > row.original.roleId : false}
-                            checked={row.getIsSelected()}
-                            onChange={row.getToggleSelectedHandler()}
-                        />
-                    );
+                    return <Checkbox checked={row.getIsSelected()} onChange={row.getToggleSelectedHandler()} />;
                 },
             },
             {
-                accessorKey: 'fullName',
-                header: 'Họ và tên',
+                accessorKey: 'name',
+                header: 'Tên studio',
                 cell: ({ row }) => {
                     return (
                         <Group wrap="nowrap" maw={240}>
                             <AspectRatio miw={rem(36)} mih={rem(36)} className="rounded-full overflow-hidden relative">
-                                {row.original.avatar ? (
-                                    <Image src={row.original.avatar} className="object-cover w-full h-full" alt="" />
+                                {row.original.logo ? (
+                                    <Image src={row.original.logo} className="object-cover w-full h-full" alt="" />
                                 ) : (
                                     <div>
-                                        <UserIcon styles={{ height: '24px', width: '24px' }} />
+                                        <StudioIcon
+                                            styles={{ height: '24px', width: '24px', stroke: 'currentcolor' }}
+                                        />
                                     </div>
                                 )}
                             </AspectRatio>
-                            <Text className="text-sm font-semibold max-w-[150px]">{row.original.fullName}</Text>
+                            <Text className="text-sm font-semibold max-w-[150px]">{row.original.name}</Text>
                         </Group>
                     );
                 },
@@ -98,37 +89,11 @@ export default function ManageUser() {
             //     },
             // },
             {
-                accessorKey: 'roleId',
-                header: 'Vai trò',
-                cell: (cellContext) => {
-                    return (
-                        <SelectCell
-                            disabled={
-                                accountType?.role?.id ? accountType.role.id > cellContext.row.original.roleId : false
-                            }
-                            cellContext={cellContext}
-                            data={Object.entries(roleMap).map(([key, value]) => ({ value: key, label: value }))}
-                            onChange={(e, user) => {
-                                if (e !== user.roleId.toString()) {
-                                    setDataUpdate({ roleId: Number(e) });
-                                }
-                            }}
-                            onClick={() => {
-                                if (!cellContext.row.getIsSelected()) setRowSelection({ [cellContext.row.id]: true });
-                            }}
-                        />
-                    );
-                },
-            },
-            {
                 accessorKey: 'status',
                 header: 'Trạng thái',
                 cell: (cellContext) => {
                     return (
                         <SelectCell
-                            disabled={
-                                accountType?.role?.id ? accountType.role.id > cellContext.row.original.roleId : false
-                            }
                             cellContext={cellContext}
                             data={[
                                 {
@@ -144,8 +109,8 @@ export default function ManageUser() {
                                     value: '2',
                                 },
                             ]}
-                            onChange={(e, user) => {
-                                if (e !== user.status.toString()) {
+                            onChange={(e, studio) => {
+                                if (e !== studio.status.toString()) {
                                     setDataUpdate({ status: Number(e) });
                                 }
                             }}
@@ -163,14 +128,20 @@ export default function ManageUser() {
                     return (
                         <Group maw={50}>
                             <Button
-                                disabled={accountType?.role?.id ? accountType.role.id > row.original.roleId : false}
                                 className="text-sm font-semibold cursor-pointer"
                                 onClick={() => {
-                                    editStateModal[1].open();
                                     setRowSelection({ [row.id]: true });
                                 }}
                             >
                                 Sửa
+                            </Button>
+                            <Button
+                                color="red.6"
+                                className="text-sm font-semibold cursor-pointer"
+                                disabled={!row.getIsSelected()}
+                                onClick={open}
+                            >
+                                Xóa
                             </Button>
                         </Group>
                     );
@@ -190,42 +161,57 @@ export default function ManageUser() {
             rowSelection,
             sorting,
         },
-        enableRowSelection: (row) => {
-            return accountType?.role?.id ? accountType.role.id <= row.original.roleId : false;
-        },
+        enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
         enableMultiSort: true,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
-        getRowId: (row) => row.id,
         debugTable: true,
+        getRowId: (row) => row.id,
     });
 
-    const refreshData = useCallback(async (idToast?: Id) => {
-        await queryClient.invalidateQueries(['user-list']);
+    const refreshData = useCallback(async (idToast?: Id, success: boolean = true) => {
+        await queryClient.invalidateQueries({ queryKey: ['studios'] });
         setRowSelection({});
         if (idToast)
-            toast.update(idToast, {
-                render: 'Cập nhật thành công',
-                type: 'success',
-                isLoading: false,
-                autoClose: 3000,
-                theme: 'colored',
-            });
+            success
+                ? toast.update(idToast, {
+                      render: 'Cập nhật thành công',
+                      type: 'success',
+                      isLoading: false,
+                      autoClose: 3000,
+                      theme: 'colored',
+                  })
+                : toast.update(idToast, {
+                      render: 'Có lỗi xảy ra trong quá trình cập nhật',
+                      type: 'error',
+                      isLoading: false,
+                      autoClose: 3000,
+                      theme: 'colored',
+                  });
+        // dataQuery.refetch();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         const callAPI = async (promiseList: unknown[]) => {
             const id = toast.loading('Đang cập nhật...', { isLoading: true, theme: 'dark' });
-            await Promise.all(promiseList);
-            refreshData(id);
+            await Promise.all(promiseList)
+                .then(() => refreshData(id, true))
+                .catch(() => refreshData(id, false));
         };
-        if (dataUpdate && Object.keys(rowSelection).length > 0) {
+
+        if (dataUpdate) {
             const promiseList: unknown[] = [];
             Object.keys(rowSelection).map((id) => {
                 promiseList.push(
-                    new Promise((resolve) => updateUserMutation.mutateAsync({ id, ...dataUpdate }).then(resolve)),
+                    new Promise((resolve, reject) =>
+                        updateStudioMutation
+                            .mutateAsync({ id, ...dataUpdate })
+                            .then(resolve)
+                            .catch(reject),
+                    ),
                 );
             });
             callAPI(promiseList);
@@ -235,14 +221,30 @@ export default function ManageUser() {
     }, [dataUpdate]);
 
     useEffect(() => {
-        console.log(rowSelection);
+        if (dataQuery.data?.data && rowSelection) {
+            const listId = Object.keys(rowSelection);
+            setDataDelete((prev) => {
+                const currentData = dataQuery.data?.data.filter((data) => {
+                    return listId.includes(data.id);
+                });
+
+                const filterData = prev.filter((data) => {
+                    return listId.includes(data.id);
+                });
+
+                // remove duplicate use Set
+                const uniqueData = new Set([...filterData, ...currentData]);
+
+                return [...uniqueData];
+            });
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rowSelection]);
 
     return (
         <>
-            <Group justify="flex-end">
-                <Button onClick={createStateModal[1].open}>Thêm mới người dùng</Button>
-            </Group>
+            <CreateStudio refreshData={refreshData} />
             <TableForm
                 table={table}
                 handlePagination={setPagination}
@@ -250,27 +252,7 @@ export default function ManageUser() {
                 pageSize={pageSize}
                 total={(dataQuery.data?.total && Math.ceil(dataQuery.data?.total / pageSize)) || 0}
             />
-            {/* <DeleteUserStudio table={table} opened={opened} close={close} refreshData={refreshData} /> */}
-            <Modal onClose={createStateModal[1].close} opened={createStateModal[0]} size="xl">
-                <BasicUserInfo
-                    onChangedOrCreate={() => {
-                        refreshData();
-                        createStateModal[1].close();
-                    }}
-                />
-            </Modal>
-
-            <Modal onClose={editStateModal[1].close} opened={editStateModal[0]} size="xl">
-                {table.getRowModel().rows.filter((row) => row.getIsSelected()).length > 0 && (
-                    <BasicUserInfo
-                        userInfo={table.getRowModel().rows.filter((row) => row.getIsSelected())[0].original}
-                        onChangedOrCreate={() => {
-                            refreshData();
-                            editStateModal[1].close();
-                        }}
-                    />
-                )}
-            </Modal>
+            <DeleteStudios dataList={dataDelete} opened={opened} close={close} refreshData={refreshData} />
         </>
     );
 }

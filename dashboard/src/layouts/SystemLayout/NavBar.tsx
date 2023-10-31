@@ -16,7 +16,7 @@ export default function SystemNav() {
                     mih={40}
                     {...(!location.pathname.includes('dashboard')
                         ? {
-                              ...{ ...(schema.colorScheme === 'light' && { className: '!text-white' }) },
+                              ...{ ...(schema.colorScheme === 'light' && { classNames: { inner: '!text-black' } }) },
                               variant: 'subtle',
                           }
                         : { variant: 'gradient' })}
@@ -33,7 +33,7 @@ export default function SystemNav() {
                     mih={40}
                     {...(!location.pathname.includes('manage-studios')
                         ? {
-                              ...{ ...(schema.colorScheme === 'light' && { className: '!text-white' }) },
+                              ...{ ...(schema.colorScheme === 'light' && { classNames: { inner: '!text-black' } }) },
                               variant: 'subtle',
                           }
                         : { variant: 'gradient' })}
@@ -50,7 +50,7 @@ export default function SystemNav() {
                     mih={40}
                     {...(!location.pathname.includes('manage-users')
                         ? {
-                              ...{ ...(schema.colorScheme === 'light' && { className: '!text-white' }) },
+                              ...{ ...(schema.colorScheme === 'light' && { classNames: { inner: '!text-black' } }) },
                               variant: 'subtle',
                           }
                         : { variant: 'gradient' })}
@@ -67,7 +67,7 @@ export default function SystemNav() {
                     mih={40}
                     {...(!location.pathname.includes('manage-category')
                         ? {
-                              ...{ ...(schema.colorScheme === 'light' && { className: '!text-white' }) },
+                              ...{ ...(schema.colorScheme === 'light' && { classNames: { inner: '!text-black' } }) },
                               variant: 'subtle',
                           }
                         : { variant: 'gradient' })}
@@ -84,7 +84,7 @@ export default function SystemNav() {
                     mih={40}
                     {...(!location.pathname.includes('rolebase')
                         ? {
-                              ...{ ...(schema.colorScheme === 'light' && { className: '!text-white' }) },
+                              ...{ ...(schema.colorScheme === 'light' && { classNames: { inner: '!text-black' } }) },
                               variant: 'subtle',
                           }
                         : { variant: 'gradient' })}
@@ -101,7 +101,7 @@ export default function SystemNav() {
                     mih={40}
                     {...(!location.pathname.includes('manage-blogs')
                         ? {
-                              ...{ ...(schema.colorScheme === 'light' && { className: '!text-white' }) },
+                              ...{ ...(schema.colorScheme === 'light' && { classNames: { inner: '!text-black' } }) },
                               variant: 'subtle',
                           }
                         : { variant: 'gradient' })}

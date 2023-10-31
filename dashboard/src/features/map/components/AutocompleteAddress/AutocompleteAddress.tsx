@@ -11,7 +11,7 @@ const AutocompleteAddress = ({
     reset,
     setIsReset,
     ...props
-}: { defaultValue?: string; reset: boolean; setIsReset: (state: boolean) => void } & InputProps) => {
+}: { defaultValue?: string; reset?: boolean; setIsReset?: (state: boolean) => void } & InputProps) => {
     const [value, setValue] = useDebouncedState(defaultValue || '', 400);
     const { ref, focused } = useFocusWithin();
     const { sessionToken, placeChoose, setPlaceChoose } = useSearchLocationStore();
@@ -27,7 +27,7 @@ const AutocompleteAddress = ({
         if (reset) {
             setValue(defaultValue || '');
             setPlaceChoose(null);
-            setIsReset(false);
+            setIsReset && setIsReset(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reset, defaultValue]);

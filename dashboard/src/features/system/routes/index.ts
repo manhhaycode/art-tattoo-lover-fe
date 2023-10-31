@@ -1,2 +1,3 @@
 import SystemManageUser from './SystemManageUser';
-export { SystemManageUser };
+import SystemManageStudio from './SystemManageStudio';
+export { SystemManageUser, SystemManageStudio };

@@ -1,4 +1,5 @@
 import { useGetSessionUserMutation, useRefreshTokenMutation } from '@/features/auth/api';
+import { resetAuthStore } from '@/lib/helper';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/componentStore';
 import Cookies from 'js-cookie';
@@ -15,13 +16,15 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
 
     const sessionUserMutation = useGetSessionUserMutation({
         onSuccess: (data) => {
-            setAccountType({
-                role: { id: data.user.roleId, name: 'Member' },
-                permissions: [],
-                user: data.user,
-            });
-            setIsAuth(true);
-            reset();
+            if (data.user.status === 1) {
+                setAccountType({
+                    role: { id: data.user.roleId, name: 'Member' },
+                    permissions: [],
+                    user: data.user,
+                });
+                setIsAuth(true);
+                reset();
+            } else resetAuthStore();
         },
         onError: () => {
             if (Cookies.get('tattus-at')) {
