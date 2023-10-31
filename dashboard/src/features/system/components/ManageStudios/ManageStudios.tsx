@@ -19,6 +19,7 @@ import { IStudio, useGetListStudio, useUpdateStudioMutation } from '@/features/s
 import DeleteStudios from './DeleteStudios';
 import CreateStudio from './CreateStudio';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/authStore';
 
 export default function ManageStudios() {
     const navigate = useNavigate();
@@ -35,6 +36,8 @@ export default function ManageStudios() {
     const [opened, { open, close }] = useDisclosure(false);
 
     const updateStudioMutation = useUpdateStudioMutation({});
+
+    const { accountType, setAccountType } = useAuthStore();
 
     const columns = useMemo<ColumnDef<IStudio>[]>(
         () => [
@@ -134,6 +137,7 @@ export default function ManageStudios() {
                                 onClick={() => {
                                     setRowSelection({ [row.id]: true });
                                     sessionStorage.setItem('tattus-studio', row.id);
+                                    setAccountType({ ...accountType, studioId: row.id });
                                     navigate('/studio/dashboard');
                                 }}
                             >
