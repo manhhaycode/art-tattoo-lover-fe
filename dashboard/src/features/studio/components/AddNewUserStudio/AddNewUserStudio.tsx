@@ -85,7 +85,11 @@ export default function AddNewUserStudio({ refreshData }: { refreshData: () => v
                                 onChange={(e) => {
                                     setValue('roleId', Number(e), { shouldValidate: true });
                                 }}
-                                data={Object.entries(roleMap).map(([key, value]) => ({ value: key, label: value }))}
+                                data={Object.entries(roleMap)
+                                    .filter((role) => {
+                                        return Number(role[0]) >= (accountType?.role?.id || 3) && Number(role[0]) < 6;
+                                    })
+                                    .map(([key, value]) => ({ value: key, label: value }))}
                                 rightSectionProps={{ className: 'hidden' }}
                                 className="text-sm font-semibold"
                                 allowDeselect={false}

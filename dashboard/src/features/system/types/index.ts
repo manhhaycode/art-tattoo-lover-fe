@@ -24,5 +24,15 @@ export interface ICreateUserReq extends IUser {
     password: string;
 }
 
+export interface ICreateStudioReq {
+    name: string;
+    address: string;
+    phoneNumber: string;
+    email: string;
+    logo: string;
+}
+
 export interface IUpdateUser extends ILogout {}
 export interface ICreateUser extends ILogout {}
+export interface IDeleteStudio extends ILogout {}
+export interface ICreateStudio extends ILogout {}

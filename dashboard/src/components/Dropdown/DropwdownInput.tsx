@@ -11,7 +11,7 @@ export default function DropwdownInput({
         <div
             {...props}
             className={twMerge(
-                'absolute top-[calc(100%+4px)] left-0 w-full bg-white p-2 rounded-lg ',
+                'absolute top-[calc(100%+4px)] left-0 w-full bg-white p-2 rounded-lg z-[10000] ',
                 props.className,
                 schema.colorScheme === 'dark' && 'bg-gray-dark',
             )}

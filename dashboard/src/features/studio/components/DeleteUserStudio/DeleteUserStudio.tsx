@@ -1,15 +1,14 @@
 import { Modal, Text, Group, Button, AspectRatio, Image, rem } from '@mantine/core';
-import { Table } from '@tanstack/react-table';
 import { IUserStudio, useDeleteUserStudioMutation } from '@/features/studio';
 import { UserIcon } from '@/assets/icons';
 import { toast } from 'react-toastify';
 export default function DeleteUserStudio({
-    table,
+    dataList,
     opened,
     close,
     refreshData,
 }: {
-    table: Table<IUserStudio>;
+    dataList: IUserStudio[];
     opened: boolean;
     close: () => void;
     refreshData: () => void;
@@ -42,32 +41,25 @@ export default function DeleteUserStudio({
 
             <Text className="text-sm font-semibold mt-4 mb-4">Danh sách tài khoản sẽ xóa</Text>
             <div className="flex flex-col gap-y-4">
-                {table
-                    .getRowModel()
-                    .rows.filter((row) => row.getIsSelected())
-                    .map((row) => {
-                        return (
-                            <Group wrap="nowrap" key={row.id}>
-                                <AspectRatio
-                                    miw={rem(36)}
-                                    mih={rem(36)}
-                                    className="rounded-full overflow-hidden relative"
-                                >
-                                    {row.original.user.avatar ? (
-                                        <Image src={row.original.user.avatar} className="object-cover w-full h-full" />
-                                    ) : (
-                                        <div>
-                                            <UserIcon styles={{ height: '24px', width: '24px' }} />
-                                        </div>
-                                    )}
-                                </AspectRatio>
-                                <Group gap={rem(8)}>
-                                    <Text className="text-sm font-semibold w-full">{row.original.user.fullName}</Text>
-                                    <Text className="text-sm font-semibold w-full">{row.original.user.email}</Text>
-                                </Group>
+                {dataList.map((data) => {
+                    return (
+                        <Group wrap="nowrap" key={data.id}>
+                            <AspectRatio miw={rem(36)} mih={rem(36)} className="rounded-full overflow-hidden relative">
+                                {data.user.avatar ? (
+                                    <Image src={data.user.avatar} className="object-cover w-full h-full" />
+                                ) : (
+                                    <div>
+                                        <UserIcon styles={{ height: '24px', width: '24px' }} />
+                                    </div>
+                                )}
+                            </AspectRatio>
+                            <Group gap={rem(8)}>
+                                <Text className="text-sm font-semibold w-full">{data.user.fullName}</Text>
+                                <Text className="text-sm font-semibold w-full">{data.user.email}</Text>
                             </Group>
-                        );
-                    })}
+                        </Group>
+                    );
+                })}
             </div>
 
             <Group mt={rem(24)} justify="flex-end">
@@ -76,12 +68,9 @@ export default function DeleteUserStudio({
                 </Button>
                 <Button
                     onClick={() => {
-                        table
-                            .getRowModel()
-                            .rows.filter((row) => row.getIsSelected())
-                            .map((row) => {
-                                deleteUserStudioMutation.mutate(row.original.id);
-                            });
+                        dataList.map((data) => {
+                            deleteUserStudioMutation.mutate(data.id);
+                        });
                     }}
                     color="red.6"
                 >

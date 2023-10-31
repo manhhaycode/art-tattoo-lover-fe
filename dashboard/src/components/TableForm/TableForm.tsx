@@ -8,11 +8,13 @@ export default function TableForm<T extends object>({
     handlePagination,
     pageIndex,
     pageSize,
+    total,
 }: {
     table: TableProps<T>;
     handlePagination: React.Dispatch<React.SetStateAction<PaginationState>>;
     pageIndex: number;
     pageSize: number;
+    total: number;
 }) {
     return (
         <>
@@ -48,7 +50,7 @@ export default function TableForm<T extends object>({
                     <Table.Tbody>
                         {table.getRowModel().rows.map((row) => {
                             return (
-                                <Table.Tr key={row.id}>
+                                <Table.Tr key={row.id} variant="disabled">
                                     {row.getVisibleCells().map((cell) => {
                                         return (
                                             <Table.Td key={cell.id}>
@@ -81,7 +83,7 @@ export default function TableForm<T extends object>({
                 <Pagination
                     fw={600}
                     fs="14px"
-                    total={10}
+                    total={total}
                     onChange={(e) => {
                         handlePagination({ pageIndex: e - 1, pageSize });
                     }}

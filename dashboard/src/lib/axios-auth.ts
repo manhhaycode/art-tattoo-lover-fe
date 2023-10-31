@@ -30,36 +30,28 @@ httpRequest.interceptors.request.use(async (value) => {
     return value;
 });
 
-httpRequest.interceptors.response.use(
-    async (response) => {
-        if (process.env.NODE_ENV === 'development') {
-            await sleep();
-        }
-        return response;
-    },
-    async (error) => {
-        if (error instanceof Error && !(error instanceof AxiosError)) {
-            return Promise.reject({ error: error.message });
-        }
+httpRequest.interceptors.response.use(undefined, async (error) => {
+    if (error instanceof Error && !(error instanceof AxiosError)) {
+        return Promise.reject({ error: error.message });
+    }
 
-        if (error instanceof AxiosError && error.response) {
-            if (error.request.responseURL.includes('/users/password')) {
-                return Promise.reject(error.response.data);
-            }
-            try {
-                if (error.response.status === 401) {
-                    const res: IRefreshToken = await refreshToken();
-                    res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
-                }
-            } catch (e) {
-                return Promise.reject({ error: (e as Error).message });
-            }
+    if (error instanceof AxiosError && error.response) {
+        if (error.request.responseURL.includes('/users/password')) {
             return Promise.reject(error.response.data);
-        } else {
-            throw new Error('Network Error');
         }
-    },
-);
+        try {
+            if (error.response.status === 401) {
+                const res: IRefreshToken = await refreshToken();
+                res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+            }
+        } catch (e) {
+            return Promise.reject({ error: (e as Error).message });
+        }
+        return Promise.reject(error.response.data);
+    } else {
+        throw new Error('Network Error');
+    }
+});
 
 export const get = async (path: string, options?: AxiosRequestConfig<object>) => {
     const response = await httpRequest.get(path, options);

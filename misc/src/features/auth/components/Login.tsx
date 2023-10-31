@@ -6,6 +6,7 @@ import { useLoginMutation } from '../api/authAPI';
 import { Loader, PasswordInput } from '@mantine/core';
 import Button from '@/components/common/Button';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 interface ILogin {
     email: string;
     password: string;
@@ -17,14 +18,21 @@ export default function Login() {
     const { setIsAuth, setAccountType, setIsLogout } = useAuthStore();
     const loginMutation = useLoginMutation({
         onSuccess: (data) => {
-            setIsAuth(true);
-            setAccountType({
-                role: { id: data.user.roleId, name: 'Member' },
-                permissions: [],
-                user: data.user,
-            });
-            setIsLogout(false);
-            reset();
+            if (data.user.status === 1) {
+                setIsAuth(true);
+                setAccountType({
+                    role: { id: data.user.roleId, name: 'Member' },
+                    permissions: [],
+                    user: data.user,
+                });
+                setIsLogout(false);
+                reset();
+            } else {
+                toast('Tài khoản của bạn chưa được kích hoạt  hoặc đã bị khóa', {
+                    type: 'error',
+                    theme: 'dark',
+                });
+            }
         },
     });
 
