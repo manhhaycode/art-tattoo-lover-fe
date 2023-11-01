@@ -23,7 +23,7 @@ export default function Th<T extends object>({ header }: ThProps<T>) {
             }}
             className="hover:bg-[light-dark(var(--mantine-color-gray-0),var(--mantine-color-dark-6))] cursor-pointer select-none"
         >
-            <Group justify="space-between" maw={250}>
+            <Group justify="space-between">
                 <Text fw={600} fz="sm">
                     {flexRender(header.column.columnDef.header, header.getContext())}
                 </Text>
