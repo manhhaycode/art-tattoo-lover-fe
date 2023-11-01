@@ -46,6 +46,11 @@ interface ModalState {
     setIsResetPasswordModalVisible: (isResetPasswordModalVisible: boolean) => void;
     isModalVisible: boolean;
     setIsModalVisible: (isModalVisible: boolean) => void;
+    isBookingModal: {
+        visible: boolean;
+        studioId: string | null;
+    };
+    setIsBookingModal: (visible: boolean, studioId: string | null) => void;
     reset: () => void;
 }
 
@@ -58,12 +63,28 @@ export const useModalStore = create<ModalState>((set) => ({
     setIsResetPasswordModalVisible: (isResetPasswordModalVisible) => set({ isResetPasswordModalVisible }),
     isModalVisible: false,
     setIsModalVisible: (isModalVisible) => set({ isModalVisible }),
+    isBookingModal: {
+        visible: false,
+        studioId: null,
+    },
+    setIsBookingModal: (visible: boolean, studioId: string | null) =>
+        set({
+            isBookingModal: {
+                visible,
+                studioId,
+            },
+            isModalVisible: visible,
+        }),
     reset: () => {
         set({
             isLoginModalVisible: false,
             isRegisterModalVisible: false,
             isModalVisible: false,
             isResetPasswordModalVisible: false,
+            isBookingModal: {
+                visible: false,
+                studioId: null,
+            },
         });
     },
 }));
