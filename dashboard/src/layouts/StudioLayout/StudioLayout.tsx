@@ -24,12 +24,16 @@ export default function StudioLayout() {
     }, [accountType?.studioId]);
     return (
         <>
-            <AppShell.Navbar p="md" className="flex flex-col justify-between">
-                <StudioNav />
-            </AppShell.Navbar>
-            <AppShell.Main>
-                <Outlet />
-            </AppShell.Main>
+            {accountType?.studioId && (
+                <>
+                    <AppShell.Navbar p="md" className="flex flex-col justify-between">
+                        <StudioNav />
+                    </AppShell.Navbar>
+                    <AppShell.Main>
+                        <Outlet />
+                    </AppShell.Main>
+                </>
+            )}
         </>
     );
 }
