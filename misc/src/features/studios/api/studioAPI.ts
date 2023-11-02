@@ -1,6 +1,7 @@
 import * as httpRequest from '@/lib/axios';
-import { IFilter, IPaginationStudio, IStudio } from '../types';
+import { IFilter, IPaginationStudio, IStudio, StudioArtist } from '../types';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
     if (Object.keys(filter).length === 0)
@@ -52,4 +53,19 @@ export const useGetListStudio = (filter: IFilter) => {
         staleTime: Infinity,
         // keepPreviousData: true,
     });
+};
+
+export const getStudioArtists = async (studioId: string): Promise<StudioArtist[]> => {
+    try {
+        const res = await httpRequest.get('/studios/artists', {
+            params: {
+                studioId,
+            },
+        });
+
+        return res as StudioArtist[];
+    } catch (error) {
+        toast.error(error.message);
+        return [];
+    }
 };

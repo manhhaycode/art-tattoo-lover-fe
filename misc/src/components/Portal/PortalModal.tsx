@@ -5,14 +5,13 @@ import BookingModal from '@/features/studios/components/BookingModal';
 
 export default function PortalModal({ idModal }: { idModal: string }) {
     const modal = document.getElementById(idModal);
-    const { isLoginModalVisible, isRegisterModalVisible, isResetPasswordModalVisible, isBookingModal } =
-        useModalStore();
+    const { isLoginModalVisible, isRegisterModalVisible, isResetPasswordModalVisible, bookingModal } = useModalStore();
     return (
         <>
             {isLoginModalVisible && createPortal(<Login />, modal!)}
             {isRegisterModalVisible && createPortal(<Register />, modal!)}
             {isResetPasswordModalVisible && createPortal(<ResetPassword />, modal!)}
-            {isBookingModal.visible && isBookingModal.studioId && createPortal(<BookingModal />, modal!)}
+            {bookingModal.visible && bookingModal.studioId && createPortal(<BookingModal />, modal!)}
         </>
     );
 }
