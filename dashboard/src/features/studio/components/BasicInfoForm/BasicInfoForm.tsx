@@ -1,4 +1,4 @@
-import { AspectRatio, Container, Group, Image, Text, Input, Button, useMantineColorScheme } from '@mantine/core';
+import { AspectRatio, Container, Group, Image, Text, Input, Button, useMantineColorScheme, rem } from '@mantine/core';
 import { useGetStuidoMutation, useUpdateStudioMutation } from '@/features/studio/api';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
@@ -12,6 +12,7 @@ import { AutocompleteAddress } from '@/features/map/components';
 import { typeEnum, useUploadMediaMutation } from '@/features/media';
 import { usePlaceDetailMutation } from '@/features/map/api';
 import { twMerge } from 'tailwind-merge';
+import EditWorkingTime from '../EditWorkingTime/EditWorkingTime';
 
 const previewImage = (file: FileWithPath) => {
     const imageUrl = URL.createObjectURL(file);
@@ -27,7 +28,8 @@ export default function BasicInfoForm() {
     const colorSchema = useMantineColorScheme();
     const getStudioMutation = useGetStuidoMutation({
         onSuccess: (data) => {
-            setBasicInfoStudio(data);
+            const listWorkingTime = data.workingTimes.sort((a, b) => a.dayOfWeek - b.dayOfWeek);
+            setBasicInfoStudio({ ...data, workingTimes: listWorkingTime });
             reset({ ...data });
         },
     });
@@ -256,29 +258,48 @@ export default function BasicInfoForm() {
                                     />
                                 )}
                             </div>
-                            <Group>
-                                <Button
-                                    type="submit"
-                                    disabled={
-                                        updateStudioMutation.isLoading ||
-                                        uploadMediaMutation.isLoading ||
-                                        !isValid ||
-                                        !isDirty
+
+                            <div className="flex flex-col gap-y-2 self-end">
+                                <label className="text-sm font-semibold">Chọn lịch làm việc của studio</label>
+                                <div className="flex flex-col gap-y-5 my-4">
+                                    {
+                                        <EditWorkingTime
+                                            handleChange={(e) => {
+                                                setValue('workingTimes', e, { shouldDirty: true });
+                                            }}
+                                            list={watch('workingTimes')}
+                                        />
                                     }
-                                    loading={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
-                                >
-                                    Thay đổi thông tin studio
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        reset();
-                                        setIsReset(true);
-                                    }}
-                                >
-                                    Đặt lại thông tin studio
-                                </Button>
-                            </Group>
+                                </div>
+                                {errors.workingTimes && (
+                                    <label className="text-xs font-semibold text-red-500">
+                                        {errors.workingTimes.message}
+                                    </label>
+                                )}
+                            </div>
                         </div>
+                        <Group mt={rem(16)}>
+                            <Button
+                                type="submit"
+                                disabled={
+                                    updateStudioMutation.isLoading ||
+                                    uploadMediaMutation.isLoading ||
+                                    !isValid ||
+                                    !isDirty
+                                }
+                                loading={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
+                            >
+                                Thay đổi thông tin studio
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    reset();
+                                    setIsReset(true);
+                                }}
+                            >
+                                Đặt lại thông tin studio
+                            </Button>
+                        </Group>
                     </form>
                 </Container>
             )}
