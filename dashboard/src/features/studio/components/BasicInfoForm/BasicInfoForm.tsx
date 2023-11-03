@@ -7,7 +7,7 @@ import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IStudio } from '@/features/studio';
 import logoStudio from '@/assets/img/imgLogoStudio.png';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { AutocompleteAddress } from '@/features/map/components';
 import { typeEnum, useUploadMediaMutation } from '@/features/media';
 import { usePlaceDetailMutation } from '@/features/map/api';
@@ -36,7 +36,7 @@ export default function BasicInfoForm() {
 
     const updateStudioMutation = useUpdateStudioMutation({
         onSuccess: () => {
-            toast('Thay đổi thông tin thành công', { type: 'success' });
+            toast.success('Thay đổi thông tin thành công');
             getStudioMutation.mutate(accountType!.studioId!);
         },
     });
@@ -69,7 +69,7 @@ export default function BasicInfoForm() {
                     data.longitude = placDetail.geometry.location.lng;
                     setSessionToken();
                 } else {
-                    toast('Có lỗi xảy ra khi thay đổi địa chỉ, vui lòng thử lại sau', { type: 'error' });
+                    toast.error('Có lỗi xảy ra khi thay đổi địa chỉ, vui lòng thử lại sau');
                     return;
                 }
             }
@@ -138,14 +138,10 @@ export default function BasicInfoForm() {
                                     onDrop={(files) => {
                                         setFile(files[0]);
                                         setValue('logo', files[0].name, { shouldDirty: true });
-                                        toast('Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật', {
-                                            type: 'success',
-                                        });
+                                        toast.success('Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật');
                                     }}
                                     onReject={() => {
-                                        toast('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh', {
-                                            type: 'error',
-                                        });
+                                        toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
 
                                         // console.log('rejected files', files)
                                     }}

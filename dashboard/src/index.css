@@ -1,5 +1,4 @@
 @import 'react-multi-carousel/lib/styles.css';
-@import 'react-toastify/dist/ReactToastify.css';
 @import 'react-loading-skeleton/dist/skeleton.css';
 @import '@mantine/core/styles.css';
 @import '@mantine/dropzone/styles.css';
@@ -187,6 +186,9 @@
     --search-gray-dark: #3a3b3c;
     --button-primary: #ff3b5c;
     --hover-button-primary: #fe2c55;
+    --fc-event-bg-color: var(--mantine-primary-color-filled-hover);
+    --fc-small-font-size: 0.875rem;
+    --fc: var(--button-hover, var(--mantine-primary-color-filled-hover));
 }
 
 body {
@@ -221,11 +223,36 @@ html *::-webkit-scrollbar {
     font-size: inherit;
     font-weight: inherit;
 } */
-
-.Toastify {
-    position: relative;
-    z-index: 100000;
+.fc-basic-view .fc-body .fc-row {
+    min-height: 1em;
 }
-.Toastify__toast-theme--dark {
-    box-shadow: 0 0 0 1px #393a3b;
+
+.fc-timegrid-slots table tbody tr {
+    height: 200px;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border: 1px solid var(--_app-shell-border-color);
+}
+.fc-theme-standard .fc-scrollgrid {
+    border: 1px solid var(--_app-shell-border-color);
+}
+
+.fc .fc-scrollgrid-section-sticky > * {
+    background-color: transparent;
+}
+
+.fc-timegrid-event .fc-event-time {
+    font-weight: 500;
+}
+/* 
+.fc-timegrid-event-harness:hover {
+    z-index: 100 !important;
+    scale: 1.1;
+    transition: all 0.2s ease-in-out;
+} */
+
+.fc-event-main {
+    cursor: pointer;
 }

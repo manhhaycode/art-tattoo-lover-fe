@@ -2,7 +2,7 @@ import { AspectRatio, Button, Group, Image, Input, Modal, Text, rem } from '@man
 import { useDisclosure } from '@mantine/hooks';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateStudioMutation } from '@/features/system';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { typeEnum, useUploadMediaMutation } from '@/features/media';
@@ -35,11 +35,11 @@ export default function CreateStudio({ refreshData }: { refreshData: () => void 
     const createStudioMutation = useCreateStudioMutation({
         onSuccess: () => {
             close();
-            toast('Tạo studio mới thành công', { type: 'success' });
+            toast.success('Tạo studio mới thành công');
             refreshData();
         },
         onError: () => {
-            toast('Có lỗi xảy ra, vui lòng thử lại', { type: 'error' });
+            toast.error('Có lỗi xảy ra, vui lòng thử lại');
         },
     });
 
@@ -51,7 +51,7 @@ export default function CreateStudio({ refreshData }: { refreshData: () => void 
 
     const uploadMediaMutation = useUploadMediaMutation({
         onError: () => {
-            toast('Upload ảnh lên server xảy ra lỗi, tải lại trang và thử lại', { type: 'error', theme: 'dark' });
+            toast.error('Upload ảnh lên server xảy ra lỗi, tải lại trang và thử lại');
         },
     });
     const [file, setFile] = useState<FileWithPath | null>(null);
@@ -68,7 +68,7 @@ export default function CreateStudio({ refreshData }: { refreshData: () => void 
                     data.longitude = placDetail.geometry.location.lng;
                     setSessionToken();
                 } else {
-                    toast('Có lỗi xảy ra khi thay đổi địa chỉ, vui lòng thử lại sau', { type: 'error' });
+                    toast.error('Có lỗi xảy ra khi thay đổi địa chỉ, vui lòng thử lại sau');
                     return;
                 }
             }
@@ -127,16 +127,10 @@ export default function CreateStudio({ refreshData }: { refreshData: () => void 
                                         setFile(files[0]);
                                         setValue('logo', files[0].name, { shouldDirty: true });
                                         // console.log('accepted files', files[0]);
-                                        toast('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật', {
-                                            type: 'success',
-                                            theme: 'dark',
-                                        });
+                                        toast.success('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật');
                                     }}
                                     onReject={() => {
-                                        toast('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh', {
-                                            type: 'error',
-                                            theme: 'dark',
-                                        });
+                                        toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
 
                                         // console.log('rejected files', files)
                                     }}

@@ -5,7 +5,7 @@ import { DatesProvider, DatePickerInput } from '@mantine/dates';
 import { useEffect, useState } from 'react';
 import 'dayjs/locale/vi';
 import { Button, Input, Loader, PasswordInput, Select } from '@mantine/core';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { typeEnum, useUploadMediaMutation } from '@/features/media';
 import { ErrorAuth } from '@/lib/error';
@@ -27,7 +27,7 @@ export default function BasicInfoForm({
     const updateBasicInfoMutation = useUpdateUserMutation({
         onSuccess: (data) => {
             console.log(data);
-            toast('Cập nhật thông tin cơ bản thành công', { type: 'success', theme: 'dark' });
+            toast.success('Cập nhật thông tin cơ bản thành công');
             onChangedOrCreate && onChangedOrCreate();
         },
         onError: (error, data) => {
@@ -42,7 +42,7 @@ export default function BasicInfoForm({
     const createUserMutation = useCreateUserMutation({
         onSuccess: (data) => {
             console.log(data);
-            toast('Tạo mới tài khoản thành công', { type: 'success', theme: 'dark' });
+            toast.success('Tạo mới tài khoản thành công');
             onChangedOrCreate && onChangedOrCreate();
         },
         onError: (error, data) => {
@@ -51,14 +51,14 @@ export default function BasicInfoForm({
             } else if (error.message === ErrorAuth.AT_INVALID) {
                 createUserMutation.mutate(data);
             } else if (error.message === 'Email already exists') {
-                toast('Email đã tồn tại', { type: 'error', theme: 'dark' });
+                toast.error('Email đã tồn tại');
             }
         },
     });
 
     const uploadMediaMutation = useUploadMediaMutation({
         onError: () => {
-            toast('Upload ảnh lên server xảy ra lỗi, tải lại trang và thử lại', { type: 'error', theme: 'dark' });
+            toast.error('Upload ảnh lên server xảy ra lỗi, tải lại trang và thử lại');
         },
     });
 
@@ -137,16 +137,10 @@ export default function BasicInfoForm({
                                 setFile(files[0]);
                                 setValue('avatar', files[0].name, { shouldDirty: true });
                                 // console.log('accepted files', files[0]);
-                                toast('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật', {
-                                    type: 'success',
-                                    theme: 'dark',
-                                });
+                                toast.success('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật');
                             }}
                             onReject={() => {
-                                toast('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh', {
-                                    type: 'error',
-                                    theme: 'dark',
-                                });
+                                toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
 
                                 // console.log('rejected files', files)
                             }}

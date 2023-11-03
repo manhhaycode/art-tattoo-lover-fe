@@ -1,6 +1,6 @@
 import { Modal, Text, Group, Button, AspectRatio, Image, rem } from '@mantine/core';
 import { UserIcon } from '@/assets/icons';
-import { Id, toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useDeleteStudioMutation } from '@/features/system';
 import { IStudio } from '@/features/studio';
 export default function DeleteStudios({
@@ -12,7 +12,7 @@ export default function DeleteStudios({
     dataList: IStudio[];
     opened: boolean;
     close: () => void;
-    refreshData: (id: Id, success: boolean) => void;
+    refreshData: (id: string, success: boolean) => void;
 }) {
     const deleteStudioMutation = useDeleteStudioMutation({});
 
@@ -61,7 +61,7 @@ export default function DeleteStudios({
                 <Button
                     onClick={() => {
                         const callAPI = async (promiseList: unknown[]) => {
-                            const id = toast.loading('Đang cập nhật...', { isLoading: true, theme: 'dark' });
+                            const id = toast.loading('Đang cập nhật...');
                             await Promise.all(promiseList)
                                 .then(() => refreshData(id, true))
                                 .catch(() => refreshData(id, false));

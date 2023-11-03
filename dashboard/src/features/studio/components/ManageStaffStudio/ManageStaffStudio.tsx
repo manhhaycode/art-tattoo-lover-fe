@@ -2,8 +2,8 @@ import { UserIcon } from '@/assets/icons';
 import { roleMap } from '@/features/auth';
 
 import { useAuthStore } from '@/store/authStore';
-import { Checkbox, Text, Group, AspectRatio, Image, rem, Button } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Input } from '@mantine/core';
+import { useDebouncedState, useDisclosure } from '@mantine/hooks';
 
 import {
     ColumnDef,
@@ -17,7 +17,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useGetListUserStudio, useUpdateUserStudioMutation } from '../../api';
 import { IUpdateUserStudioReq, IUserStudio } from '@/features/studio';
-import { Id, toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import AddNewUserStudio from '../AddNewUserStudio';
 import queryClient from '@/lib/react-query';
 import DeleteUserStudio from '../DeleteUserStudio';
@@ -31,8 +31,14 @@ export default function ManageStaffStudio() {
         pageIndex: 0,
         pageSize: 10,
     });
+    const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
     const defaultData = useMemo(() => [], []);
-    const dataQuery = useGetListUserStudio({ page: pageIndex, pageSize, studioId: accountType?.studioId ?? '' });
+    const dataQuery = useGetListUserStudio({
+        page: pageIndex,
+        pageSize,
+        studioId: accountType?.studioId ?? '',
+        searchKeyword,
+    });
     const [dataUpdate, setDataUpdate] = useState<Partial<IUpdateUserStudioReq> | null>(null);
     const [dataDelete, setDataDelete] = useState<IUserStudio[]>([]);
     const [rowSelection, setRowSelection] = useState({});
@@ -138,7 +144,9 @@ export default function ManageStaffStudio() {
                                     data={Object.entries(roleMap)
                                         .filter((role) => {
                                             return (
-                                                Number(role[0]) >= (accountType?.role?.id || 3) && Number(role[0]) < 6
+                                                Number(role[0]) >= (accountType?.role?.id || 3) &&
+                                                Number(role[0]) < 6 &&
+                                                Number(role[0]) >= 3
                                             );
                                         })
                                         .map(([key, value]) => ({ value: key, label: value }))}
@@ -242,30 +250,22 @@ export default function ManageStaffStudio() {
         debugTable: true,
     });
 
-    const refreshData = useCallback(async (idToast?: Id, success: boolean = true) => {
+    const refreshData = useCallback(async (idToast?: string, success: boolean = true) => {
         await queryClient.invalidateQueries(['user-studio']);
         setRowSelection({});
         if (idToast)
             success
-                ? toast.update(idToast, {
-                      render: 'Cập nhật thành công',
-                      type: 'success',
-                      isLoading: false,
-                      autoClose: 3000,
-                      theme: 'colored',
+                ? toast.success('Cập nhật thành công', {
+                      id: idToast,
                   })
-                : toast.update(idToast, {
-                      render: 'Có lỗi xảy ra trong quá trình cập nhật',
-                      type: 'error',
-                      isLoading: false,
-                      autoClose: 3000,
-                      theme: 'colored',
+                : toast.error('Có lỗi xảy ra trong quá trình cập nhật', {
+                      id: idToast,
                   });
     }, []);
 
     useEffect(() => {
         const callAPI = async (promiseList: unknown[]) => {
-            const id = toast.loading('Đang cập nhật...', { isLoading: true, theme: 'dark' });
+            const id = toast.loading('Đang cập nhật...');
             await Promise.all(promiseList)
                 .then(() => refreshData(id, true))
                 .catch(() => refreshData(id, false));
@@ -312,7 +312,15 @@ export default function ManageStaffStudio() {
 
     return (
         <>
-            <AddNewUserStudio refreshData={refreshData} />
+            <Group justify="space-between">
+                <Input
+                    defaultValue={searchKeyword}
+                    onChange={(event) => setSearchKeyword(event.currentTarget.value)}
+                    placeholder="Tìm kiếm nhân viên studio"
+                    className="w-1/2"
+                />
+                <AddNewUserStudio refreshData={refreshData} />
+            </Group>
             <TableForm
                 handlePagination={setPagination}
                 pageIndex={pageIndex}
