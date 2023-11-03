@@ -9,6 +9,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
 import ListServiceOfStudio from '@/components/ListServiceOfStudio';
 import { db } from '@/assets/data';
+import { useModalStore } from '@/store/componentStore';
+import { toast } from 'react-toastify';
+import { useAuthStore } from '@/store/authStore';
 
 export default function StudioIntroCard({
     studio,
@@ -19,6 +22,8 @@ export default function StudioIntroCard({
     // maxLineIntro?: number;
 }) {
     const navigator = useNavigate();
+    const { setBookingModal } = useModalStore();
+    const { isAuth } = useAuthStore();
 
     return (
         <div className="w-full px-6 py-4 bg-gray-dark flex gap-x-6 rounded-[20px] shadow-shadow-dropdown relative">
@@ -30,7 +35,17 @@ export default function StudioIntroCard({
                     alt=""
                 />
                 <Button
-                    onClick={() => navigator(`/studio/${convertSlugURL(studio.name!)}/${studio.id}`)}
+                    onClick={() => {
+                        if (!isAuth) {
+                            toast.info('Vui lòng đăng nhập trước để đặt lịch');
+                        } else {
+                            if (!studio) {
+                                toast.info('Vui lòng chọn studio trước');
+                            } else {
+                                setBookingModal(true, studio.id as string);
+                            }
+                        }
+                    }}
                     className="py-[10px]"
                 >
                     <CalendarIcon />
