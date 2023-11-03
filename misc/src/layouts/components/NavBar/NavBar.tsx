@@ -26,7 +26,7 @@ export default function NavBar() {
                 {...(!location.pathname.includes('book-tracking') && { style: { background: 'transparent' } })}
             >
                 <CalendarIcon styles={{ width: '24px', height: '24px' }} />
-                <p className="font-medium text-base">Theo dõi lịch Booking</p>
+                <p className="font-medium text-base">Theo dõi lịch hẹn</p>
             </Button>
             <Button
                 onClick={() => {

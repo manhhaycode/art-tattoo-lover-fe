@@ -25,7 +25,7 @@ const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
     };
 };
 
-const getStudio = async (id: string): Promise<IStudio | null> => {
+export const getStudio = async (id: string): Promise<IStudio | null> => {
     if (id !== '') {
         try {
             const response: IStudio = await httpRequest.get(`/studios/${id}`);
