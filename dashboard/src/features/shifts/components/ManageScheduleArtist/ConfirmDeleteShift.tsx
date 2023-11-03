@@ -1,7 +1,8 @@
-import { Box, Modal, Text } from '@mantine/core';
-import { IShiftUser, useGetShiftDetail } from '@/features/shifts';
+import { AspectRatio, Box, Group, Image, Modal, Text, rem } from '@mantine/core';
+import { useGetShiftDetail } from '@/features/shifts';
 import { convertDateToString } from '@/lib/helper';
 import { EventImpl } from '@fullcalendar/core/internal';
+import { UserIcon } from '@/assets/icons';
 
 export default function ManageShiftInfo({
     handleModal,
@@ -36,21 +37,40 @@ export default function ManageShiftInfo({
                         Thời gian làm việc từ {convertDateToString(shiftInfo.start!)} -{' '}
                         {convertDateToString(shiftInfo.end!)}
                     </Text>
-                    {data && data.shiftUsers.length > 0 ? (
+                    {data && data.shiftArtists.length > 0 ? (
                         <Text className="text-sm font-semibold">Các artist đã đăng ký ca này</Text>
                     ) : (
                         <Text className="text-sm font-semibold">Chưa có artist nào đăng ký ca này</Text>
                     )}
                     {data &&
-                        data.shiftUsers.map((shiftUser: IShiftUser) => {
+                        data.shiftArtists.map((artist) => {
                             return (
-                                // <Group key={user.id} gap={12}>
-                                //     <AvartarIcon logo={user.avatar || undefined} fullName={user.fullName} />
-                                //     <Text>{user.fullName}</Text>
-                                // </Group>
-                                <Text className="text-sm font-semibold" key={shiftUser.stuUserId}>
-                                    {shiftUser.stuUserId}
-                                </Text>
+                                <Group wrap="nowrap" key={data.id}>
+                                    <AspectRatio
+                                        miw={rem(36)}
+                                        mih={rem(36)}
+                                        className="rounded-full overflow-hidden relative"
+                                    >
+                                        {artist.stuUser.user.avatar ? (
+                                            <Image
+                                                src={artist.stuUser.user.avatar}
+                                                className="object-cover w-full h-full"
+                                            />
+                                        ) : (
+                                            <div>
+                                                <UserIcon styles={{ height: '24px', width: '24px' }} />
+                                            </div>
+                                        )}
+                                    </AspectRatio>
+                                    <Group gap={rem(8)}>
+                                        <Text className="text-sm font-semibold w-full">
+                                            {artist.stuUser.user.fullName}
+                                        </Text>
+                                        <Text className="text-sm font-semibold w-full">
+                                            {artist.stuUser.user.email}
+                                        </Text>
+                                    </Group>
+                                </Group>
                             );
                         })}
                 </Box>

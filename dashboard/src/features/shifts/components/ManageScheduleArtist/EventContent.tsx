@@ -11,6 +11,7 @@ export default function EventContent({
     handleModalInfo,
     handleDelete,
     handleModalCreate,
+    isEdit,
     handleModalRegister,
 }: {
     arg: EventContentArg;
@@ -40,6 +41,7 @@ export default function EventContent({
             readonly toggle: () => void;
         },
     ];
+    isEdit: boolean;
 }) {
     const { accountType } = useAuthStore();
     const navigate = useNavigate();
@@ -54,57 +56,52 @@ export default function EventContent({
                     handleDelete(false);
                     if (accountType?.role?.id === 5) handleModalRegister[1].open();
                 }}
-                className="flex flex-col justify-between p-4 h-full"
+                className="flex flex-col justify-between p-2 h-full"
             >
                 <Flex direction={'column'} gap={rem(16)}>
                     <Text className="font-semibold text-sm">Ca: {arg.timeText}</Text>
                     <Text className="font-semibold text-sm">Phòng: 104</Text>
                 </Flex>
-                {/* {arg.event.extendedProps.shiftUsers && (
-                    <Group gap={rem(8)} wrap="wrap" justify="flex-end">
-                        {arg.event.extendedProps.shiftUsers.map((user: IUser) => {
-                            return (
-                                <AvartarIcon key={user.id} logo={user.avatar || undefined} fullName={user.fullName} />
-                            );
-                        })}
-                    </Group>
-                )} */}
                 {accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_ARTISTS_SCHEDULE) && (
                     <Group gap={rem(8)} wrap="wrap" justify="flex-end">
-                        {!arg.event.extendedProps.shiftUsers && (
-                            <ActionIcon
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleAction(arg);
-                                    handleModalCreate[1].open();
-                                }}
-                                color={'blue.4'}
-                            >
-                                <BiAddToQueue size={20} />
-                            </ActionIcon>
-                        )}
-                        {arg.event.extendedProps.shiftUsers && (
+                        {isEdit && (
                             <>
-                                <ActionIcon
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        navigate('/studio/dashboard');
-                                    }}
-                                    color={'green.4'}
-                                >
-                                    <AiOutlineEye size={20} />
-                                </ActionIcon>
-                                <ActionIcon
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleAction(arg);
-                                        handleModalInfo[1].open();
-                                        handleDelete(true);
-                                    }}
-                                    color={'red.6'}
-                                >
-                                    <AiOutlineDelete size={20} />
-                                </ActionIcon>
+                                {!arg.event.extendedProps.shiftArtists && (
+                                    <ActionIcon
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleAction(arg);
+                                            handleModalCreate[1].open();
+                                        }}
+                                        color={'blue.4'}
+                                    >
+                                        <BiAddToQueue size={20} />
+                                    </ActionIcon>
+                                )}
+                                {arg.event.extendedProps.shiftArtists && (
+                                    <>
+                                        <ActionIcon
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate('/studio/dashboard');
+                                            }}
+                                            color={'green.4'}
+                                        >
+                                            <AiOutlineEye size={20} />
+                                        </ActionIcon>
+                                        <ActionIcon
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleAction(arg);
+                                                handleModalInfo[1].open();
+                                                handleDelete(true);
+                                            }}
+                                            color={'red.6'}
+                                        >
+                                            <AiOutlineDelete size={20} />
+                                        </ActionIcon>
+                                    </>
+                                )}
                             </>
                         )}
                     </Group>

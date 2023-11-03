@@ -1,4 +1,5 @@
 import { ILogout } from '@/features/auth';
+import { IUserStudio } from '@/features/studio';
 
 export interface IShiftReq {
     start: string;
@@ -12,12 +13,13 @@ export interface IShift {
     start: string;
     end: string;
     studioId: string;
-    shiftUsers: IShiftUser[];
+    shiftArtists: IShiftArtists[];
 }
 
-export interface IShiftUser {
+export interface IShiftArtists {
     shiftId: string;
     stuUserId: string;
+    stuUser: IUserStudio;
     isBooked: boolean;
 }
 
