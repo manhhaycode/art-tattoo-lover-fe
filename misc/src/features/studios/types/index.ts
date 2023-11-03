@@ -1,3 +1,5 @@
+import { IUser } from '@/features/users';
+
 export interface IMedia {
     id: string;
     url: string;
@@ -65,3 +67,19 @@ export interface IStudio {
     listMedia: IMedia[];
     workingTimes: IWorkingTime[];
 }
+
+export type StudioArtist = {
+    id: string;
+    studioId: string;
+    userId: string;
+    isDisabled: boolean;
+    user: IUser;
+};
+
+export type Shift = {
+    id: string;
+    studioId: string;
+    start: string;
+    end: string;
+    shiftUsers: StudioArtist[];
+};
