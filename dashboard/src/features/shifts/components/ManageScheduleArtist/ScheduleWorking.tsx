@@ -64,7 +64,6 @@ export default function ScheduleWorking() {
                             <Button
                                 onClick={async (e) => {
                                     e.preventDefault();
-                                    toggle();
                                     const promiseList: unknown[] = [];
                                     for (const event of calendarRef.current!.getApi().getEvents()) {
                                         const eventU = event as EventImpl;
@@ -92,7 +91,10 @@ export default function ScheduleWorking() {
                                     }
                                     const id = toast.loading('Đang cập nhật...');
                                     await Promise.all(promiseList)
-                                        .then(() => refreshData(id, true))
+                                        .then(() => {
+                                            refreshData(id, true);
+                                            toggle();
+                                        })
                                         .catch(() => refreshData(id, false));
                                 }}
                             >
@@ -125,7 +127,7 @@ export default function ScheduleWorking() {
                 stickyHeaderDates={true}
                 slotLabelInterval={{ minute: 30 }}
                 slotLabelFormat={{ hour: 'numeric', minute: '2-digit', meridiem: false }}
-                eventMinHeight={200}
+                eventMinHeight={120}
                 contentHeight="auto"
                 slotMinTime="06:00:00"
                 slotMaxTime={{ hour: 23, minute: 30 }}
@@ -135,6 +137,7 @@ export default function ScheduleWorking() {
                 }}
                 eventContent={(arg) => (
                     <EventContent
+                        isEdit={isEdit}
                         handleAction={(argAction) => {
                             setShiftInfo(argAction.event);
                         }}

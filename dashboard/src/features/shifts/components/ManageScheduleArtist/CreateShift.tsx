@@ -32,7 +32,7 @@ export default function CreateShift({
             // shiftInfo?.setProp('publicId', shift[0].id);
             shiftInfo!.setProp('id', shift[0].id);
             // shiftInfo!.setExtendedProp('id', shift[0].id);
-            shiftInfo!.setExtendedProp('shiftUsers', shift[0].shiftUsers);
+            shiftInfo!.setExtendedProp('shiftArtists', shift[0].shiftArtists);
             shiftInfo!.setExtendedProp('studioId', shift[0].studioId);
             toast.success('Đăng ký lịch mới thành công');
         },
