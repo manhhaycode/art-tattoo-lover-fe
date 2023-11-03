@@ -1,4 +1,4 @@
-import { EPermissionPermission } from '@/features/auth';
+import { EPermission } from '@/features/auth';
 import { IUser } from '@/features/users';
 import { create } from 'zustand';
 
@@ -7,7 +7,7 @@ interface IAuth {
         id: number;
         name: string;
     };
-    permissions?: EPermissionPermission[];
+    permissions?: EPermission[];
     studioId?: string;
     user?: Partial<IUser>;
 }

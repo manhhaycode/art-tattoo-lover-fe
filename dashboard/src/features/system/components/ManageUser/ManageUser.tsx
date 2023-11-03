@@ -1,8 +1,8 @@
 import { UserIcon } from '@/assets/icons';
 import { roleMap } from '@/features/auth';
 
-import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Modal } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Modal, Input } from '@mantine/core';
+import { useDebouncedState, useDisclosure } from '@mantine/hooks';
 
 import {
     ColumnDef,
@@ -17,7 +17,7 @@ import queryClient from '@/lib/react-query';
 import { IUser } from '@/features/users';
 import { useGetListUser, useUpdateUserMutation } from '@/features/system';
 import TableForm, { SelectCell } from '@/components/TableForm';
-import { Id, toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import BasicUserInfo from '../BasicUserInfo';
 import { useAuthStore } from '@/store/authStore';
 
@@ -30,9 +30,11 @@ export default function ManageUser() {
         pageIndex: 0,
         pageSize: 10,
     });
+    const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
+
     const defaultData = useMemo(() => [], []);
 
-    const dataQuery = useGetListUser({ page: pageIndex, pageSize });
+    const dataQuery = useGetListUser({ page: pageIndex, pageSize, searchKeyword });
     const [dataUpdate, setDataUpdate] = useState<Partial<IUser> | null>(null);
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -202,22 +204,18 @@ export default function ManageUser() {
         debugTable: true,
     });
 
-    const refreshData = useCallback(async (idToast?: Id) => {
+    const refreshData = useCallback(async (idToast?: string, success: boolean = true) => {
         await queryClient.invalidateQueries(['user-list']);
         setRowSelection({});
-        if (idToast)
-            toast.update(idToast, {
-                render: 'Cập nhật thành công',
-                type: 'success',
-                isLoading: false,
-                autoClose: 3000,
-                theme: 'colored',
-            });
+        if (idToast) {
+            if (success) toast.success('Cập nhật thành công', { id: idToast });
+            else toast.error('Có lỗi xảy ra trong quá trình cập nhật', { id: idToast });
+        }
     }, []);
 
     useEffect(() => {
         const callAPI = async (promiseList: unknown[]) => {
-            const id = toast.loading('Đang cập nhật...', { isLoading: true, theme: 'dark' });
+            const id = toast.loading('Đang cập nhật...');
             await Promise.all(promiseList);
             refreshData(id);
         };
@@ -240,7 +238,13 @@ export default function ManageUser() {
 
     return (
         <>
-            <Group justify="flex-end">
+            <Group justify="space-between">
+                <Input
+                    defaultValue={searchKeyword}
+                    onChange={(event) => setSearchKeyword(event.currentTarget.value)}
+                    placeholder="Tìm kiếm người dùng"
+                    className="w-1/2"
+                />
                 <Button onClick={createStateModal[1].open}>Thêm mới người dùng</Button>
             </Group>
             <TableForm

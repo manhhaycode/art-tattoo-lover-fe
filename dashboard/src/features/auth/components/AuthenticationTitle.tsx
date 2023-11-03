@@ -14,7 +14,7 @@ import slider from '@/assets/img/sliderHome1.png';
 import { useLoginMutation } from '../api';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ERoleId, LoginCredentials } from '@/features/auth';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -41,7 +41,7 @@ export default function AuthenticationTitle() {
             if (roleId === ERoleId['SYSTEM_STAFF'] || roleId === ERoleId['ADMIN']) navigate('/system/dashboard');
         },
         onError: () => {
-            toast('Sai tài khoản hoặc mật khẩu hoặc không có quyền đăng nhập', { type: 'error' });
+            toast.error('Sai tài khoản hoặc mật khẩu hoặc không có quyền đăng nhập');
         },
     });
     const { handleSubmit, register } = useForm<LoginCredentials>();

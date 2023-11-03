@@ -65,7 +65,6 @@ export default function EditWorkingTime({
                                     return [...prev];
                                 });
                             }}
-                            defaultValue={data.find((item) => item.dayOfWeek === index)?.openAt}
                         />
                         <TimeInput
                             value={data.find((item) => item.dayOfWeek === index)?.closeAt || ''}

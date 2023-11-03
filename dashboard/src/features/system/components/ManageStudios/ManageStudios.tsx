@@ -1,7 +1,7 @@
 import { StudioIcon } from '@/assets/icons';
 
-import { Checkbox, Text, Group, AspectRatio, Image, rem, Button } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Input } from '@mantine/core';
+import { useDebouncedState, useDisclosure } from '@mantine/hooks';
 
 import {
     ColumnDef,
@@ -14,7 +14,7 @@ import {
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import queryClient from '@/lib/react-query';
 import TableForm, { SelectCell } from '@/components/TableForm';
-import { Id, toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { IStudio, useGetListStudio, useUpdateStudioMutation } from '@/features/studio';
 import DeleteStudios from './DeleteStudios';
 import CreateStudio from './CreateStudio';
@@ -27,8 +27,9 @@ export default function ManageStudios() {
         pageIndex: 0,
         pageSize: 10,
     });
+    const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
     const defaultData = useMemo(() => [], []);
-    const dataQuery = useGetListStudio({ page: pageIndex, pageSize });
+    const dataQuery = useGetListStudio({ page: pageIndex, pageSize, searchKeyword });
     const [dataUpdate, setDataUpdate] = useState<Partial<IStudio | null>>(null);
     const [dataDelete, setDataDelete] = useState<IStudio[]>([]);
     const [rowSelection, setRowSelection] = useState({});
@@ -179,32 +180,20 @@ export default function ManageStudios() {
         getRowId: (row) => row.id,
     });
 
-    const refreshData = useCallback(async (idToast?: Id, success: boolean = true) => {
+    const refreshData = useCallback(async (idToast?: string, success: boolean = true) => {
         await queryClient.invalidateQueries({ queryKey: ['studios'] });
         setRowSelection({});
         if (idToast)
             success
-                ? toast.update(idToast, {
-                      render: 'Cập nhật thành công',
-                      type: 'success',
-                      isLoading: false,
-                      autoClose: 3000,
-                      theme: 'colored',
-                  })
-                : toast.update(idToast, {
-                      render: 'Có lỗi xảy ra trong quá trình cập nhật',
-                      type: 'error',
-                      isLoading: false,
-                      autoClose: 3000,
-                      theme: 'colored',
-                  });
+                ? toast.success('Cập nhật thành công', { id: idToast })
+                : toast.error('Có lỗi xảy ra trong quá trình cập nhật', { id: idToast });
         // dataQuery.refetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         const callAPI = async (promiseList: unknown[]) => {
-            const id = toast.loading('Đang cập nhật...', { isLoading: true, theme: 'dark' });
+            const id = toast.loading('Đang cập nhật...');
             await Promise.all(promiseList)
                 .then(() => refreshData(id, true))
                 .catch(() => refreshData(id, false));
@@ -252,7 +241,15 @@ export default function ManageStudios() {
 
     return (
         <>
-            <CreateStudio refreshData={refreshData} />
+            <Group justify="space-between">
+                <Input
+                    defaultValue={searchKeyword}
+                    onChange={(event) => setSearchKeyword(event.currentTarget.value)}
+                    placeholder="Tìm kiếm studio"
+                    className="w-1/2"
+                />
+                <CreateStudio refreshData={refreshData} />
+            </Group>
             <TableForm
                 table={table}
                 handlePagination={setPagination}

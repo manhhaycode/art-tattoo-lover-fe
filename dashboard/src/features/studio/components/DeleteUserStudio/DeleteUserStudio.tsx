@@ -1,7 +1,7 @@
 import { Modal, Text, Group, Button, AspectRatio, Image, rem } from '@mantine/core';
 import { IUserStudio, useDeleteUserStudioMutation } from '@/features/studio';
 import { UserIcon } from '@/assets/icons';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 export default function DeleteUserStudio({
     dataList,
     opened,
@@ -17,10 +17,10 @@ export default function DeleteUserStudio({
         onSuccess: () => {
             close();
             refreshData();
-            toast('Xóa tài khoản thành công', { type: 'success' });
+            toast.success('Xóa tài khoản thành công');
         },
         onError: () => {
-            toast('Có lỗi xảy ra, vui lòng thử lại', { type: 'error' });
+            toast.error('Có lỗi xảy ra, vui lòng thử lại');
         },
     });
 
@@ -67,6 +67,7 @@ export default function DeleteUserStudio({
                     Hủy
                 </Button>
                 <Button
+                    loading={deleteUserStudioMutation.isLoading}
                     onClick={() => {
                         dataList.map((data) => {
                             deleteUserStudioMutation.mutate(data.id);

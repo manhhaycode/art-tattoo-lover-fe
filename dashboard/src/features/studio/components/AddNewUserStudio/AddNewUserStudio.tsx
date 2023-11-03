@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateUserStudioMutation } from '@/features/studio';
 import { ICreateUserStudioReq } from '@/features/studio';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { roleMap } from '@/features/auth';
 import { useAuthStore } from '@/store/authStore';
 
@@ -21,11 +21,11 @@ export default function AddNewUserStudio({ refreshData }: { refreshData: () => v
     const createUserStudioMutation = useCreateUserStudioMutation({
         onSuccess: () => {
             close();
-            toast('Thêm tài khoản thành công', { type: 'success' });
+            toast.success('Thêm tài khoản thành công');
             refreshData();
         },
         onError: () => {
-            toast('Có lỗi xảy ra, vui lòng thử lại', { type: 'error' });
+            toast.error('Có lỗi xảy ra, vui lòng thử lại');
         },
     });
 
@@ -87,7 +87,11 @@ export default function AddNewUserStudio({ refreshData }: { refreshData: () => v
                                 }}
                                 data={Object.entries(roleMap)
                                     .filter((role) => {
-                                        return Number(role[0]) >= (accountType?.role?.id || 3) && Number(role[0]) < 6;
+                                        return (
+                                            Number(role[0]) >= (accountType?.role?.id || 3) &&
+                                            Number(role[0]) < 6 &&
+                                            Number(role[0]) >= 3
+                                        );
                                     })
                                     .map(([key, value]) => ({ value: key, label: value }))}
                                 rightSectionProps={{ className: 'hidden' }}

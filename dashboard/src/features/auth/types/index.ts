@@ -26,10 +26,10 @@ export interface ISession {
     roleId: number;
     studioId?: string;
     sessionId: string;
-    permissions: EPermissionPermission[];
+    permissions: EPermission[];
 }
 
-export enum EPermissionPermission {
+export enum EPermission {
     MANAGE_BLOG = 'BLOG.ALL',
     MANAGE_OWNED_BLOG = 'BLOG.OWN',
     MANAGE_CATEGORY = 'CATE.ALL',

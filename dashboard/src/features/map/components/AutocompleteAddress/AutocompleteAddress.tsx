@@ -4,7 +4,7 @@ import { useSearchLocationStore } from '@/store/componentStore';
 import { useDebouncedState, useFocusWithin } from '@mantine/hooks';
 import { useAutoCompleteLocation } from '@/features/map/api';
 import { DropwdownInput } from '@/components/Dropdown';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
 const AutocompleteAddress = ({
     defaultValue,

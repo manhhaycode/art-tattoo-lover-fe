@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { Text, useMantineTheme } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
 const ManageStudios = lazy(() => import('@/features/system/components/ManageStudios'));
 export default function SystemManageStudio() {
@@ -10,7 +10,7 @@ export default function SystemManageStudio() {
     const location = useLocation();
     useEffect(() => {
         if (location.state && location.state.message) {
-            toast(location.state.message, { type: 'error', theme: 'dark' });
+            toast.error(location.state.message);
             navigate('/system/manage-studios', { replace: true });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
