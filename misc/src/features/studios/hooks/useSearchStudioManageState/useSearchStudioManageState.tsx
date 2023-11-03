@@ -10,6 +10,8 @@ const useSearchStudioManageState = () => {
     const category = searchParams.get('category');
     const rating = searchParams.get('rating');
     const sort = searchParams.get('sort');
+    const page = Number(searchParams.get('page') || 0);
+    const pageSize = Number(searchParams.get('pageSize') || 15);
     const { reset, setFilterData, filterData, isQuery, setIsQuery } = useFilterFormStore();
     const query = useGetListStudio(
         filterData && checkFilterEmpty(filterData)
@@ -18,8 +20,8 @@ const useSearchStudioManageState = () => {
                   category: category || undefined,
                   rating: rating?.split(',').map((item) => Number(item)) || undefined,
                   sort: sort || undefined,
-                  pageSize: 10,
-                  page: 0,
+                  pageSize,
+                  page,
               }
             : {},
     );
@@ -48,7 +50,7 @@ const useSearchStudioManageState = () => {
     }, []);
 
     // if (isLoading) return <div>Loading...</div>;
-    return { ...query, params: { searchKeyword, category, rating, sort } };
+    return { ...query, params: { searchKeyword, category, rating, sort }, entries: searchParams.entries() };
 };
 
 export default useSearchStudioManageState;

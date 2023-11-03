@@ -22,6 +22,9 @@ const AutocompleteAddress = ({ isVisible, navigateOnClickOption, ...props }: Aut
             {isVisible && (
                 <Input
                     {...props}
+                    classNames={{
+                        input: 'bg-white text-black',
+                    }}
                     ref={inputRef}
                     placeholder="Nhập vị trí cần tìm"
                     defaultValue={value}

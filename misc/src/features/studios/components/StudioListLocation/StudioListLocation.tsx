@@ -4,26 +4,30 @@ import { convertAdressComponents } from '@/lib/helper/googleMapHelper';
 import { useFilterFormStore, useGoogleMapStore } from '@/store/componentStore';
 import { Suspense, lazy, useEffect } from 'react';
 import { useGetListStudio } from '@/features/studios';
+import { Group, Pagination } from '@mantine/core';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const StudioCardInfo = lazy(() => import('./StudioCardInfo'));
 
 export default function StudioListLocation() {
     const { placeDetail } = useGoogleMapStore();
+    const search = useSearchParams();
+    const navigate = useNavigate();
     const { filterData, setIsQuery, setListStudio, reset } = useFilterFormStore();
-    const { data, isLoading } = useGetListStudio(
+    const { data, isFetching } = useGetListStudio(
         filterData?.viewPortNE && filterData?.viewPortSW
             ? {
                   ...filterData,
-                  page: 0,
-                  pageSize: 10,
+                  page: (search[0].get('page') && Number(search[0].get('page')) - 1) || 0,
+                  pageSize: 15,
               }
             : {},
     );
 
     useEffect(() => {
-        setIsQuery(isLoading);
+        setIsQuery(isFetching);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoading]);
+    }, [isFetching]);
 
     useEffect(() => {
         return () => reset();
@@ -54,6 +58,28 @@ export default function StudioListLocation() {
                     {data && data.data.map((studio) => <StudioCardInfo key={studio.id} studio={studio} />)}
                 </Suspense>
             </div>
+            {data && (
+                <Group position="left">
+                    <Pagination
+                        className="ml-auto mt-5"
+                        value={data.page + 1}
+                        onChange={(value) => {
+                            if (value === data.page + 1) return;
+                            window.scrollTo(0, 0);
+                            const entries = search[0].entries();
+                            const searchParams = new URLSearchParams();
+                            for (const [key, value] of entries) {
+                                searchParams.append(key, value);
+                            }
+
+                            searchParams.set('page', String(value));
+                            navigate(`/search-location?${searchParams.toString()}`);
+                        }}
+                        size={'md'}
+                        total={(data.total && Math.ceil(data?.total / data.pageSize)) || 0}
+                    ></Pagination>
+                </Group>
+            )}
         </>
     );
 }

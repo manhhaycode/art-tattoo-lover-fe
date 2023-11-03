@@ -40,14 +40,14 @@ export default function SearchLocation() {
                             navigate(
                                 `/search-location?location=${searchParams.get('location')}&placeId=${searchParams.get(
                                     'placeId',
-                                )}`,
+                                )}&page=${searchParams.get('page') || 0}`,
                             );
                         }}
                         onClickCategory={(category) => {
                             navigate(
                                 `/search-location?location=${searchParams.get('location')}&placeId=${searchParams.get(
                                     'placeId',
-                                )}&category=${category.id}`,
+                                )}&category=${category.id}&page=${searchParams.get('page') || 0}`,
                             );
                         }}
                     />
