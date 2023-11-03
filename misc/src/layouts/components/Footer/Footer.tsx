@@ -1,30 +1,29 @@
-// import { Facebook, Instagram, Pinterest, Twitter, YouTube } from '@mui/icons-material';
-// import { Container, IconButton, Typography, styled } from '@mui/material';
-// export  default function Footer(){
-// const FooterContainer = styled('footer')(({ theme }) => ({
-//   backgroundColor: theme.palette.primary.main,
-//   color: theme.palette.primary.contrastText,
-//   padding: theme.spacing(2),
-//   marginTop: 'auto',
-// }));
+export default function Footer() {
+    const footerStyle = {
+        backgroundColor: "#607d8b",
+        color: "white",
+        padding: "16px",
+        marginTop: "auto",
+    };
 
-//   return (
-//     <FooterContainer sx={{ background: "#607d8b"}}>
-//       <Container maxWidth="md">
-//       <Typography variant="body1" align="center">
-//         SOCIAL MEDIA
-//         </Typography>
-//         <Typography variant="body1" align="center">
-//       <IconButton size="large" edge="start" color="inherit" aria-label="logo"><Facebook /></IconButton>
-//       <IconButton size="large" edge="start" color="inherit" aria-label="logo"><Instagram /></IconButton>
-//       <IconButton size="large" edge="start" color="inherit" aria-label="logo"><Twitter /></IconButton>
-//       <IconButton size="large" edge="start" color="inherit" aria-label="logo"><Pinterest /></IconButton>
-//       <IconButton size="large" edge="start" color="inherit" aria-label="logo"><YouTube /></IconButton>
-//       </Typography>
-//         <Typography variant="body1" align="center">
-//         ©Art Tatto Lover
-//         </Typography>
-//       </Container>
-//     </FooterContainer>
-//   );
-// };
+    const iconStyle = {
+        fontSize: "2rem",
+        margin: "0 8px",
+    };
+
+    return (
+        <footer style={footerStyle}>
+            <div className="container">
+                <p style={{ textAlign: "center" }}>SOCIAL MEDIA</p>
+                <p style={{ textAlign: "center" }}>
+                    <a href="https://www.facebook.com"><i className="fab fa-facebook" style={iconStyle}></i></a>
+                    <a href="https://www.instagram.com"><i className="fab fa-instagram" style={iconStyle}></i></a>
+                    <a href="https://www.twitter.com"><i className="fab fa-twitter" style={iconStyle}></i></a>
+                    <a href="https://www.pinterest.com"><i className="fab fa-pinterest" style={iconStyle}></i></a>
+                    <a href="https://www.youtube.com"><i className="fab fa-youtube" style={iconStyle}></i></a>
+                </p>
+                <p style={{ textAlign: "center" }}>©Art Tatto Lover</p>
+            </div>
+        </footer>
+    );
+}
