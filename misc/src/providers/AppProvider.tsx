@@ -21,6 +21,8 @@ export default function AppProvider({ children }: { children: React.ReactNode })
                 withNormalizeCSS
                 theme={{
                     colorScheme: theme === 'light' ? 'light' : 'dark',
+                    primaryColor: 'red',
+                    primaryShade: 5,
                 }}
             >
                 <Suspense fallback={<div className="h-screen w-screen bg-dark-theme"></div>}>

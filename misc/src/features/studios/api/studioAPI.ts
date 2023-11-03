@@ -51,7 +51,7 @@ export const useGetListStudio = (filter: IFilter) => {
         queryKey: ['studios', filter],
         queryFn: () => getListStudio(filter),
         staleTime: Infinity,
-        // keepPreviousData: true,
+        keepPreviousData: true,
     });
 };
 
