@@ -6,7 +6,7 @@ export default function NavBar() {
     const location = useLocation();
     const navigate = useNavigate();
     return (
-        <div className="w-[350px] bg-gray-dark border-r-2 border-search-gray-dark h-[calc(100vh-80px)] top-20 sticky flex flex-col gap-y-4 p-4">
+        <div className="min-w-[350px] bg-gray-dark border-r-2 border-search-gray-dark h-[calc(100vh-80px)] top-20 sticky flex flex-col gap-y-4 p-4">
             <Button
                 onClick={() => {
                     navigate('/user/profile');
@@ -26,7 +26,7 @@ export default function NavBar() {
                 {...(!location.pathname.includes('book-tracking') && { style: { background: 'transparent' } })}
             >
                 <CalendarIcon styles={{ width: '24px', height: '24px' }} />
-                <p className="font-medium text-base">Theo dõi lịch Booking</p>
+                <p className="font-medium text-base">Theo dõi lịch hẹn</p>
             </Button>
             <Button
                 onClick={() => {

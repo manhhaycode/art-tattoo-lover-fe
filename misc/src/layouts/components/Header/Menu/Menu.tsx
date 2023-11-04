@@ -96,7 +96,7 @@ export default function Menu() {
                                 }}
                                 className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
                             >
-                                Theo dõi lịch booking
+                                Theo dõi lịch hẹn
                             </button>
                             <button
                                 onClick={() => {
