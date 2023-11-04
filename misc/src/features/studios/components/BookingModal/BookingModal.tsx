@@ -10,6 +10,8 @@ import { clsx } from '@mantine/core';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import queryClient from '@/lib/react-query';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -27,6 +29,7 @@ const BookingModal = () => {
     const [date, setDate] = useState<string>(defaultDate.value);
     const [selectedShift, setSelectedShift] = useState<string | null>();
     const [notes, setNotes] = useState<string>('');
+    const navigate = useNavigate();
 
     const { data: artists } = useQuery(['artists'], async () => {
         if (!bookingModal?.studioId) return [];
@@ -88,6 +91,8 @@ const BookingModal = () => {
             reset();
             setBookingModal(false, null);
             toast.success('Đặt lịch thành công');
+            navigate('/user/book-tracking');
+            queryClient.invalidateQueries(['appointments']);
         },
         onError() {
             toast.error('Đặt lịch thất bại');

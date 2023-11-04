@@ -11,6 +11,15 @@ export const AppointmentStatus = {
     '5': 'Đã quá hạn',
 };
 
+export const AppointmentStatusString = {
+    PENDING: '0',
+    CONFIRMED: '1',
+    RESCHEDULED: '2',
+    CANCELED: '3',
+    DONE: '4',
+    LATE: '5',
+};
+
 export type ShiftUser = {
     shiftId: string;
     userId: string;
@@ -26,6 +35,14 @@ export type AppointmentType = {
     notes: string | null;
     artist: ShiftUser | null;
     shift: Shift;
+    status: keyof typeof AppointmentStatus;
+};
+
+export type AppointmentRescheduleReq = {
+    appointmentId: string;
+    shiftId: string;
+    notes?: string;
+    artistId?: string;
 };
 
 export interface AppointmentResp extends PaginationResp {

@@ -1,18 +1,42 @@
 import { IStudio } from '@/features/studios';
-import { AppointmentType } from '../../types/appointment';
+import { AppointmentStatusString, AppointmentType } from '../../types/appointment';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
 import Button from '@/components/common/Button';
 import { formatStringDate } from '@/lib/helper/dateHelper';
 
 import { IconCalendar, IconCalendarPin, IconCalendarRepeat, IconCalendarX } from '@tabler/icons-react';
+import AppointmentStatusTag from './AppointmentStatus';
+import { useMutation } from '@tanstack/react-query';
+import { cancelAppointment } from '../../api/appointmentAPI';
+import { toast } from 'react-toastify';
 
 interface Props {
     appointment: AppointmentType;
     studio: IStudio;
+    refetch: () => void;
 }
-const AppointmentCard = ({ appointment, studio }: Props) => {
+const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
+    const { mutate: cancelMutate } = useMutation({
+        mutationKey: ['cancelAppointment', appointment.id],
+        mutationFn: async () => {
+            return cancelAppointment(appointment.id);
+        },
+        onMutate: () => {
+            toast.loading('Đang hủy lịch...');
+        },
+        onSuccess: () => {
+            toast.dismiss();
+            toast.success('Hủy lịch thành công');
+            refetch();
+        },
+        onError: () => {
+            toast.dismiss();
+            toast.error('Hủy lịch thất bại');
+        },
+    });
+
     return (
-        <div className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown">
+        <div className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
             <div className="flex w-full gap-2">
                 <img
                     className="cursor-pointer rounded-xl w-40 aspect-video"
@@ -36,12 +60,25 @@ const AppointmentCard = ({ appointment, studio }: Props) => {
                 </div>
             </div>
 
+            <div className="absolute top-3 right-3">
+                <AppointmentStatusTag status={appointment.status} />
+            </div>
+
             <div className="flex gap-4 mt-4">
-                <Button className="w-full" typeStyle="secondary">
+                <Button
+                    className="w-full h-fit py-3 hover:opacity-80"
+                    typeStyle="secondary"
+                    onClick={() => {
+                        if (appointment.status.toString() !== AppointmentStatusString.CANCELED) {
+                            cancelMutate();
+                        }
+                    }}
+                    disabled={appointment.status.toString() === AppointmentStatusString.CANCELED}
+                >
                     <IconCalendarX size={18} className="text-white" />
                     <span>Hủy lịch</span>
                 </Button>
-                <Button className="w-full">
+                <Button className="w-full h-fit py-3 hover:opacity-90">
                     <IconCalendarRepeat size={18} className="text-white" />
                     <span>Đặt lại lịch</span>
                 </Button>

@@ -1,5 +1,5 @@
 import * as httpAuth from '@/lib/axios-auth';
-import { AppointmentResp } from '../types/appointment';
+import { AppointmentRescheduleReq, AppointmentResp } from '../types/appointment';
 import { toast } from 'react-toastify';
 import { PaginationQuery } from '@/config/types/pagination';
 
@@ -20,5 +20,21 @@ export const getAppointments = async (query: PaginationQuery): Promise<Appointme
             total: 0,
             appointments: [],
         };
+    }
+};
+
+export const cancelAppointment = async (id: string): Promise<void> => {
+    try {
+        return httpAuth.put(`/appointment/cancel/${id}`, {});
+    } catch (error) {
+        toast.error(error.message);
+    }
+};
+
+export const rescheduleAppointment = async (req: AppointmentRescheduleReq): Promise<void> => {
+    try {
+        return httpAuth.put(`/appointment/reschedule/${req.appointmentId}`, req);
+    } catch (error) {
+        toast.error(error.message);
     }
 };
