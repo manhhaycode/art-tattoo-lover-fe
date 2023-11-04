@@ -228,7 +228,7 @@ html *::-webkit-scrollbar {
 }
 
 .fc-timegrid-slots table tbody tr {
-    height: 200px;
+    height: 120px;
 }
 
 .fc-theme-standard td,
