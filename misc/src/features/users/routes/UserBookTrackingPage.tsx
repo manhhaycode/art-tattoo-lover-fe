@@ -119,7 +119,8 @@ export default function UserBookTrackingPage() {
 
             {appointments?.appointments.length === 0 && (
                 <p className="text-sm italic mt-2">
-                    Bạn chưa có lịch hẹn nào {AppointmentStatus[status as keyof typeof AppointmentStatus].toLowerCase()}
+                    Bạn chưa có lịch hẹn nào{' '}
+                    {AppointmentStatus[status as keyof typeof AppointmentStatus]?.toLowerCase()}
                 </p>
             )}
         </div>
