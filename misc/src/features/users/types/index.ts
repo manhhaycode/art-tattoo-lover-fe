@@ -14,6 +14,14 @@ export interface IUser {
     status: number;
 }
 
+export interface IArtist {
+    id: string;
+    studioId: string;
+    userId: string;
+    isDisabled: boolean;
+    user: IUser;
+}
+
 export interface UserCredentials {
     fullName: string;
     phone: string;

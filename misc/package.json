@@ -23,6 +23,7 @@
         "@mantine/dropzone": "^6.0.21",
         "@mantine/hooks": "^6.0.21",
         "@react-google-maps/api": "^2.19.2",
+        "@tabler/icons-react": "^2.40.0",
         "@tanstack/react-query": "^4.35.3",
         "axios": "^1.4.0",
         "dayjs": "^1.11.10",
