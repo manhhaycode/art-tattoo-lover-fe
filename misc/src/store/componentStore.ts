@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PlaceData } from '@googlemaps/google-maps-services-js';
 import { IFilter, IStudio } from '@/features/studios';
 import { EPositionOverlayView } from '@/features/map/types';
+import { AppointmentType } from '@/features/users/types/appointment';
 interface SearchLocationState {
     placeChoose: Partial<google.maps.places.AutocompletePrediction> | null;
     setPlaceChoose: (placeId: Partial<google.maps.places.AutocompletePrediction> | null) => void;
@@ -37,6 +38,12 @@ export const useGoogleMapStore = create<GoogleMapState>((set) => ({
     setPlaceDetail: (placeDetail) => set({ placeDetail }),
 }));
 
+interface IBookingModal {
+    visible: boolean;
+    studioId: string | null;
+    appointmentReschedule: AppointmentType | null;
+}
+
 interface ModalState {
     isLoginModalVisible: boolean;
     setIsLoginModalVisible: (isLoginModalVisible: boolean) => void;
@@ -46,11 +53,8 @@ interface ModalState {
     setIsResetPasswordModalVisible: (isResetPasswordModalVisible: boolean) => void;
     isModalVisible: boolean;
     setIsModalVisible: (isModalVisible: boolean) => void;
-    bookingModal: {
-        visible: boolean;
-        studioId: string | null;
-    };
-    setBookingModal: (visible: boolean, studioId: string | null) => void;
+    bookingModal: IBookingModal;
+    setBookingModal: (bookingModal: IBookingModal) => void;
     reset: () => void;
 }
 
@@ -66,14 +70,12 @@ export const useModalStore = create<ModalState>((set) => ({
     bookingModal: {
         visible: false,
         studioId: null,
+        appointmentReschedule: null,
     },
-    setBookingModal: (visible: boolean, studioId: string | null) =>
+    setBookingModal: (bookingModal: IBookingModal) =>
         set({
-            bookingModal: {
-                visible,
-                studioId,
-            },
-            isModalVisible: visible,
+            bookingModal,
+            isModalVisible: bookingModal.visible,
         }),
     reset: () => {
         set({
@@ -84,6 +86,7 @@ export const useModalStore = create<ModalState>((set) => ({
             bookingModal: {
                 visible: false,
                 studioId: null,
+                appointmentReschedule: null,
             },
         });
     },

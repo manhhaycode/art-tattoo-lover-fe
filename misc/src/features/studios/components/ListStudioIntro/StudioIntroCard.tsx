@@ -42,7 +42,11 @@ export default function StudioIntroCard({
                             if (!studio) {
                                 toast.info('Vui lòng chọn studio trước');
                             } else {
-                                setBookingModal(true, studio.id as string);
+                                setBookingModal({
+                                    studioId: studio.id as string,
+                                    appointmentReschedule: null,
+                                    visible: true,
+                                });
                             }
                         }
                     }}

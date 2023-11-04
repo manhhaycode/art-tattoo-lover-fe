@@ -12,6 +12,7 @@ import Input from '@/components/common/Input';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import queryClient from '@/lib/react-query';
+import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -79,29 +80,58 @@ const BookingModal = () => {
                 return;
             }
 
-            const res = await bookAppointment({
-                shiftId: selectedShift,
-                artistId: artist != '' ? artist : undefined,
-                notes: notes ?? undefined,
-            });
+            if (bookingModal.appointmentReschedule) {
+                const res = await rescheduleAppointment({
+                    appointmentId: bookingModal.appointmentReschedule.id,
+                    shiftId: selectedShift,
+                    artistId: artist ? artist : undefined,
+                    notes: notes ?? undefined,
+                });
 
-            return res;
+                return res;
+            } else {
+                const res = await bookAppointment({
+                    shiftId: selectedShift,
+                    artistId: artist != '' ? artist : undefined,
+                    notes: notes ?? undefined,
+                });
+
+                return res;
+            }
         },
         onSuccess() {
             reset();
-            setBookingModal(false, null);
+            setBookingModal({
+                visible: false,
+                studioId: null,
+                appointmentReschedule: null,
+            });
             toast.success('Đặt lịch thành công');
             navigate('/user/book-tracking');
             queryClient.invalidateQueries(['appointments']);
         },
-        onError() {
-            toast.error('Đặt lịch thất bại');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError(error: any) {
+            toast.error(error.message as string);
         },
     });
 
     useEffect(() => {
-        reset();
-    }, [bookingModal.visible]);
+        if (bookingModal.visible && bookingModal.appointmentReschedule) {
+            setArtist(bookingModal.appointmentReschedule.doneBy ?? '');
+            if (
+                dayjs(bookingModal.appointmentReschedule.shift.start).format('YYYY-MM-DD') ===
+                dayjs().format('YYYY-MM-DD')
+            ) {
+                setDate('today');
+            } else {
+                setDate(dayjs(bookingModal.appointmentReschedule.shift.start).format('YYYY-MM-DD'));
+            }
+            setSelectedShift(bookingModal.appointmentReschedule.shiftId);
+        } else {
+            reset();
+        }
+    }, [bookingModal.appointmentReschedule, bookingModal.visible]);
 
     return (
         <div className="flex flex-col overflow-auto h-full w-full max-w-lg px-10 ">

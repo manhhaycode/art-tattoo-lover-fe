@@ -2,13 +2,14 @@ import { IStudio } from '@/features/studios';
 import { AppointmentStatusString, AppointmentType } from '../../types/appointment';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
 import Button from '@/components/common/Button';
-import { formatStringDate } from '@/lib/helper/dateHelper';
+import { formatStringTime } from '@/lib/helper/dateHelper';
 
 import { IconCalendar, IconCalendarPin, IconCalendarRepeat, IconCalendarX } from '@tabler/icons-react';
 import AppointmentStatusTag from './AppointmentStatus';
 import { useMutation } from '@tanstack/react-query';
 import { cancelAppointment } from '../../api/appointmentAPI';
 import { toast } from 'react-toastify';
+import { useModalStore } from '@/store/componentStore';
 
 interface Props {
     appointment: AppointmentType;
@@ -16,6 +17,8 @@ interface Props {
     refetch: () => void;
 }
 const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
+    const { setBookingModal } = useModalStore();
+
     const { mutate: cancelMutate } = useMutation({
         mutationKey: ['cancelAppointment', appointment.id],
         mutationFn: async () => {
@@ -55,7 +58,7 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
 
                     <div className="flex items-center gap-1">
                         <IconCalendar size={16} className="text-white w-5" />
-                        <h6 className="text-sm">{formatStringDate(appointment.shift.start)}</h6>
+                        <h6 className="text-sm">{formatStringTime(appointment.shift.start)}</h6>
                     </div>
                 </div>
             </div>
@@ -78,7 +81,17 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                     <IconCalendarX size={18} className="text-white" />
                     <span>Hủy lịch</span>
                 </Button>
-                <Button className="w-full h-fit py-3 hover:opacity-90">
+                <Button
+                    className="w-full h-fit py-3 hover:opacity-90"
+                    onClick={() => {
+                        setBookingModal({
+                            visible: true,
+                            studioId: studio.id,
+                            appointmentReschedule: appointment,
+                        });
+                    }}
+                    disabled={appointment.status.toString() === AppointmentStatusString.CANCELED}
+                >
                     <IconCalendarRepeat size={18} className="text-white" />
                     <span>Đặt lại lịch</span>
                 </Button>

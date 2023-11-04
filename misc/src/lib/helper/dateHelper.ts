@@ -12,6 +12,10 @@ export const formatStringDate = (date: string | Date) => {
     return `Thứ ${dayOfweek + 1} ${dayjs(date).format('DD/MM')}`;
 };
 
+export const formatStringTime = (date: string | Date) => {
+    return dayjs(date).format('HH:mm ') + formatStringDate(date);
+};
+
 export const generateFromTodayToEndOfWeek = () => {
     const today = dayjs();
     const endOfWeek = dayjs().endOf('week');
