@@ -5,7 +5,7 @@ import { PaginationResp } from '@/config/types/pagination';
 export const AppointmentStatus = {
     '0': 'Chờ xác nhận',
     '1': 'Đã xác nhận',
-    '2': 'Thay đổi lịch',
+    '2': 'Đã đặt lại',
     '3': 'Đã hủy',
     '4': 'Đã hoàn thành',
     '5': 'Đã quá hạn',

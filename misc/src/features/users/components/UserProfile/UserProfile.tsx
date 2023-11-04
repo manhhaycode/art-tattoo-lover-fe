@@ -1,10 +1,11 @@
 import { useUserProfileManageState } from '@/features/users/hooks';
 import BasicInfoForm from './BasicInfoForm';
 import ChangePasswordForm from './ChangePasswordForm';
+import Loading from '@/components/Loading';
 
 export default function UserProfile() {
     const { isLoading, accountType, onMount } = useUserProfileManageState();
-    if (isLoading || !accountType) return <div>Loading...</div>;
+    if (isLoading || !accountType) return <Loading />;
     return (
         <>
             {accountType && onMount && (
