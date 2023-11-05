@@ -27,15 +27,6 @@ const updateAppointment = async (data: IUpdateAppointmentReq): Promise<IUpdateAp
     }
 };
 
-const cancelAppointment = async (id: string): Promise<IUpdateAppointment> => {
-    try {
-        const response = await httpAuth.put(`/appointment/cancel/${id}`, {});
-        return response;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-};
-
 export const useGetListAppointmentStudio = (filter: IFilterAppointment, enabled?: boolean) => {
     return useQuery({
         queryKey: ['appointmentsStudio', filter],
@@ -53,19 +44,6 @@ export const useUpdateAppointmentMutation = (handleFn: {
 }) => {
     return useMutation({
         mutationFn: (data: IUpdateAppointmentReq) => updateAppointment(data),
-        onError: handleFn.onError,
-        onSuccess: handleFn.onSuccess,
-        onMutate: handleFn.onMutate,
-    });
-};
-
-export const useCancelAppointmentMutation = (handleFn: {
-    onError?: (error: Error, variables: string, context: unknown) => void;
-    onSuccess?: (data: IUpdateAppointment, variables: string, context: unknown) => void;
-    onMutate?: (variables: string) => Promise<IUpdateAppointment>;
-}) => {
-    return useMutation({
-        mutationFn: (id: string) => cancelAppointment(id),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,

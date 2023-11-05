@@ -125,6 +125,7 @@ export default function ManageAppointment() {
                     return (
                         <Group>
                             <ActionIcon
+                                disabled={row.original.status === 3 || row.original.status === 4}
                                 onClick={() => {
                                     editModalState[1].open();
                                     setIsEdit(true);
@@ -135,7 +136,9 @@ export default function ManageAppointment() {
                             </ActionIcon>
 
                             <ActionIcon
-                                disabled={row.original.status === 1}
+                                disabled={
+                                    row.original.status === 1 || row.original.status === 3 || row.original.status === 4
+                                }
                                 onClick={() => {
                                     editModalState[1].open();
                                     setIsEdit(false);
@@ -146,7 +149,9 @@ export default function ManageAppointment() {
                                 <AiOutlineCheck color="black" />
                             </ActionIcon>
                             <ActionIcon
-                                disabled={!row.getIsSelected()}
+                                disabled={
+                                    !row.getIsSelected() || row.original.status === 3 || row.original.status === 4
+                                }
                                 onClick={() => {
                                     cancelModalState[1].open();
                                     setAppointmentChoose(row.original);
