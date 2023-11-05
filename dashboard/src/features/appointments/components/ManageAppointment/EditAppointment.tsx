@@ -83,7 +83,7 @@ export default function EditAppointment({
                         if (duration.match(regex) && selectedArtist)
                             return updateAppointmentMutation.mutate({
                                 artistId: selectedArtist.id,
-                                status: selectedStatus!,
+                                status: isEdit ? selectedStatus! : 1,
                                 shiftId: selectedShift?.id,
                                 id: appointmentInfo.id,
                             });

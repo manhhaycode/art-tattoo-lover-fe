@@ -1,8 +1,9 @@
 import { AspectRatio, Button, Group, Image, Modal, Text, rem } from '@mantine/core';
-import { IAppointmentStudio, useCancelAppointmentMutation } from '@/features/appointments';
+import { IAppointmentStudio, useUpdateAppointmentMutation } from '@/features/appointments';
 import { UserIcon } from '@/assets/icons';
 import toast from 'react-hot-toast';
 import { convertStartEndTimeToDisplayFormat } from '@/lib/helper';
+import queryClient from '@/lib/react-query';
 
 export default function CancelAppointment({
     handleModalState,
@@ -18,13 +19,16 @@ export default function CancelAppointment({
     ];
     appointmentList?: IAppointmentStudio[];
 }) {
-    const cancelAppointmentMutation = useCancelAppointmentMutation({
+    const updateAppointmentMutation = useUpdateAppointmentMutation({
         onSuccess: () => {
-            handleModalState[1].close();
             toast.success('Hủy lịch hẹn thành công');
+            queryClient.invalidateQueries(['appointmentsStudio']);
+            handleModalState[1].close();
         },
         onError: (error) => {
-            toast.error(error.message);
+            toast.error('Hủy lịch hẹn thất bại');
+            queryClient.invalidateQueries(['appointmentsStudio']);
+            console.log(error);
         },
     });
 
@@ -84,10 +88,10 @@ export default function CancelAppointment({
                             Hủy
                         </Button>
                         <Button
-                            loading={cancelAppointmentMutation.isLoading}
+                            loading={updateAppointmentMutation.isLoading}
                             onClick={() => {
                                 appointmentList.map((appointment) => {
-                                    cancelAppointmentMutation.mutate(appointment.id);
+                                    updateAppointmentMutation.mutate({ id: appointment.id, status: 3 });
                                 });
                             }}
                             color="red.6"
