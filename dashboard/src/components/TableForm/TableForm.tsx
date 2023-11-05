@@ -9,12 +9,14 @@ export default function TableForm<T extends object>({
     pageIndex,
     pageSize,
     total,
+    handleClickRow,
 }: {
     table: TableProps<T>;
     handlePagination: React.Dispatch<React.SetStateAction<PaginationState>>;
     pageIndex: number;
     pageSize: number;
     total: number;
+    handleClickRow?: (row: T) => void;
 }) {
     return (
         <>
@@ -50,7 +52,14 @@ export default function TableForm<T extends object>({
                     <Table.Tbody>
                         {table.getRowModel().rows.map((row) => {
                             return (
-                                <Table.Tr key={row.id} variant="disabled">
+                                <Table.Tr
+                                    key={row.id}
+                                    variant="disabled"
+                                    className="cursor-pointer"
+                                    onClick={() => {
+                                        handleClickRow && handleClickRow(row.original);
+                                    }}
+                                >
                                     {row.getVisibleCells().map((cell) => {
                                         return (
                                             <Table.Td key={cell.id}>

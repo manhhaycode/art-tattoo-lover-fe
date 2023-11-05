@@ -17,6 +17,7 @@ import CreateShift from './CreateShift';
 import { EventImpl } from '@fullcalendar/core/internal';
 import queryClient from '@/lib/react-query';
 import { EPermission } from '@/features/auth';
+import { useUnmount } from 'react-use';
 
 export default function ScheduleWorking() {
     const calendarRef = useRef<FullCalendar>(null);
@@ -51,6 +52,11 @@ export default function ScheduleWorking() {
             calendarRef.current.getApi().addEventSource(shift.data);
         }
     }, [shift.data]);
+
+    useUnmount(() => {
+        queryClient.invalidateQueries(['shifts']);
+        queryClient.invalidateQueries(['shift']);
+    });
 
     return (
         <>
