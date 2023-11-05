@@ -82,6 +82,7 @@ export const useGetShiftList = (filter: IShiftReq) => {
         queryFn: () => getShiftList(filter),
         staleTime: Infinity,
         keepPreviousData: true,
+        enabled: filter.end.length > 0 && filter.start.length > 0,
     });
 };
 
@@ -91,6 +92,7 @@ export const useGetShiftDetail = (shiftId: string) => {
         queryFn: () => getShiftDetail(shiftId),
         staleTime: Infinity,
         keepPreviousData: true,
+        enabled: shiftId.length > 0,
     });
 };
 

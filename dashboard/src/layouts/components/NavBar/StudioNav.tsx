@@ -111,6 +111,30 @@ export default function StudioNav() {
                             Lịch làm việc của artist
                         </Button>
                     )}
+                    {(permissions.includes(EPermission.MANAGE_STUDIO_BOOKING) ||
+                        permissions.includes(EPermission.VIEW_STUDIO_BOOKING)) && (
+                        <Button
+                            fullWidth
+                            mih={40}
+                            {...(!location.pathname.includes('manage-appointment')
+                                ? {
+                                      ...{
+                                          ...(schema.colorScheme === 'light' && {
+                                              classNames: { inner: '!text-black' },
+                                          }),
+                                      },
+                                      variant: 'subtle',
+                                  }
+                                : { variant: 'gradient' })}
+                            onClick={() => {
+                                navigate('/studio/manage-appointment');
+                            }}
+                            className="flex gap-x-3 justify-start active:transform-none text-base"
+                            leftSection={<MdSchedule size={24} />}
+                        >
+                            Quản lý lịch hẹn xăm
+                        </Button>
+                    )}
                 </Group>
                 <Logout
                     onSuccess={() => {

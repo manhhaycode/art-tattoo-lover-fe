@@ -13,6 +13,7 @@ import {
     IUpdateUserStudio,
     IUpdateUserStudioReq,
     IUserListReq,
+    IUserStudio,
 } from '../types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -41,6 +42,17 @@ const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
 const getStudio = async (id: string): Promise<IStudio> => {
     try {
         const response: IStudio = await httpRequest.get(`/studios/${id}`);
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+const getStudioArtist = async (studioId: string): Promise<IUserStudio[]> => {
+    try {
+        const response: IUserStudio[] = await httpRequest.get('/studios/artists', {
+            params: { studioId },
+        });
         return response;
     } catch (_error) {
         throw new Error(_error);
@@ -133,6 +145,16 @@ export const useGetListUserStudio = (data: IUserListReq) => {
         queryFn: () => getUserStudio(data),
         staleTime: Infinity,
         keepPreviousData: true,
+    });
+};
+
+export const useGetListArtistOfStudio = (studioId: string) => {
+    return useQuery({
+        queryKey: ['artist-studio', studioId],
+        queryFn: () => getStudioArtist(studioId),
+        staleTime: Infinity,
+        keepPreviousData: true,
+        enabled: studioId.length > 0,
     });
 };
 

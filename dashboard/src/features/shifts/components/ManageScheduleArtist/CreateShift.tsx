@@ -41,6 +41,8 @@ export default function CreateShift({
         },
     });
 
+    console.log(shiftCreate);
+
     return (
         <Modal
             onClose={handleModal[1].close}

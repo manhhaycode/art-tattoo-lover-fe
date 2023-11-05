@@ -4,7 +4,13 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import Error from '@/components/common/Error';
 import SystemLayout from '@/layouts/SystemLayout';
 import StudioLayout from '@/layouts/StudioLayout';
-import { StudioDashBoard, StudioMangeUser, ManageStudio, ManageScheduleArtistPage } from '@/features/studio';
+import {
+    StudioDashBoard,
+    StudioMangeUser,
+    ManageStudio,
+    ManageScheduleArtistPage,
+    ManageStudioAppointmentPage,
+} from '@/features/studio';
 import { Login } from '@/features/auth';
 import { SystemManageStudio, SystemManageUser } from '@/features/system';
 
@@ -30,6 +36,7 @@ export default function AppRoutes() {
                         <Route path="/studio/manage-user" element={<StudioMangeUser />}></Route>
                         <Route path="/studio/manage-studio" element={<ManageStudio />}></Route>
                         <Route path="/studio/manage-scheduleworking" element={<ManageScheduleArtistPage />}></Route>
+                        <Route path="/studio/manage-appointment" element={<ManageStudioAppointmentPage />}></Route>
                     </Route>
                 </Route>
                 <Route path="/login" element={<Login />}></Route>

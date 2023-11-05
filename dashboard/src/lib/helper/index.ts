@@ -95,9 +95,40 @@ export const convertWorkingTimeToDisplayFormat = (listWorkingTime: IWorkingTime[
 export const convertDateToString = (date: Date) => {
     const hours = date.getUTCHours().toString().padStart(2, '0');
     const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+    // const day = date.getDay();
     // const seconds = date.getUTCSeconds();
 
     const formattedDate = `${hours}:${minutes}`;
 
     return formattedDate;
+};
+
+export const convertStartEndTimeToDisplayFormat = (startTime: Date, endTime: Date) => {
+    const listDayOfWeeks = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+    const Shours = startTime.getUTCHours().toString().padStart(2, '0');
+    const Sminutes = startTime.getUTCMinutes().toString().padStart(2, '0');
+    const Ehours = endTime.getUTCHours().toString().padStart(2, '0');
+    const Eminutes = endTime.getUTCMinutes().toString().padStart(2, '0');
+    const dayOfWeek = listDayOfWeeks[startTime.getUTCDay()];
+    const formattedDate = `${dayOfWeek} ${Shours}:${Sminutes} - ${Ehours}:${Eminutes}`;
+    return formattedDate;
+};
+
+export const getDateAppointment = () => {
+    const start = new Date();
+    const end = new Date();
+    // Set the time to midnight (00:00:00)
+    start.setUTCHours(0, 0, 0, 0);
+    end.setUTCHours(23, 59, 59, 999);
+    end.setUTCDate(start.getDate() + 7);
+    return { start, end };
+};
+
+export const getDateShiftList = () => {
+    const timeZoneOffset = new Date().getTimezoneOffset() * 60000;
+    const start = new Date();
+    const end = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+    const utcStart = new Date(start.getTime() - timeZoneOffset);
+    const utcEnd = new Date(end.getTime() - timeZoneOffset);
+    return { start: utcStart, end: utcEnd };
 };
