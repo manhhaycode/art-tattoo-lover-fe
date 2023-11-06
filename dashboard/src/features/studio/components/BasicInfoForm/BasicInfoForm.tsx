@@ -13,6 +13,7 @@ import { typeEnum, useUploadMediaMutation } from '@/features/media';
 import { usePlaceDetailMutation } from '@/features/map/api';
 import { twMerge } from 'tailwind-merge';
 import EditWorkingTime from '../EditWorkingTime/EditWorkingTime';
+import { useNavigate } from 'react-router-dom';
 
 const previewImage = (file: FileWithPath) => {
     const imageUrl = URL.createObjectURL(file);
@@ -26,6 +27,7 @@ export default function BasicInfoForm() {
     const [file, setFile] = useState<FileWithPath | null>(null);
     const { placeChoose, setPlaceDetail, sessionToken, setSessionToken } = useSearchLocationStore();
     const colorSchema = useMantineColorScheme();
+    const navigate = useNavigate();
     const getStudioMutation = useGetStuidoMutation({
         onSuccess: (data) => {
             const listWorkingTime = data.workingTimes.sort((a, b) => a.dayOfWeek - b.dayOfWeek);
@@ -151,23 +153,30 @@ export default function BasicInfoForm() {
                                     <Text className="font-semibold">Tải ảnh mới</Text>
                                 </Dropzone>
                             </Group>
-                            <div className="flex flex-col gap-y-2 self-end">
-                                <label className="text-sm font-semibold">Địa chỉ Email</label>
-                                <Input
-                                    {...register('email', {
-                                        pattern: {
-                                            value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
-                                            message: 'Sai định dạng email',
-                                        },
-                                        required: 'Email không được để trống',
-                                        onChange: () => {
-                                            trigger('email');
-                                        },
-                                    })}
-                                />
-                                {errors.email && (
-                                    <label className="text-xs font-semibold text-red-500">{errors.email.message}</label>
-                                )}
+                            <div className="flex flex-col justify-between">
+                                <Button onClick={() => navigate('/studio/preview-studio')} className="w-fit">
+                                    Xem và sửa trang giới thiệu studio
+                                </Button>
+                                <div className="flex flex-col gap-y-2 self-end w-full">
+                                    <label className="text-sm font-semibold">Địa chỉ Email</label>
+                                    <Input
+                                        {...register('email', {
+                                            pattern: {
+                                                value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+                                                message: 'Sai định dạng email',
+                                            },
+                                            required: 'Email không được để trống',
+                                            onChange: () => {
+                                                trigger('email');
+                                            },
+                                        })}
+                                    />
+                                    {errors.email && (
+                                        <label className="text-xs font-semibold text-red-500">
+                                            {errors.email.message}
+                                        </label>
+                                    )}
+                                </div>
                             </div>
                             <div className="flex flex-col gap-y-2 self-end">
                                 <label className="text-sm font-semibold">Tên studio</label>

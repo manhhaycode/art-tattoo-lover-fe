@@ -10,6 +10,7 @@ import {
     ManageStudio,
     ManageScheduleArtistPage,
     ManageStudioAppointmentPage,
+    PreviewStudioPage,
 } from '@/features/studio';
 import { Login } from '@/features/auth';
 import { SystemManageStudio, SystemManageUser } from '@/features/system';
@@ -38,6 +39,7 @@ export default function AppRoutes() {
                         <Route path="/studio/manage-scheduleworking" element={<ManageScheduleArtistPage />}></Route>
                         <Route path="/studio/manage-appointment" element={<ManageStudioAppointmentPage />}></Route>
                     </Route>
+                    <Route path="/studio/preview-studio" element={<PreviewStudioPage />}></Route>
                 </Route>
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="*" element={<Error />}></Route>
