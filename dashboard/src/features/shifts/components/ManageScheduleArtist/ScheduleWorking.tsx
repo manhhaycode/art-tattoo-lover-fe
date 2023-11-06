@@ -18,6 +18,7 @@ import { EventImpl } from '@fullcalendar/core/internal';
 import queryClient from '@/lib/react-query';
 import { EPermission } from '@/features/auth';
 import { useUnmount } from 'react-use';
+import { getDateShiftList } from '@/lib/helper';
 
 export default function ScheduleWorking() {
     const calendarRef = useRef<FullCalendar>(null);
@@ -155,8 +156,9 @@ export default function ScheduleWorking() {
                     />
                 )}
                 datesSet={(arg) => {
-                    if (arg.endStr !== date.end || arg.startStr !== date.start)
-                        setDate({ start: arg.startStr, end: arg.endStr });
+                    const start = getDateShiftList().start;
+                    if (arg.endStr !== date.end && arg.end > start)
+                        setDate({ start: start.toISOString(), end: arg.endStr });
                 }}
             />
             {accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_ARTISTS_SCHEDULE) && (

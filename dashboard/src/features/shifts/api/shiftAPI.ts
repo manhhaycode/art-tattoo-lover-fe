@@ -8,7 +8,7 @@ export const getShiftList = async (filter: IShiftReq): Promise<IShift[]> => {
         return [];
     }
     try {
-        const res: IShift[] = await httpRequest.get('/shift', {
+        const res: IShift[] = await httpAuth.get('/shift/studio', {
             params: filter,
         });
         return res;
