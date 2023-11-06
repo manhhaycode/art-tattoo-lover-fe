@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import { manualChunksPlugin } from 'vite-plugin-webpackchunkname';
 import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react()],
+    plugins: [react(), manualChunksPlugin()],
     resolve: {
         alias: {
             '~': path.resolve(__dirname, './src'),
@@ -21,14 +22,8 @@ export default defineConfig({
             },
             output: {
                 manualChunks(id) {
-                    const modules = ['mantine', 'query', 'carousel', 'table', 'fullcalendar'];
-                    if (id.includes('map') || id.includes('google')) return;
-                    if (!id.includes('node_modules')) return 'indexmin';
                     if (id.includes('node_modules')) {
-                        for (const module of modules) {
-                            if (id.includes(module)) return module;
-                        }
-                        return 'index';
+                        return id.toString().split('node_modules/')[1].split('/')[0].toString();
                     }
                 },
                 experimentalMinChunkSize: 10000,

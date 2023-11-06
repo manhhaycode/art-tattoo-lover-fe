@@ -21,14 +21,8 @@ export default defineConfig({
             },
             output: {
                 manualChunks(id) {
-                    const modules = ['framer', 'mantine', 'query', 'carousel'];
-                    if (id.includes('map') || id.includes('google')) return;
-                    if (!id.includes('node_modules')) return 'indexmin';
                     if (id.includes('node_modules')) {
-                        for (const module of modules) {
-                            if (id.includes(module)) return module;
-                        }
-                        return 'index';
+                        return id.toString().split('node_modules/')[1].split('/')[0].toString();
                     }
                 },
                 experimentalMinChunkSize: 10000,

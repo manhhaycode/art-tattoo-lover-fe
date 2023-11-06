@@ -1,12 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useGetStudio } from '../api/studioAPI';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { convertSlugURL } from '@/lib/helper';
 import ImageListStudio from '../components/ImageListStudio';
 import ImageStudio from '@/assets/img/imageStudio.jpg';
 import ImageLogo from '@/assets/img/imgLogoStudio.png';
 import { StudioIntroCard } from '../components/ListStudioIntro';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
+import Editor from '@/components/Editor';
 export default function Studio() {
     const { slug, studioId } = useParams();
     const { data, isLoading } = useGetStudio(studioId || '');
@@ -34,7 +35,14 @@ export default function Studio() {
                         <SkeletonLoader />
                     </div>
                 )}
-                {data && <StudioIntroCard callButton={true} studio={{ ...data, listCategory: [] }} />}
+                {data && (
+                    <div className="flex flex-col gap-y-8">
+                        <StudioIntroCard callButton={true} studio={{ ...data, listCategory: [] }} />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Editor editable={false} text={data.detail || ''} />
+                        </Suspense>
+                    </div>
+                )}
             </div>
         </div>
     );
