@@ -1,4 +1,4 @@
-import { StudioIcon, UserIcon } from '@/assets/icons';
+import { CalendarIcon, StudioIcon, UserIcon } from '@/assets/icons';
 import { Button, Group, useMantineColorScheme } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { VscDashboard } from 'react-icons/vsc';
@@ -130,7 +130,15 @@ export default function StudioNav() {
                                 navigate('/studio/manage-appointment');
                             }}
                             className="flex gap-x-3 justify-start active:transform-none text-base"
-                            leftSection={<MdSchedule size={24} />}
+                            leftSection={
+                                <CalendarIcon
+                                    styles={{
+                                        width: '24px',
+                                        height: '24px',
+                                        stroke: 'currentcolor',
+                                    }}
+                                />
+                            }
                         >
                             Quản lý lịch hẹn xăm
                         </Button>

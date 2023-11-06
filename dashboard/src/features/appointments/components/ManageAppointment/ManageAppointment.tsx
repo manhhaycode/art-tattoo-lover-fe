@@ -1,5 +1,5 @@
 import TableForm from '@/components/TableForm';
-import { ActionIcon, AspectRatio, Badge, Checkbox, Group, Image, Text, rem } from '@mantine/core';
+import { ActionIcon, AspectRatio, Badge, Checkbox, Group, Image, Input, Text, rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
     ColumnDef,
@@ -17,27 +17,35 @@ import { EditIcon, UserIcon } from '@/assets/icons';
 import { convertStartEndTimeToDisplayFormat, getDateAppointment } from '@/lib/helper';
 import AppointmentStatusTag from './AppointmentStatus';
 import EditAppointment from './EditAppointment';
-import { useUnmount } from 'react-use';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { TbCalendarCancel } from 'react-icons/tb';
 import CancelAppointment from './CancelAppointment';
+import 'dayjs/locale/vi';
+import { DatePickerInput, DatesProvider } from '@mantine/dates';
+import ViewAppointment from './ViewAppointment';
 
 export default function ManageAppointment() {
     const editModalState = useDisclosure(false);
     const cancelModalState = useDisclosure(false);
+    const viewModalState = useDisclosure(false);
     const [isedit, setIsEdit] = useState(false);
+
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-    const [date] = useState(getDateAppointment());
+    const [date, setDate] = useState<[Date | null, Date | null]>([null, null]);
+
     const defaultData = useMemo(() => [], []);
-    const dataQuery = useGetListAppointmentStudio({
-        page: pageIndex,
-        pageSize,
-        startDate: date.start.toISOString(),
-        endDate: date.end.toISOString(),
-    });
+    const dataQuery = useGetListAppointmentStudio(
+        {
+            page: pageIndex,
+            pageSize,
+            startDate: date[0]?.toISOString(),
+            endDate: date[1]?.toISOString(),
+        },
+        date[0] !== null && date[1] !== null,
+    );
     const [dataCancel, setDataCancel] = useState<IAppointmentStudio[]>([]);
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -58,7 +66,15 @@ export default function ManageAppointment() {
                 enableSorting: false,
                 size: 100,
                 cell: ({ row }) => {
-                    return <Checkbox checked={row.getIsSelected()} onChange={row.getToggleSelectedHandler()} />;
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                            checked={row.getIsSelected()}
+                            onChange={row.getToggleSelectedHandler()}
+                        />
+                    );
                 },
             },
             {
@@ -125,34 +141,33 @@ export default function ManageAppointment() {
                     return (
                         <Group>
                             <ActionIcon
-                                disabled={row.original.status === 3 || row.original.status === 4}
-                                onClick={() => {
+                                disabled={row.original.status > 2}
+                                onClick={(e) => {
+                                    e.stopPropagation();
                                     editModalState[1].open();
                                     setIsEdit(true);
                                     setAppointmentChoose(row.original);
                                 }}
                             >
-                                <EditIcon />
+                                <EditIcon styles={{ fill: 'currentcolor' }} />
                             </ActionIcon>
 
                             <ActionIcon
-                                disabled={
-                                    row.original.status === 1 || row.original.status === 3 || row.original.status === 4
-                                }
-                                onClick={() => {
+                                disabled={row.original.status !== 0}
+                                onClick={(e) => {
+                                    e.stopPropagation();
                                     editModalState[1].open();
                                     setIsEdit(false);
                                     setAppointmentChoose(row.original);
                                 }}
                                 color="lime.4"
                             >
-                                <AiOutlineCheck color="black" />
+                                <AiOutlineCheck />
                             </ActionIcon>
                             <ActionIcon
-                                disabled={
-                                    !row.getIsSelected() || row.original.status === 3 || row.original.status === 4
-                                }
-                                onClick={() => {
+                                disabled={!row.getIsSelected() || row.original.status >= 2}
+                                onClick={(e) => {
+                                    e.stopPropagation();
                                     cancelModalState[1].open();
                                     setAppointmentChoose(row.original);
                                 }}
@@ -188,9 +203,13 @@ export default function ManageAppointment() {
         debugTable: true,
     });
 
-    useUnmount(() => {
-        queryClient.invalidateQueries(['appointmentsStudio']);
-    });
+    useEffect(() => {
+        const date = getDateAppointment();
+        setDate([date.start, date.end]);
+        return () => {
+            queryClient.invalidateQueries(['appointmentsStudio']);
+        };
+    }, []);
 
     useEffect(() => {
         if (dataQuery.data && rowSelection) {
@@ -217,15 +236,28 @@ export default function ManageAppointment() {
     return (
         <>
             <Group justify="space-between">
-                {/* <Input
-                    defaultValue={searchKeyword}
-                    onChange={(event) => setSearchKeyword(event.currentTarget.value)}
+                <Input
+                    // defaultValue={searchKeyword}
+                    // onChange={(event) => setSearchKeyword(event.currentTarget.value)}
                     placeholder="Tìm kiếm nhân viên studio"
                     className="w-1/2"
-                /> */}
-                {/* <AddNewUserStudio refreshData={refreshData} /> */}
+                />
+                <DatesProvider settings={{ locale: 'vi', firstDayOfWeek: 0, weekendDays: [0] }}>
+                    <DatePickerInput
+                        valueFormat="DD/MM"
+                        placeholder="Chọn khoảng thời gian muốn xem"
+                        type="range"
+                        value={date}
+                        onChange={setDate}
+                    />
+                </DatesProvider>
             </Group>
             <TableForm
+                handleClickRow={(row) => {
+                    viewModalState[1].open();
+                    setRowSelection({ [row.id]: true });
+                    setAppointmentChoose(row);
+                }}
                 handlePagination={setPagination}
                 pageIndex={pageIndex}
                 pageSize={pageSize}
@@ -233,7 +265,7 @@ export default function ManageAppointment() {
                 total={(dataQuery.data?.total && Math.ceil(dataQuery.data?.total / pageSize)) || 0}
             />
             <EditAppointment isEdit={isedit} handleModalState={editModalState} appointmentInfo={appointmentChooose} />
-            {/* <ConfirmAppointment handleModalState={confirmModalState} appointmentInfo={appointmentChooose} /> */}
+            <ViewAppointment handleModalState={viewModalState} apointmentInfo={appointmentChooose} />
             <CancelAppointment handleModalState={cancelModalState} appointmentList={dataCancel} />
         </>
     );

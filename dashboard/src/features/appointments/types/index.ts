@@ -37,7 +37,7 @@ export interface IUpdateAppointmentReq {
     notes?: string;
     artistId?: string;
     status?: number;
-    listMedia?: string[];
+    duration?: string;
 }
 
 export interface IUpdateAppointment extends ILogout {}

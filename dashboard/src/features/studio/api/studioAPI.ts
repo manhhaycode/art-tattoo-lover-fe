@@ -114,6 +114,7 @@ export const useGetStudio = (id: string) => {
         queryKey: ['studio', id],
         queryFn: () => getStudio(id),
         staleTime: 0,
+        enabled: id.length > 0,
     });
 };
 
