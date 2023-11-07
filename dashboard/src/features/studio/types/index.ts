@@ -4,8 +4,7 @@ import { IUser } from '@/features/users';
 export interface IMedia {
     id: string;
     url: string;
-    type: string;
-    created_at: Date;
+    type?: number;
 }
 
 export interface IFilter {
@@ -29,6 +28,12 @@ export interface IUpdateStudio extends ILogout {}
 export interface IUpdateUserStudio extends ILogout {}
 export interface ICreateUserStudio extends ILogout {}
 export interface IDeleteUserStudio extends ILogout {}
+
+export interface IUpdateStudioReq extends IStudio {
+    listRemoveMedia: string[];
+    listNewMedia: IMedia[];
+}
+
 export interface IDeleteUserStudioReq {
     userId: string;
 }

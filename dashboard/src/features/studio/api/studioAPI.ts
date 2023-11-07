@@ -10,6 +10,7 @@ import {
     IPaginationUserList,
     IStudio,
     IUpdateStudio,
+    IUpdateStudioReq,
     IUpdateUserStudio,
     IUpdateUserStudioReq,
     IUserListReq,
@@ -70,7 +71,7 @@ const getUserStudio = async (data: IUserListReq): Promise<IPaginationUserList> =
     }
 };
 
-const updateStudio = async (data: Partial<IStudio>): Promise<IUpdateStudio> => {
+const updateStudio = async (data: Partial<IUpdateStudioReq>): Promise<IUpdateStudio> => {
     try {
         const response: IUpdateStudio = await httpAuth.put(`/studios/${data.id}`, data);
         return response;
@@ -161,11 +162,11 @@ export const useGetListArtistOfStudio = (studioId: string) => {
 
 export const useUpdateStudioMutation = (handleFn: {
     onError?: (error: Error, variables: Partial<IStudio>, context: unknown) => void;
-    onSuccess?: (data: IUpdateStudio, variables: Partial<IStudio>, context: unknown) => void;
-    onMutate?: (variables: Partial<IStudio>) => Promise<IUpdateStudio>;
+    onSuccess?: (data: IUpdateStudio, variables: Partial<IUpdateStudioReq>, context: unknown) => void;
+    onMutate?: (variables: Partial<IUpdateStudioReq>) => Promise<IUpdateStudio>;
 }) => {
     return useMutation({
-        mutationFn: (data: Partial<IStudio>) => updateStudio(data),
+        mutationFn: (data: Partial<IUpdateStudioReq>) => updateStudio(data),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,

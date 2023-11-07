@@ -4,7 +4,6 @@ export interface IMedia {
     id: string;
     url: string;
     type: string;
-    created_at: Date;
 }
 
 export interface IFilter {
