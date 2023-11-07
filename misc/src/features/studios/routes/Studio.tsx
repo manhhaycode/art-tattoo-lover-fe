@@ -3,8 +3,6 @@ import { useGetStudio } from '../api/studioAPI';
 import { Suspense, useEffect } from 'react';
 import { convertSlugURL } from '@/lib/helper';
 import ImageListStudio from '../components/ImageListStudio';
-import ImageStudio from '@/assets/img/imageStudio.jpg';
-import ImageLogo from '@/assets/img/imgLogoStudio.png';
 import { StudioIntroCard } from '../components/ListStudioIntro';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import Editor from '@/components/Editor';
@@ -27,7 +25,7 @@ export default function Studio() {
         <div className="pb-16">
             <div className="my-6 mx-auto xl:w-[1372px] grid grid-flow-row gap-y-6">
                 <ImageListStudio
-                    listImage={[ImageLogo, ImageStudio, ImageStudio, ImageStudio, ImageStudio]}
+                    listImage={[data?.listMedia.find((media) => media.type === 'IMAGE')?.url || '']}
                     isLoading={isLoading}
                 />
                 {isLoading && (
