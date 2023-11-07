@@ -3,7 +3,7 @@ import { IArtist, IUser } from '@/features/users';
 export interface IMedia {
     id: string;
     url: string;
-    type: string;
+    type: number;
 }
 
 export interface IFilter {
