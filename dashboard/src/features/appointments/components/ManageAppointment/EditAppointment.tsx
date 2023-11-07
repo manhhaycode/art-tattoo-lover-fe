@@ -51,7 +51,7 @@ export default function EditAppointment({
         if (appointmentInfo) {
             setSelectedStatus(appointmentInfo.status);
             setSelectedShift(appointmentInfo.shift);
-            setSelectedArtist(appointmentInfo.artist);
+            setSelectedArtist(appointmentInfo.artist || undefined);
             setDuration('');
             setDate(getDateShiftList());
         }
@@ -61,7 +61,7 @@ export default function EditAppointment({
     useEffect(() => {
         if (appointmentInfo) {
             setSelectedShift(appointmentInfo.shift);
-            setSelectedArtist(appointmentInfo.artist);
+            setSelectedArtist(appointmentInfo.artist || undefined);
             setDuration('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,9 +90,7 @@ export default function EditAppointment({
                         if (appointmentInfo.status > 3) return;
 
                         if (!isEdit || selectedStatus == 1 || selectedStatus == 2) {
-                            if (!duration)
-                                return toast.error('Vui lòng nhập khoảng thời gian giữa các ca', { duration: 1000 });
-                            else if (!duration.match(regex))
+                            if (duration.length > 0 && !duration.match(regex))
                                 return toast.error('Vui lòng nhập đúng định dạng hh:mm', { duration: 1000 });
                         } else if (duration) return;
 
@@ -130,7 +128,7 @@ export default function EditAppointment({
                             <label className="text-sm font-semibold">Artist làm việc ca này</label>
                             {data && (
                                 <ComboboxInfo
-                                    disabled={isEdit && selectedStatus !== 2}
+                                    disabled={isEdit && selectedStatus !== 1 && selectedStatus !== 2}
                                     defaultValue={appointmentInfo.artist?.user.fullName}
                                     options={data.shiftArtists.map((artist) => artist.stuUser)}
                                     optionElement={(option) => (
@@ -167,7 +165,7 @@ export default function EditAppointment({
                                         </Group>
                                     )}
                                     onBlurInput={() => {
-                                        if (selectedStatus !== 2 && isEdit) return;
+                                        if (selectedStatus !== 1 && selectedStatus !== 2 && isEdit) return;
                                         if (!selectedArtist) {
                                             toast.error('Vui lòng chọn artist trong danh sách');
                                         }
@@ -176,7 +174,7 @@ export default function EditAppointment({
                                         setSelectedArtist(undefined);
                                     }}
                                     onSubmitOption={(option, setValue) => {
-                                        if (selectedStatus !== 2 && isEdit) return;
+                                        if (selectedStatus !== 1 && selectedStatus !== 2 && isEdit) return;
                                         setValue(option.user.fullName);
                                         setSelectedArtist(option);
                                     }}
@@ -293,9 +291,8 @@ export default function EditAppointment({
                                 shiftList.isFetching ||
                                 !selectedArtist ||
                                 !selectedShift ||
-                                (!duration && (!isEdit || selectedStatus === 1)) ||
                                 (selectedStatus === 2 &&
-                                    selectedArtist.id === appointmentInfo.artist.id &&
+                                    selectedArtist.id === appointmentInfo.artist?.id &&
                                     selectedShift.id === appointmentInfo.shift.id)
                             }
                             type="submit"

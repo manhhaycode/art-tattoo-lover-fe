@@ -23,11 +23,11 @@ export interface IAppointmentStudio {
     id: string;
     user: IUser;
     shiftId: string;
-    doneBy: string;
+    doneBy: string | null;
     notes: string;
     status: number;
     listMedia: string[];
-    artist: IUserStudio;
+    artist: IUserStudio | null;
     shift: IShift;
 }
 
