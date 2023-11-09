@@ -5,8 +5,9 @@ import { Text, useMantineTheme } from '@mantine/core';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ManageStudioAppointment = lazy(() => import('@/features/appointments/components/ManageAppointment'));
-export default function ManageStudioAppointmentPage() {
+const ManageServiceStudio = lazy(() => import('@/features/services/components/ManageServiceStudio'));
+
+export default function ManageStudioServicePage() {
     const theme = useMantineTheme();
     const { accountType } = useAuthStore();
     const [display, setDisplay] = useState(false);
@@ -17,7 +18,7 @@ export default function ManageStudioAppointmentPage() {
             const permissions = accountType.permissions;
             if (
                 permissions.includes(EPermission.MANAGE_OWNED_STUDIO) ||
-                permissions.includes(EPermission.VIEW_STUDIO_BOOKING)
+                permissions.includes(EPermission.VIEW_STUDIO_SERVICES)
             )
                 setDisplay(true);
             else {
@@ -31,10 +32,10 @@ export default function ManageStudioAppointmentPage() {
         display && (
             <div className="flex flex-col gap-y-5">
                 <Text className="text-2xl font-semibold" c={theme.colors[theme.primaryColor][6]}>
-                    Quản lý lịch hẹn xăm
+                    Quản lý các dịch vụ xăm
                 </Text>
                 <Suspense fallback={<Load />}>
-                    <ManageStudioAppointment />
+                    <ManageServiceStudio />
                 </Suspense>
             </div>
         )

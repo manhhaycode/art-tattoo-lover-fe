@@ -11,6 +11,8 @@ import {
     ManageScheduleArtistPage,
     ManageStudioAppointmentPage,
     PreviewStudioPage,
+    ManageStudioServicePage,
+    ManageInvoicePage,
 } from '@/features/studio';
 import { Login } from '@/features/auth';
 import { SystemManageStudio, SystemManageUser } from '@/features/system';
@@ -38,6 +40,8 @@ export default function AppRoutes() {
                         <Route path="/studio/manage-studio" element={<ManageStudio />}></Route>
                         <Route path="/studio/manage-scheduleworking" element={<ManageScheduleArtistPage />}></Route>
                         <Route path="/studio/manage-appointment" element={<ManageStudioAppointmentPage />}></Route>
+                        <Route path="/studio/manage-service" element={<ManageStudioServicePage />}></Route>
+                        <Route path="/studio/manage-invoice" element={<ManageInvoicePage />}></Route>
                     </Route>
                     <Route path="/studio/preview-studio" element={<PreviewStudioPage />}></Route>
                 </Route>

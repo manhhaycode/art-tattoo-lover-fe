@@ -17,8 +17,6 @@ export default function EditWorkingTime({
         setData(list);
     }, [list]);
 
-    console.log(data);
-
     return (
         <>
             {listDayOfWeeks.map((dayOfWeek, index) => {
@@ -28,23 +26,18 @@ export default function EditWorkingTime({
                             checked={data.find((item) => item.dayOfWeek === index) ? true : false}
                             onChange={(e) => {
                                 if (e.target.checked) {
-                                    setData((prev) => {
-                                        const i = prev.findIndex((item) => item.dayOfWeek === index);
-                                        if (i !== -1) prev.splice(i, 1);
-                                        handleChange([
-                                            ...prev,
-                                            { dayOfWeek: index, openAt: '00:00:00', closeAt: '23:59:00' },
-                                        ]);
-
-                                        return [...prev, { dayOfWeek: index, openAt: '00:00:00', closeAt: '23:59:00' }];
-                                    });
+                                    const i = data.findIndex((item) => item.dayOfWeek === index);
+                                    if (i !== -1) data.splice(i, 1);
+                                    setData([...data, { dayOfWeek: index, openAt: '00:00:00', closeAt: '23:59:00' }]);
+                                    handleChange([
+                                        ...data,
+                                        { dayOfWeek: index, openAt: '00:00:00', closeAt: '23:59:00' },
+                                    ]);
                                 } else {
-                                    setData((prev) => {
-                                        const i = prev.findIndex((item) => item.dayOfWeek === index);
-                                        prev.splice(i, 1);
-                                        handleChange([...prev]);
-                                        return [...prev];
-                                    });
+                                    const i = data.findIndex((item) => item.dayOfWeek === index);
+                                    data.splice(i, 1);
+                                    setData([...data]);
+                                    handleChange([...data]);
                                 }
                             }}
                         />

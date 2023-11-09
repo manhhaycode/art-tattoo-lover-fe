@@ -132,3 +132,11 @@ export const getDateShiftList = () => {
     const utcEnd = new Date(end.getTime() - timeZoneOffset);
     return { start: utcStart, end: utcEnd };
 };
+
+export const numbertoPrice = (num: number): string => {
+    const numStr: string = num.toString();
+
+    const formattedStr = numStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ';
+
+    return formattedStr;
+};
