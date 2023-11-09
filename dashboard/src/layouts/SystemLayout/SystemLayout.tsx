@@ -8,7 +8,7 @@ export default function SystemLayout() {
             <AppShell.Navbar p="md" className="flex flex-col justify-between">
                 <SystemNav />
             </AppShell.Navbar>
-            <AppShell.Main>
+            <AppShell.Main className="relative">
                 <Outlet />
             </AppShell.Main>
         </>
