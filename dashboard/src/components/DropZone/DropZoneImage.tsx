@@ -4,14 +4,20 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { TbFileUpload, TbPhoto, TbTrashX } from 'react-icons/tb';
 import { ImageSlider } from '../common/Image';
+import { twMerge } from 'tailwind-merge';
 
 export default function DropZoneImage({
     handleDrop,
     handleSave,
+    classNames,
     src,
 }: {
     handleDrop?: (files: FileWithPath[]) => void;
     handleSave?: (files: FileWithPath[]) => void;
+    classNames?: {
+        dropZone?: string;
+        image?: string;
+    };
     src: string;
 }) {
     const [srcDefault, setSrcDefault] = useState(src);
@@ -19,6 +25,7 @@ export default function DropZoneImage({
 
     useEffect(() => {
         setSrcDefault(src);
+        setFiles([]);
     }, [src]);
 
     return (
@@ -50,15 +57,16 @@ export default function DropZoneImage({
                 </Dropzone>
             ) : (
                 <div className="relative">
-                    <ImageSlider className="rounded-xl" src={srcDefault} />
-                    <Group className="ga[-x-4">
+                    <ImageSlider
+                        className={twMerge('rounded-xl', classNames?.image?.toString() || '')}
+                        src={srcDefault}
+                    />
+                    <Group className="gap-x-4 absolute top-2 right-2">
                         {files.length > 0 && (
                             <ActionIcon
                                 onClick={() => {
                                     handleSave && handleSave(files);
-                                    setFiles([]);
                                 }}
-                                className="absolute top-2 right-2"
                                 color="green"
                                 radius="xl"
                             >
@@ -70,7 +78,6 @@ export default function DropZoneImage({
                                 setFiles([]);
                                 setSrcDefault('');
                             }}
-                            className="absolute top-2 right-10"
                             color="red"
                             radius="xl"
                         >

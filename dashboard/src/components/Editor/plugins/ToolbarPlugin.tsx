@@ -35,6 +35,8 @@ import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/r
 import { INSERT_IMAGE_COMMAND } from './ImagePlugin';
 import { InsertTableDialog } from './TablePlugin';
 import useModal from '../hooks/useModal';
+import { useDisclosure } from '@mantine/hooks';
+import ImageModal from '../ui/ImageModal';
 
 const LowPriority = 1;
 
@@ -422,6 +424,7 @@ export default function ToolbarPlugin({
     const [isUnderline, setIsUnderline] = useState(false);
     const [isStrikethrough, setIsStrikethrough] = useState(false);
     const [modal, showModal] = useModal();
+    const insertImageState = useDisclosure();
 
     const updateToolbar = useCallback(() => {
         const selection = $getSelection();
@@ -511,12 +514,12 @@ export default function ToolbarPlugin({
         );
     }, [editor, updateToolbar]);
 
-    const insertImage = useCallback(() => {
-        const url = FillURL();
-        if (url.length > 0) {
+    const insertImage = useCallback(
+        (url: string) => {
             editor.dispatchCommand(INSERT_IMAGE_COMMAND, { altText: 'image', src: url });
-        }
-    }, [editor]);
+        },
+        [editor],
+    );
 
     const save = useCallback(async () => {
         editor.getEditorState().read(async () => {
@@ -623,7 +626,7 @@ export default function ToolbarPlugin({
             >
                 <i className="format link" />
             </button>
-            <button onClick={insertImage} className={'toolbar-item spaced'}>
+            <button onClick={insertImageState[1].open} className={'toolbar-item spaced'}>
                 <i className="format image" />
             </button>
             <button
@@ -678,6 +681,7 @@ export default function ToolbarPlugin({
                 <i className="format justify-align" />
             </button>{' '}
             {modal}
+            <ImageModal handleModalState={insertImageState} handleInsertImage={insertImage} />
         </div>
     );
 }

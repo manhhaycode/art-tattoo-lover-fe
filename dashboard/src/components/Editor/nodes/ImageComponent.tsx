@@ -19,32 +19,36 @@ import {
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
 import { $isImageNode } from './ImageNode';
-import { AspectRatio, Image as ImageM } from '@mantine/core';
+import { AspectRatio } from '@mantine/core';
+import DropZoneImage from '@/components/DropZone';
+import { useUploadMediaMutation } from '@/features/media';
+import toast from 'react-hot-toast';
+import { FileWithPath } from '@mantine/dropzone';
 
-const imageCache = new Set();
+// const imageCache = new Set();
 
-function useSuspenseImage(src: string) {
-    if (!imageCache.has(src)) {
-        throw new Promise((resolve) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = () => {
-                imageCache.add(src);
-                resolve(null);
-            };
-        });
-    }
-}
+// function useSuspenseImage(src: string) {
+//     if (!imageCache.has(src)) {
+//         throw new Promise((resolve) => {
+//             const img = new Image();
+//             img.src = src;
+//             img.onload = () => {
+//                 imageCache.add(src);
+//                 resolve(null);
+//             };
+//         });
+//     }
+// }
 
 export function LazyImage({
-    altText,
-    className,
-    imageRef,
+    // altText,
+    // className,
+    // imageRef,
     src,
     // width,
-    height,
-} // maxWidth,
-: {
+    height, // maxWidth,
+    handleSave,
+}: {
     altText: string;
     className?: string | null;
     height: 'inherit' | number;
@@ -52,8 +56,9 @@ export function LazyImage({
     maxWidth: number;
     src: string;
     width: 'inherit' | number;
+    handleSave?: (files: FileWithPath[]) => void;
 }): JSX.Element {
-    useSuspenseImage(src);
+    // useSuspenseImage(src);
     return (
         <AspectRatio
             ratio={16 / 9}
@@ -63,7 +68,14 @@ export function LazyImage({
                 width: 1000,
             }}
         >
-            <ImageM className={className || undefined} src={src} alt={altText} ref={imageRef} draggable="false" />
+            <DropZoneImage
+                handleSave={(files) => {
+                    handleSave && handleSave(files);
+                    console.log(files);
+                }}
+                src={src}
+                classNames={{ image: 'rounded-none	' }}
+            ></DropZoneImage>
         </AspectRatio>
     );
 }
@@ -95,9 +107,40 @@ export default function ImageComponent({
     const [editor] = useLexicalComposerContext();
     const [, setSelection] = useState<RangeSelection | NodeSelection | GridSelection | null>(null);
     const activeEditorRef = useRef<LexicalEditor | null>(null);
+    const uploadMediaMutation = useUploadMediaMutation({
+        onSuccess: (data) => {
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                if ($isImageNode(node)) {
+                    node.setSrc(data.url);
+                }
+            });
+            toast.success('Tải ảnh lên server thành công');
+        },
+        onError: (erorr) => {
+            console.log(erorr);
+            toast.error('Tải ảnh lên server thất bại');
+        },
+    });
+
+    const handleUpload = useCallback(
+        (files: FileWithPath[]) => {
+            editor.getEditorState().read(() => {
+                const node = $getNodeByKey(nodeKey);
+                if ($isImageNode(node)) {
+                    uploadMediaMutation.mutate({
+                        file: files[0],
+                        type: 0,
+                    });
+                }
+            });
+        },
+        [nodeKey, editor, uploadMediaMutation],
+    );
 
     const onDelete = useCallback(
         (payload: KeyboardEvent) => {
+            console.log($isNodeSelection($getSelection()));
             if (isSelected && $isNodeSelection($getSelection())) {
                 const event = payload;
                 event.preventDefault();
@@ -148,6 +191,7 @@ export default function ImageComponent({
                         width={width}
                         height={height}
                         maxWidth={maxWidth}
+                        handleSave={handleUpload}
                     />
                 </div>
             </>
