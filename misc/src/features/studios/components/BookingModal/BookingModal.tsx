@@ -1,8 +1,8 @@
 import { useModalStore } from '@/store/componentStore';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getStudioArtists } from '../../api';
+import { getStudioArtists, useGetListServiceStudio } from '../../api';
 import CusSelect from '@/components/common/Select';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import { bookAppointment, getStudioShifts } from '../../api/bookingAPI';
 import { QUERY_FORMAT, formatStringDate } from '@/lib/helper/dateHelper';
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import queryClient from '@/lib/react-query';
 import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';
+import { IService } from '../../types';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -28,6 +29,7 @@ const BookingModal = () => {
     const { bookingModal, setBookingModal } = useModalStore();
     const [artist, setArtist] = useState<string>(defaultArtist.value);
     const [date, setDate] = useState<string>(defaultDate.value);
+    const [selectedService, setSelectedService] = useState<IService>();
     const [selectedShift, setSelectedShift] = useState<string | null>();
     const [notes, setNotes] = useState<string>('');
     const navigate = useNavigate();
@@ -53,6 +55,20 @@ const BookingModal = () => {
 
         return res;
     });
+
+    const { data: services } = useGetListServiceStudio({
+        studioId: bookingModal.studioId || '',
+        page: 0,
+        pageSize: 1000,
+    });
+
+    const serviceOpts = useMemo(() => {
+        if (!services) return [];
+        return services.data.map((s) => ({
+            label: s.name,
+            value: s.id,
+        }));
+    }, [services]);
 
     const dateOpts = () => {
         const days = [];
@@ -80,6 +96,11 @@ const BookingModal = () => {
                 return;
             }
 
+            if (!selectedService) {
+                toast.error('Vui lòng chọn dịch vụ');
+                return;
+            }
+
             if (bookingModal.appointmentReschedule) {
                 const res = await rescheduleAppointment({
                     appointmentId: bookingModal.appointmentReschedule.id,
@@ -94,6 +115,7 @@ const BookingModal = () => {
                     shiftId: selectedShift,
                     artistId: artist != '' ? artist : undefined,
                     notes: notes ?? undefined,
+                    serviceId: selectedService.id,
                 });
 
                 return res;
@@ -134,7 +156,7 @@ const BookingModal = () => {
     }, [bookingModal.appointmentReschedule, bookingModal.visible]);
 
     return (
-        <div className="flex flex-col overflow-auto h-full w-full max-w-lg px-10 ">
+        <div className="flex flex-col overflow-auto h-full w-full max-w-lg px-10 pb-8">
             <div className="mt-10 w-full">
                 <h1 className="text-2xl font-semibold text-center">Đặt lịch ngay</h1>
             </div>
@@ -180,6 +202,22 @@ const BookingModal = () => {
                         }}
                     />
                 </div>
+                <div className="">
+                    <h4 className="text-lg font-semibold mb-1">Chọn dịch vụ</h4>
+                    {serviceOpts && (
+                        <CusSelect
+                            className="w-full"
+                            width={'100%'}
+                            data={serviceOpts}
+                            value={selectedService?.id}
+                            onChange={(value) => {
+                                if (value === null) return;
+                                setSelectedService(services?.data.find((s) => s.id === value));
+                            }}
+                            searchable
+                        />
+                    )}
+                </div>
 
                 <div className="">
                     <h4 className="text-lg font-semibold mb-1">Lựa chọn khung giờ</h4>
@@ -223,9 +261,13 @@ const BookingModal = () => {
                     onClick={() => {
                         if (!selectedShift) {
                             toast.error('Vui lòng chọn khung giờ');
-                        } else {
-                            bookMutate();
+                            return;
                         }
+                        if (!selectedService) {
+                            toast.error('Vui lòng chọn dịch vụ');
+                            return;
+                        }
+                        bookMutate();
                     }}
                 >
                     Đặt lịch

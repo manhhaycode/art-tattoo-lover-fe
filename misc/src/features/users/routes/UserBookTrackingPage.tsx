@@ -9,6 +9,8 @@ import dayjs from 'dayjs';
 import { AppointmentStatus, AppointmentStatusString } from '../types/appointment';
 import CusSelect from '@/components/common/Select';
 import Loading from '@/components/Loading';
+import { useUnmount } from 'react-use';
+import queryClient from '@/lib/react-query';
 
 const PAGE_SIZE = 10;
 
@@ -24,17 +26,23 @@ export default function UserBookTrackingPage() {
         data: appointments,
         isLoading: appointmentLoading,
         refetch,
-    } = useQuery(['appointments', page, status], async () => {
-        const res = await getAppointments({
-            page,
-            pageSize: PAGE_SIZE,
-            startDate:
-                status !== AppointmentStatusString.CANCELED ? dayjs().startOf('day').format(QUERY_FORMAT) : undefined,
-            status: status ? status : undefined,
-        });
+    } = useQuery(
+        ['appointments', page, status],
+        async () => {
+            const res = await getAppointments({
+                page,
+                pageSize: PAGE_SIZE,
+                startDate:
+                    status !== AppointmentStatusString.CANCELED
+                        ? dayjs().startOf('day').format(QUERY_FORMAT)
+                        : undefined,
+                statusList: status ? status : undefined,
+            });
 
-        return res;
-    });
+            return res;
+        },
+        { keepPreviousData: true },
+    );
 
     // get studio data
     useEffect(() => {
@@ -61,11 +69,14 @@ export default function UserBookTrackingPage() {
         getData();
     }, [appointments]);
 
+    useUnmount(() => {
+        queryClient.removeQueries(['appointments']);
+        queryClient.removeQueries(['studios']);
+    });
+
     const isLoading = useMemo(() => {
         return appointmentLoading || studioLoading;
     }, [appointmentLoading, studioLoading]);
-
-    if (isLoading) return <Loading />;
 
     return (
         <div className="px-6 py-4 w-full">
@@ -85,43 +96,52 @@ export default function UserBookTrackingPage() {
                 />
             </div>
 
-            {appointments && appointments.appointments.length > 0 && studioData && (
+            {isLoading ? (
+                <Loading />
+            ) : (
                 <>
-                    <p className="text-sm mt-2">Lịch hẹn: {appointments?.total || 0}</p>
-                    <div className="grid grid-cols-2 gap-4 mt-4 w-full">
-                        {appointments.appointments.map((appointment) => {
-                            if (!studioData[appointment.shift.studioId]) return null;
-                            return (
-                                <AppointmentCard
-                                    key={appointment.id}
-                                    appointment={appointment}
-                                    studio={studioData[appointment.shift.studioId]}
-                                    refetch={refetch}
+                    {appointments && Object.keys(studioData).length > 0 && appointments.appointments.length > 0 && (
+                        <>
+                            <p className="text-sm mt-2">Lịch hẹn: {appointments?.total || 0}</p>
+                            <div className="grid grid-cols-2 gap-4 mt-4 w-full">
+                                {appointments.appointments.map((appointment) => {
+                                    if (!studioData[appointment.shift.studioId]) return null;
+                                    return (
+                                        <AppointmentCard
+                                            key={appointment.id}
+                                            appointment={appointment}
+                                            studio={studioData[appointment.shift.studioId]}
+                                            refetch={refetch}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            <div className="w-full flex justify-end">
+                                <Pagination
+                                    className="ml-auto mt-5"
+                                    value={page + 1}
+                                    onChange={(value) => {
+                                        if (value === page + 1) return;
+
+                                        setPage(value - 1);
+                                    }}
+                                    size={'md'}
+                                    total={
+                                        (appointments.total &&
+                                            Math.ceil(appointments?.total / appointments.pageSize)) ||
+                                        0
+                                    }
                                 />
-                            );
-                        })}
-                    </div>
-                    <div className="w-full flex justify-end">
-                        <Pagination
-                            className="ml-auto mt-5"
-                            value={page + 1}
-                            onChange={(value) => {
-                                if (value === page + 1) return;
-
-                                setPage(value - 1);
-                            }}
-                            size={'md'}
-                            total={(appointments.total && Math.ceil(appointments?.total / appointments.pageSize)) || 0}
-                        />
-                    </div>
+                            </div>
+                        </>
+                    )}
+                    {appointments?.appointments.length === 0 && (
+                        <p className="text-sm italic mt-2">
+                            Bạn chưa có lịch hẹn nào{' '}
+                            {AppointmentStatus[status as keyof typeof AppointmentStatus].toLowerCase()}
+                        </p>
+                    )}
                 </>
-            )}
-
-            {appointments?.appointments.length === 0 && (
-                <p className="text-sm italic mt-2">
-                    Bạn chưa có lịch hẹn nào{' '}
-                    {AppointmentStatus[status as keyof typeof AppointmentStatus]?.toLowerCase()}
-                </p>
             )}
         </div>
     );

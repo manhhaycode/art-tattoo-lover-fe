@@ -2,7 +2,7 @@ export type PaginationQuery = {
     page: number;
     pageSize: number;
     startDate?: string;
-    status?: string;
+    statusList?: string;
 };
 
 export interface PaginationResp {

@@ -1,6 +1,6 @@
 import TableForm from '@/components/TableForm';
 import { ActionIcon, AspectRatio, Badge, Checkbox, Group, Image, Input, Text, rem } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDebouncedState, useDisclosure } from '@mantine/hooks';
 import {
     ColumnDef,
     PaginationState,
@@ -10,7 +10,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table';
 import { useState, useMemo, useEffect } from 'react';
-import { useGetListAppointmentStudio } from '@/features/appointments';
+import { statusAppointmentMap, useGetListAppointmentStudio } from '@/features/appointments';
 import { IAppointmentStudio } from '@/features/appointments';
 import queryClient from '@/lib/react-query';
 import { EditIcon, UserIcon } from '@/assets/icons';
@@ -23,8 +23,12 @@ import CancelAppointment from './CancelAppointment';
 import 'dayjs/locale/vi';
 import { DatePickerInput, DatesProvider } from '@mantine/dates';
 import ViewAppointment from './ViewAppointment';
+import DropdownFilter from '@/components/DropdownFilter/DropdownFilter';
+import { useGetListServiceStudio } from '@/features/services';
+import { useAuthStore } from '@/store/authStore';
 
 export default function ManageAppointment() {
+    const { accountType } = useAuthStore();
     const editModalState = useDisclosure(false);
     const cancelModalState = useDisclosure(false);
     const viewModalState = useDisclosure(false);
@@ -34,8 +38,10 @@ export default function ManageAppointment() {
         pageIndex: 0,
         pageSize: 10,
     });
+    const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
     const [date, setDate] = useState<[Date | null, Date | null]>([null, null]);
-
+    const [listStatus, setListStatus] = useState<number[]>([]);
+    const [listService, setListService] = useState<string[]>([]);
     const defaultData = useMemo(() => [], []);
     const dataQuery = useGetListAppointmentStudio(
         {
@@ -43,13 +49,24 @@ export default function ManageAppointment() {
             pageSize,
             startDate: date[0]?.toISOString(),
             endDate: date[1]?.toISOString(),
+            searchKeyWord: searchKeyword,
+            statusList: listStatus,
+            serviceList: listService,
         },
         date[0] !== null && date[1] !== null,
     );
+    const { data: serviceListStudio } = useGetListServiceStudio({
+        page: 0,
+        pageSize: 1000,
+        searchKeyword: '',
+        studioId: accountType?.studioId,
+    });
+
     const [dataCancel, setDataCancel] = useState<IAppointmentStudio[]>([]);
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [appointmentChooose, setAppointmentChoose] = useState<IAppointmentStudio>();
+
     const columns = useMemo<ColumnDef<IAppointmentStudio>[]>(
         () => [
             {
@@ -107,8 +124,8 @@ export default function ManageAppointment() {
             {
                 accessorKey: 'id',
                 header: 'Dịch vụ',
-                cell: () => {
-                    return <Badge variant="light">Xăm kín lưng</Badge>;
+                cell: ({ row }) => {
+                    return <Badge variant="light">{row.original.service?.name || 'Bất kỳ'}</Badge>;
                 },
             },
             {
@@ -237,20 +254,54 @@ export default function ManageAppointment() {
         <>
             <Group justify="space-between">
                 <Input
-                    // defaultValue={searchKeyword}
-                    // onChange={(event) => setSearchKeyword(event.currentTarget.value)}
+                    defaultValue={searchKeyword}
+                    onChange={(event) => setSearchKeyword(event.currentTarget.value)}
                     placeholder="Tìm kiếm nhân viên studio"
                     className="w-1/2"
                 />
-                <DatesProvider settings={{ locale: 'vi', firstDayOfWeek: 0, weekendDays: [0] }}>
-                    <DatePickerInput
-                        valueFormat="DD/MM"
-                        placeholder="Chọn khoảng thời gian muốn xem"
-                        type="range"
-                        value={date}
-                        onChange={setDate}
+                <Group gap={rem(12)}>
+                    <DropdownFilter
+                        name="Trạng thái"
+                        listOptions={Object.entries(statusAppointmentMap).map((status) => {
+                            return {
+                                value: status[0],
+                                label: status[1],
+                            };
+                        })}
+                        value={'value'}
+                        label={'label'}
+                        onChange={(listSelect) => {
+                            console.log(listSelect);
+                            setListStatus(listSelect.map((status) => Number(status.value)));
+                        }}
                     />
-                </DatesProvider>
+                    {serviceListStudio && (
+                        <DropdownFilter
+                            name="Dịch vụ"
+                            listOptions={serviceListStudio?.data.map((service) => {
+                                return {
+                                    value: service.id,
+                                    label: service.name,
+                                };
+                            })}
+                            value={'value'}
+                            label={'label'}
+                            onChange={(listSelect) => {
+                                console.log(listSelect);
+                                setListService(listSelect.map((service) => service.value));
+                            }}
+                        />
+                    )}
+                    <DatesProvider settings={{ locale: 'vi', firstDayOfWeek: 0, weekendDays: [0] }}>
+                        <DatePickerInput
+                            valueFormat="DD/MM"
+                            placeholder="Chọn khoảng thời gian muốn xem"
+                            type="range"
+                            value={date}
+                            onChange={setDate}
+                        />
+                    </DatesProvider>
+                </Group>
             </Group>
             <TableForm
                 handleClickRow={(row) => {
