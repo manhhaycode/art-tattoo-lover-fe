@@ -140,11 +140,11 @@ export default function ManageServiceStudio() {
                             data={[
                                 {
                                     label: 'Đã kích hoạt',
-                                    value: 'true',
+                                    value: 'false',
                                 },
                                 {
                                     label: 'Đã tạm khóa',
-                                    value: 'false',
+                                    value: 'true',
                                 },
                             ]}
                             onChange={(e, service) => {

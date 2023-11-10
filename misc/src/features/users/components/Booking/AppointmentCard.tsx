@@ -76,7 +76,11 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                             cancelMutate();
                         }
                     }}
-                    disabled={appointment.status.toString() === AppointmentStatusString.CANCELED}
+                    {...((appointment.status.toString() === AppointmentStatusString.CANCELED ||
+                        appointment.status.toString() === AppointmentStatusString.DONE) && {
+                        disabled: true,
+                        className: 'w-full h-fit py-3 !bg-disable text-placeholder-gray',
+                    })}
                 >
                     <IconCalendarX size={18} className="text-white" />
                     <span>Hủy lịch</span>
@@ -90,7 +94,11 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                             appointmentReschedule: appointment,
                         });
                     }}
-                    disabled={appointment.status.toString() === AppointmentStatusString.CANCELED}
+                    {...((appointment.status.toString() === AppointmentStatusString.CANCELED ||
+                        appointment.status.toString() === AppointmentStatusString.DONE) && {
+                        disabled: true,
+                        className: 'w-full h-fit py-3 !bg-disable text-placeholder-gray',
+                    })}
                 >
                     <IconCalendarRepeat size={18} className="text-white" />
                     <span>Đặt lại lịch</span>

@@ -64,7 +64,7 @@ export default function ViewAppointment({
                         </Text>
                         <Group py={rem(4)} gap={rem(12)}>
                             <Text className="text-sm font-semibold">Dịch vụ xăm:</Text>
-                            <Badge variant="light">Xăm kín lưng</Badge>
+                            <Badge variant="light">{apointmentInfo.service?.name || 'Bất kỳ'}</Badge>
                         </Group>
                         <Group py={rem(4)} gap={rem(12)}>
                             <Text className="text-sm font-semibold">Trạng thái lịch hẹn:</Text>

@@ -306,7 +306,7 @@ export default function BasicInfoService({
                                     };
                                 })}
                                 onChange={(e) => {
-                                    setValue('categoryId', Number(e), { shouldDirty: true, shouldValidate: true });
+                                    setValue('categoryId', Number(e), { shouldDirty: true });
                                 }}
                                 rightSectionProps={{ className: 'hidden' }}
                                 className="text-sm font-semibold"
@@ -322,38 +322,40 @@ export default function BasicInfoService({
                             />
                         )}
                     </div>
-                    <div className="flex flex-col gap-y-2">
-                        <label className="text-sm font-semibold">Trạng thái</label>
-                        <Select
-                            value={watch('isDisabled') ? 'true' : 'false'}
-                            data={[
-                                {
-                                    label: 'Đã tạm khóa',
-                                    value: 'false',
-                                },
-                                {
-                                    label: 'Đã kích hoạt',
-                                    value: 'true',
-                                },
-                            ]}
-                            onChange={(e) => {
-                                setValue('isDisabled', e === 'true' ? true : false, {
-                                    shouldDirty: true,
-                                    shouldValidate: true,
-                                });
-                            }}
-                            rightSectionProps={{ className: 'hidden' }}
-                            className="text-sm font-semibold"
-                            allowDeselect={false}
-                            classNames={{ input: '!px-4 ', dropdown: 'text-sm font-semibold' }}
-                            withCheckIcon={false}
-                            disabled={
-                                createServiceMutation.isLoading ||
-                                updateServiceMutation.isLoading ||
-                                uploadMediaMutation.isLoading
-                            }
-                        />
-                    </div>
+                    {serviceInfo && (
+                        <div className="flex flex-col gap-y-2">
+                            <label className="text-sm font-semibold">Trạng thái</label>
+                            <Select
+                                value={watch('isDisabled') ? 'true' : 'false'}
+                                data={[
+                                    {
+                                        label: 'Đã tạm khóa',
+                                        value: 'true',
+                                    },
+                                    {
+                                        label: 'Đã kích hoạt',
+                                        value: 'false',
+                                    },
+                                ]}
+                                onChange={(e) => {
+                                    console.log(watch('isDisabled'));
+                                    const isDisabled = e === 'true' ? true : false;
+                                    if (isDisabled === watch('isDisabled')) return;
+                                    setValue('isDisabled', isDisabled, { shouldDirty: true });
+                                }}
+                                rightSectionProps={{ className: 'hidden' }}
+                                className="text-sm font-semibold"
+                                allowDeselect={false}
+                                classNames={{ input: '!px-4 ', dropdown: 'text-sm font-semibold' }}
+                                withCheckIcon={false}
+                                disabled={
+                                    createServiceMutation.isLoading ||
+                                    updateServiceMutation.isLoading ||
+                                    uploadMediaMutation.isLoading
+                                }
+                            />
+                        </div>
+                    )}
                 </div>
                 <Group justify="flex-end" className="mt-8">
                     <Button

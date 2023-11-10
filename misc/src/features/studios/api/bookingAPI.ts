@@ -29,6 +29,7 @@ export type BookAppointment = {
     shiftId: string;
     notes?: string;
     artistId?: string;
+    serviceId?: string;
 };
 
 export const bookAppointment = async (body: BookAppointment): Promise<void> => {

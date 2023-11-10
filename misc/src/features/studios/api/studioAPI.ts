@@ -1,5 +1,5 @@
 import * as httpRequest from '@/lib/axios';
-import { IFilter, IPaginationStudio, IStudio, StudioArtist } from '../types';
+import { IFilter, IPaginationStudio, IStudio, StudioArtist, IServiceListStudioReq, IServiceListStudio } from '../types';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
@@ -37,6 +37,15 @@ export const getStudio = async (id: string): Promise<IStudio | null> => {
     return null;
 };
 
+const getListServiceStudio = async (filter: IServiceListStudioReq): Promise<IServiceListStudio> => {
+    try {
+        const response: IServiceListStudio = await httpRequest.get('/studio/service', { params: filter });
+        return response;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 export const useGetStudio = (id: string) => {
     return useQuery({
         queryKey: ['studio', id],
@@ -52,6 +61,16 @@ export const useGetListStudio = (filter: IFilter) => {
         queryFn: () => getListStudio(filter),
         staleTime: Infinity,
         keepPreviousData: true,
+    });
+};
+
+export const useGetListServiceStudio = (filter: IServiceListStudioReq) => {
+    return useQuery({
+        queryKey: ['studio-services', filter],
+        queryFn: () => getListServiceStudio(filter),
+        staleTime: Infinity,
+        keepPreviousData: true,
+        enabled: filter.studioId !== '',
     });
 };
 

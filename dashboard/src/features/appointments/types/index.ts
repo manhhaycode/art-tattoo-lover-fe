@@ -2,12 +2,15 @@ import { IShift } from '@/features/shifts';
 import { IUserStudio } from '@/features/studio';
 import { IUser } from '@/features/users';
 import { ILogout } from '@/features/auth/types';
+import { IService } from '@/features/services';
 
 export interface IFilterAppointment {
     userId?: string;
     startDate?: string;
     endDate?: string;
-    status?: number;
+    statusList?: number[];
+    serviceList?: string[];
+    searchKeyWord?: string;
     page?: number;
     pageSize?: number;
 }
@@ -29,6 +32,7 @@ export interface IAppointmentStudio {
     listMedia: string[];
     artist: IUserStudio | null;
     shift: IShift;
+    service: IService | null;
 }
 
 export interface IUpdateAppointmentReq {
