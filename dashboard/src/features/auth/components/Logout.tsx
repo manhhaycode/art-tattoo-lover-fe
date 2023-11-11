@@ -26,7 +26,7 @@ export default function Logout({ onSuccess }: { onSuccess?: () => void }) {
                     if (onSuccess) onSuccess();
                 }
             }}
-            className="w-full"
+            className="w-full min-h-max"
         >
             <p className="justify-self-center font-semibold text-base leading-none">Đăng xuất</p>
         </Button>

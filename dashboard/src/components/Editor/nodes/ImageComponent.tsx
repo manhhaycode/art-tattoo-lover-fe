@@ -71,7 +71,6 @@ export function LazyImage({
             <DropZoneImage
                 handleSave={(files) => {
                     handleSave && handleSave(files);
-                    console.log(files);
                 }}
                 src={src}
                 classNames={{ image: 'rounded-none	' }}
@@ -140,7 +139,6 @@ export default function ImageComponent({
 
     const onDelete = useCallback(
         (payload: KeyboardEvent) => {
-            console.log($isNodeSelection($getSelection()));
             if (isSelected && $isNodeSelection($getSelection())) {
                 const event = payload;
                 event.preventDefault();

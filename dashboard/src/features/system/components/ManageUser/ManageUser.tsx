@@ -232,10 +232,6 @@ export default function ManageUser() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataUpdate]);
 
-    useEffect(() => {
-        console.log(rowSelection);
-    }, [rowSelection]);
-
     return (
         <>
             <Group justify="space-between">

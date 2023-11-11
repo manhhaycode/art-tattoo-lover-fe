@@ -18,6 +18,7 @@ interface IComboboxInfoProps<T extends object> {
     fieldFind: string;
     gap?: number;
     disabled?: boolean;
+    placeholder?: string;
 }
 
 export default function ComboboxInfo<T extends object>({
@@ -30,6 +31,7 @@ export default function ComboboxInfo<T extends object>({
     onChangeOptions,
     onChangeSelected,
     handleFilter,
+    placeholder,
     defaultValue,
     fieldFind,
     gap,
@@ -44,7 +46,7 @@ export default function ComboboxInfo<T extends object>({
         onChangeOptions && onChangeOptions(options, setValue);
         const filter = handleFilter(options, value);
         if (filter.length === 0) {
-            setValue('');
+            // setValue('');
             onChangeInput && onChangeInput({ currentTarget: { value: '' } } as any);
         }
         setFilterOption(filter);
@@ -80,7 +82,7 @@ export default function ComboboxInfo<T extends object>({
                 <TextInput
                     disabled={disabled}
                     ref={inputRef}
-                    placeholder="Nhập tên artist hoặc email"
+                    placeholder={placeholder}
                     value={value}
                     onChange={(event) => {
                         setValue(event.currentTarget.value);

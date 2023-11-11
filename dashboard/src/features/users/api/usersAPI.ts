@@ -1,11 +1,24 @@
 import * as httpAuth from '@/lib/axios-auth';
-import { IUpdateUser, IUser, UserCredentials, UserPasswordCredentials } from '../types';
-import { useMutation } from '@tanstack/react-query';
+import { ISearchUserPagination, IUpdateUser, IUser, UserCredentials, UserPasswordCredentials } from '../types';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { IPaginationReq } from '@/common/types';
 
 export const getUser = async (): Promise<IUser> => {
     try {
         const resUser = await httpAuth.get(`/users/profile`);
         return resUser;
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+export const searchUser = async (filter: IPaginationReq): Promise<ISearchUserPagination> => {
+    if (filter.searchKeyword === '') return { data: [], total: 0, page: filter.page, pageSize: filter.pageSize };
+    try {
+        const res: ISearchUserPagination = await httpAuth.get('/users/search', {
+            params: filter,
+        });
+        return res;
     } catch (e) {
         throw new Error(e.error);
     }
@@ -27,6 +40,14 @@ export const changePasswordUser = async (data: UserPasswordCredentials): Promise
     } catch (e) {
         throw new Error(e.error);
     }
+};
+export const useSearchUser = (filter: IPaginationReq) => {
+    return useQuery({
+        queryKey: ['user-search', filter],
+        queryFn: () => searchUser(filter),
+        staleTime: Infinity,
+        keepPreviousData: true,
+    });
 };
 
 export const useGetUserMutation = (
