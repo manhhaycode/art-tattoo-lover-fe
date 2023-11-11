@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceData } from '@googlemaps/google-maps-services-js';
 import { themeList } from './../theme';
+import { IAppointmentStudio } from '@/features/appointments';
 
 type Theme = (typeof themeList)[number];
 
@@ -93,4 +94,18 @@ export const useSearchLocationStore = create<SearchLocationState>((set) => ({
             placeChoose: null,
             sessionToken: uuidv4() as google.maps.places.AutocompleteSessionToken,
         }),
+}));
+
+interface InvoiceState {
+    appointment: Partial<IAppointmentStudio> | null;
+    setAppointment: (invoiceUser: Partial<IAppointmentStudio> | null) => void;
+    payMethod: number;
+    setPayMethod: (payMethod: number) => void;
+}
+
+export const useInvoiceStore = create<InvoiceState>((set) => ({
+    appointment: null,
+    setAppointment: (appointment) => set({ appointment }),
+    payMethod: 0,
+    setPayMethod: (payMethod) => set({ payMethod }),
 }));

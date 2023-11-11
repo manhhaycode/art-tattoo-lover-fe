@@ -2,6 +2,7 @@ import { Group, Pagination, ScrollArea, Select, Table, Text, rem } from '@mantin
 import { PaginationState, Table as TableProps, flexRender } from '@tanstack/react-table';
 import { Fragment } from 'react';
 import THead from '../THead';
+import { twMerge } from 'tailwind-merge';
 
 export default function TableForm<T extends object>({
     table,
@@ -10,19 +11,21 @@ export default function TableForm<T extends object>({
     pageSize,
     total,
     handleClickRow,
+    className,
 }: {
     table: TableProps<T>;
-    handlePagination: React.Dispatch<React.SetStateAction<PaginationState>>;
-    pageIndex: number;
-    pageSize: number;
-    total: number;
+    handlePagination?: React.Dispatch<React.SetStateAction<PaginationState>>;
+    pageIndex?: number;
+    pageSize?: number;
+    total?: number;
     handleClickRow?: (row: T) => void;
+    className?: string;
 }) {
     return (
         <>
             <ScrollArea
                 classNames={{ scrollbar: '!sticky' }}
-                className="!max-h-[calc(100vh-320px)] !min-h-[calc(100vh-320px)] overflow-y-auto"
+                className={twMerge('!max-h-[calc(100vh-320px)] !min-h-[calc(100vh-320px)] overflow-y-auto ', className)}
             >
                 <Table highlightOnHover verticalSpacing={'sm'} className="min-w-[1080px]">
                     <Table.Thead>
@@ -73,31 +76,33 @@ export default function TableForm<T extends object>({
                     </Table.Tbody>
                 </Table>
             </ScrollArea>
-            <Group mt={rem(24)} className="justify-end">
-                <Text fs="14px" fw={600}>
-                    Số dòng trên trang:
-                </Text>
-                <Select
-                    defaultValue={'10'}
-                    rightSectionProps={{ className: 'hidden' }}
-                    className="text-sm font-semibold !max-w-[60px]"
-                    allowDeselect={false}
-                    classNames={{ input: '!px-4 ', dropdown: 'text-sm font-semibold' }}
-                    onChange={(e) => {
-                        handlePagination({ pageIndex, pageSize: Number(e) });
-                    }}
-                    withCheckIcon={false}
-                    data={['10', '20', '50', '100']}
-                />
-                <Pagination
-                    fw={600}
-                    fs="14px"
-                    total={total}
-                    onChange={(e) => {
-                        handlePagination({ pageIndex: e - 1, pageSize });
-                    }}
-                />
-            </Group>
+            {handlePagination && pageIndex !== undefined && pageSize !== undefined && total !== undefined && (
+                <Group mt={rem(24)} className="justify-end">
+                    <Text fs="14px" fw={600}>
+                        Số dòng trên trang:
+                    </Text>
+                    <Select
+                        defaultValue={'10'}
+                        rightSectionProps={{ className: 'hidden' }}
+                        className="text-sm font-semibold !max-w-[60px]"
+                        allowDeselect={false}
+                        classNames={{ input: '!px-4 ', dropdown: 'text-sm font-semibold' }}
+                        onChange={(e) => {
+                            handlePagination({ pageIndex, pageSize: Number(e) });
+                        }}
+                        withCheckIcon={false}
+                        data={['10', '20', '50', '100']}
+                    />
+                    <Pagination
+                        fw={600}
+                        fs="14px"
+                        total={total}
+                        onChange={(e) => {
+                            handlePagination({ pageIndex: e - 1, pageSize });
+                        }}
+                    />
+                </Group>
+            )}
         </>
     );
 }

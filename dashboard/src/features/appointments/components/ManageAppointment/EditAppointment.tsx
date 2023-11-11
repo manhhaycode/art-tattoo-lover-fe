@@ -8,6 +8,8 @@ import queryClient from '@/lib/react-query';
 import ComboboxInfo from '@/components/common/Combobox';
 import { useGetShiftDetail, useGetShiftList } from '@/features/shifts';
 import { convertStartEndTimeToDisplayFormat, getDateShiftList } from '@/lib/helper';
+import { useInvoiceStore } from '@/store/componentStore';
+import { useNavigate } from 'react-router-dom';
 export default function EditAppointment({
     handleModalState,
     isEdit,
@@ -29,6 +31,8 @@ export default function EditAppointment({
     const [selectedArtist, setSelectedArtist] = useState<IUserStudio | undefined>();
     const [selectedStatus, setSelectedStatus] = useState(appointmentInfo?.status);
     const [selectedShift, setSelectedShift] = useState(appointmentInfo?.shift);
+    const { setAppointment } = useInvoiceStore();
+    const navigate = useNavigate();
 
     const { data, isFetching } = useGetShiftDetail(selectedShift?.id || '');
     const shiftList = useGetShiftList({
@@ -128,6 +132,7 @@ export default function EditAppointment({
                             <label className="text-sm font-semibold">Artist làm việc ca này</label>
                             {data && (
                                 <ComboboxInfo
+                                    placeholder="Nhập tên artist hoặc email artist"
                                     disabled={isEdit && selectedStatus !== 1 && selectedStatus !== 2}
                                     defaultValue={appointmentInfo.artist?.user.fullName}
                                     options={data.shiftArtists.map((artist) => artist.stuUser)}
@@ -199,6 +204,7 @@ export default function EditAppointment({
                                     <label className="text-sm font-semibold">Ca làm việc</label>
                                     {shiftList.data && (
                                         <ComboboxInfo
+                                            placeholder='Nhập ca làm việc (dạng "Ca hh:mm - hh:mm")'
                                             disabled={selectedStatus !== 2}
                                             gap={1}
                                             defaultValue={`Ca ${convertStartEndTimeToDisplayFormat(
@@ -235,12 +241,12 @@ export default function EditAppointment({
                                                 setSelectedShift(option);
                                             }}
                                             handleFilter={(e, input) => {
-                                                return e.filter((shift) =>
-                                                    `Ca ${convertStartEndTimeToDisplayFormat(
+                                                return e.filter((shift) => {
+                                                    return `Ca ${convertStartEndTimeToDisplayFormat(
                                                         new Date(shift.start + 'Z'),
                                                         new Date(shift.end + 'Z'),
-                                                    )}`.includes(input),
-                                                );
+                                                    )}`.includes(input);
+                                                });
                                             }}
                                             fieldFind={'id'}
                                             selected={selectedShift}
@@ -295,9 +301,15 @@ export default function EditAppointment({
                                     selectedArtist.id === appointmentInfo.artist?.id &&
                                     selectedShift.id === appointmentInfo.shift.id)
                             }
-                            type="submit"
+                            onClick={() => {
+                                if (selectedStatus === 4) {
+                                    setAppointment(appointmentInfo);
+                                    navigate('/studio/manage-invoice/create');
+                                }
+                            }}
+                            type={selectedStatus !== 4 ? 'submit' : 'button'}
                         >
-                            Xác nhận
+                            {selectedStatus !== 4 ? 'Xác nhận' : 'Tạo hóa đơn thanh toán'}
                         </Button>
                     </Group>
                 </form>

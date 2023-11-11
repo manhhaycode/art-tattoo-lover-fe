@@ -1,6 +1,7 @@
 import { ERoleId } from '@/features/auth';
 import { IWorkingTime } from '@/features/studio';
 import Cookies from 'js-cookie';
+import dayjs from 'dayjs';
 
 /* eslint-disable no-useless-escape */
 export const encodeStringtoURI = (str: string) => {
@@ -139,4 +140,20 @@ export const numbertoPrice = (num: number): string => {
     const formattedStr = numStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ';
 
     return formattedStr;
+};
+
+export const QUERY_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
+
+export const formatStringDate = (date: string | Date) => {
+    const dayOfweek = dayjs(date).day();
+
+    if (dayOfweek === 0) {
+        return 'Chủ nhật ' + dayjs(date).format('DD/MM');
+    }
+
+    return `Thứ ${dayOfweek + 1} ${dayjs(date).format('DD/MM')}`;
+};
+
+export const formatStringTime = (date: string | Date) => {
+    return formatStringDate(date) + ' ' + dayjs(date).format('HH:mm');
 };

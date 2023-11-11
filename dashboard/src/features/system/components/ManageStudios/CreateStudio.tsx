@@ -126,13 +126,10 @@ export default function CreateStudio({ refreshData }: { refreshData: () => void 
                                     onDrop={(files) => {
                                         setFile(files[0]);
                                         setValue('logo', files[0].name, { shouldDirty: true });
-                                        // console.log('accepted files', files[0]);
                                         toast.success('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật');
                                     }}
                                     onReject={() => {
                                         toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
-
-                                        // console.log('rejected files', files)
                                     }}
                                     maxSize={100 * 1024}
                                     accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}

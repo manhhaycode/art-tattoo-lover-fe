@@ -271,7 +271,6 @@ export default function ManageAppointment() {
                         value={'value'}
                         label={'label'}
                         onChange={(listSelect) => {
-                            console.log(listSelect);
                             setListStatus(listSelect.map((status) => Number(status.value)));
                         }}
                     />
@@ -287,7 +286,6 @@ export default function ManageAppointment() {
                             value={'value'}
                             label={'label'}
                             onChange={(listSelect) => {
-                                console.log(listSelect);
                                 setListService(listSelect.map((service) => service.value));
                             }}
                         />

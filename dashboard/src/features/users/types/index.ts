@@ -1,3 +1,4 @@
+import { IPagination } from '@/common/types';
 import { ILogout } from '@/features/auth/types';
 
 export interface IUpdateUser extends ILogout {}
@@ -25,4 +26,8 @@ export interface UserCredentials {
 export interface UserPasswordCredentials {
     oldPassword: string;
     newPassword: string;
+}
+
+export interface ISearchUserPagination extends IPagination {
+    data: IUser[];
 }

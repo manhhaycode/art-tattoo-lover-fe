@@ -4,9 +4,9 @@ import { useAuthStore } from '@/store/authStore';
 import { Suspense, useEffect, useState, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Text, useMantineTheme } from '@mantine/core';
-const ManageInvoice = lazy(() => import('@/features/invoices/componenents/ManageInvoice'));
+const CreateInvoice = lazy(() => import('@/features/invoices/componenents/CreateInvoice'));
 
-export default function ManageInvoicePage() {
+export default function CreateInvoicePage() {
     const theme = useMantineTheme();
     const { accountType } = useAuthStore();
     const [display, setDisplay] = useState(false);
@@ -31,10 +31,10 @@ export default function ManageInvoicePage() {
         display && (
             <div className="flex flex-col gap-y-5">
                 <Text className="text-2xl font-semibold" c={theme.colors[theme.primaryColor][6]}>
-                    Quản lý hóa đơn của studio
+                    Tạo hóa đơn mới
                 </Text>
                 <Suspense fallback={<Load />}>
-                    <ManageInvoice />
+                    <CreateInvoice />
                 </Suspense>
             </div>
         )

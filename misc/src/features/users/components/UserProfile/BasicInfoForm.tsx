@@ -16,8 +16,7 @@ import { ErrorAuth } from '@/lib/error';
 export default function BasicInfoForm() {
     const { accountType, setIsChange, ...authstore } = useAuthStore();
     const updateBasicInfoMutation = useUpdateBasicInfoMutation({
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: () => {
             setIsChange(true);
             toast('Cập nhật thông tin cơ bản thành công', { type: 'success', theme: 'dark' });
         },
@@ -93,7 +92,6 @@ export default function BasicInfoForm() {
                                 onDrop={(files) => {
                                     setFile(files[0]);
                                     setValue('avatar', files[0].name, { shouldDirty: true });
-                                    // console.log('accepted files', files[0]);
                                     toast('Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật', {
                                         type: 'success',
                                         theme: 'dark',
@@ -104,8 +102,6 @@ export default function BasicInfoForm() {
                                         type: 'error',
                                         theme: 'dark',
                                     });
-
-                                    // console.log('rejected files', files)
                                 }}
                                 maxSize={100 * 1024}
                                 accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
