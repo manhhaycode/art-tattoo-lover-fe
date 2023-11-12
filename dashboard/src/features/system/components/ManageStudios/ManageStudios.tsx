@@ -1,7 +1,7 @@
-import { StudioIcon } from '@/assets/icons';
+import { EditIcon, StudioIcon } from '@/assets/icons';
 
-import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Input } from '@mantine/core';
-import { useDebouncedState, useDisclosure } from '@mantine/hooks';
+import { Checkbox, Text, Group, AspectRatio, Image, rem, Input, Button } from '@mantine/core';
+import { useDebouncedState } from '@mantine/hooks';
 
 import {
     ColumnDef,
@@ -16,10 +16,10 @@ import queryClient from '@/lib/react-query';
 import TableForm, { SelectCell } from '@/components/TableForm';
 import { toast } from 'react-hot-toast';
 import { IStudio, useGetListStudio, useUpdateStudioMutation } from '@/features/studio';
-import DeleteStudios from './DeleteStudios';
 import CreateStudio from './CreateStudio';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
+import DropdownFilter from '@/components/DropdownFilter/DropdownFilter';
 
 export default function ManageStudios() {
     const navigate = useNavigate();
@@ -28,13 +28,13 @@ export default function ManageStudios() {
         pageSize: 10,
     });
     const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
+    const [listStatus, setListStatus] = useState<number[]>([0, 1, 2, 3]);
+
     const defaultData = useMemo(() => [], []);
-    const dataQuery = useGetListStudio({ page: pageIndex, pageSize, searchKeyword });
+    const dataQuery = useGetListStudio({ page: pageIndex, pageSize, searchKeyword, statusList: listStatus });
     const [dataUpdate, setDataUpdate] = useState<Partial<IStudio | null>>(null);
-    const [dataDelete, setDataDelete] = useState<IStudio[]>([]);
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
-    const [opened, { open, close }] = useDisclosure(false);
 
     const updateStudioMutation = useUpdateStudioMutation({});
 
@@ -63,7 +63,7 @@ export default function ManageStudios() {
                 header: 'Tên studio',
                 cell: ({ row }) => {
                     return (
-                        <Group wrap="nowrap" maw={240}>
+                        <Group wrap="nowrap">
                             <AspectRatio miw={rem(36)} mih={rem(36)} className="rounded-full overflow-hidden relative">
                                 {row.original.logo ? (
                                     <Image src={row.original.logo} className="object-cover w-full h-full" alt="" />
@@ -75,7 +75,7 @@ export default function ManageStudios() {
                                     </div>
                                 )}
                             </AspectRatio>
-                            <Text className="text-sm font-semibold max-w-[150px]">{row.original.name}</Text>
+                            <Text className="text-sm font-semibold">{row.original.name}</Text>
                         </Group>
                     );
                 },
@@ -103,16 +103,20 @@ export default function ManageStudios() {
                             cellContext={cellContext}
                             data={[
                                 {
-                                    label: 'Chưa kích hoạt',
+                                    label: 'Đã kích hoạt',
                                     value: '0',
                                 },
                                 {
-                                    label: 'Kích hoạt',
+                                    label: 'Chưa kích hoạt',
                                     value: '1',
                                 },
                                 {
                                     label: 'Vô hiệu hóa',
                                     value: '2',
+                                },
+                                {
+                                    label: 'Dừng hoạt động',
+                                    value: '3',
                                 },
                             ]}
                             onChange={(e, studio) => {
@@ -134,6 +138,17 @@ export default function ManageStudios() {
                     return (
                         <Group maw={50}>
                             <Button
+                                leftSection={<EditIcon styles={{ fill: 'currentcolor' }} />}
+                                onClick={() => {
+                                    setRowSelection({ [row.id]: true });
+                                    sessionStorage.setItem('tattus-studio', row.id);
+                                    setAccountType({ ...accountType, studioId: row.id });
+                                    navigate('/studio/dashboard');
+                                }}
+                            >
+                                Sửa
+                            </Button>
+                            {/* <Button
                                 className="text-sm font-semibold cursor-pointer"
                                 onClick={() => {
                                     setRowSelection({ [row.id]: true });
@@ -151,7 +166,7 @@ export default function ManageStudios() {
                                 onClick={open}
                             >
                                 Xóa
-                            </Button>
+                            </Button> */}
                         </Group>
                     );
                 },
@@ -217,37 +232,61 @@ export default function ManageStudios() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataUpdate]);
 
-    useEffect(() => {
-        if (dataQuery.data?.data && rowSelection) {
-            const listId = Object.keys(rowSelection);
-            setDataDelete((prev) => {
-                const currentData = dataQuery.data?.data.filter((data) => {
-                    return listId.includes(data.id);
-                });
-
-                const filterData = prev.filter((data) => {
-                    return listId.includes(data.id);
-                });
-
-                // remove duplicate use Set
-                const uniqueData = new Set([...filterData, ...currentData]);
-
-                return [...uniqueData];
-            });
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rowSelection]);
-
     return (
         <>
             <Group justify="space-between">
-                <Input
-                    defaultValue={searchKeyword}
-                    onChange={(event) => setSearchKeyword(event.currentTarget.value)}
-                    placeholder="Tìm kiếm studio"
-                    className="w-1/2"
-                />
+                <Group className="w-1/2 gap-x-6 flex-nowrap">
+                    <Input
+                        defaultValue={searchKeyword}
+                        onChange={(event) => setSearchKeyword(event.currentTarget.value)}
+                        placeholder="Tìm kiếm studio"
+                        className="w-full"
+                    />
+                    <DropdownFilter
+                        name="Trạng thái"
+                        defaultValue={[
+                            {
+                                label: 'Đã kích hoạt',
+                                value: '0',
+                            },
+                            {
+                                label: 'Chưa kích hoạt',
+                                value: '1',
+                            },
+                            {
+                                label: 'Vô hiệu hóa',
+                                value: '2',
+                            },
+                            {
+                                label: 'Dừng hoạt động',
+                                value: '3',
+                            },
+                        ]}
+                        listOptions={[
+                            {
+                                label: 'Đã kích hoạt',
+                                value: '0',
+                            },
+                            {
+                                label: 'Chưa kích hoạt',
+                                value: '1',
+                            },
+                            {
+                                label: 'Vô hiệu hóa',
+                                value: '2',
+                            },
+                            {
+                                label: 'Dừng hoạt động',
+                                value: '3',
+                            },
+                        ]}
+                        value={'value'}
+                        label={'label'}
+                        onChange={(listSelect) => {
+                            setListStatus(listSelect.map((status) => Number(status.value)));
+                        }}
+                    />
+                </Group>
                 <CreateStudio refreshData={refreshData} />
             </Group>
             <TableForm
@@ -257,7 +296,6 @@ export default function ManageStudios() {
                 pageSize={pageSize}
                 total={(dataQuery.data?.total && Math.ceil(dataQuery.data?.total / pageSize)) || 0}
             />
-            <DeleteStudios dataList={dataDelete} opened={opened} close={close} refreshData={refreshData} />
         </>
     );
 }

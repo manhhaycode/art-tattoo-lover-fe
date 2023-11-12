@@ -14,6 +14,7 @@ import {
     ManageStudioServicePage,
     ManageInvoicePage,
     CreateInvoicePage,
+    ViewInvoicePage,
 } from '@/features/studio';
 import { Login } from '@/features/auth';
 import { SystemManageStudio, SystemManageUser } from '@/features/system';
@@ -45,6 +46,7 @@ export default function AppRoutes() {
                         <Route path="/studio/manage-invoice">
                             <Route index element={<ManageInvoicePage />}></Route>
                             <Route path="/studio/manage-invoice/create" element={<CreateInvoicePage />}></Route>
+                            <Route path="/studio/manage-invoice/view/:invoiceId" element={<ViewInvoicePage />}></Route>
                         </Route>
                     </Route>
                     <Route path="/studio/preview-studio" element={<PreviewStudioPage />}></Route>

@@ -6,7 +6,7 @@ import { ActionIcon, Button, Group, Text, rem } from '@mantine/core';
 import { TbPlus, TbTrashX } from 'react-icons/tb';
 import { numbertoPrice } from '@/lib/helper';
 import { useInvoiceStore } from '@/store/componentStore';
-import { useGetListServiceStudio } from '@/features/services';
+import { IService, useGetListServiceStudio } from '@/features/services';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 declare module '@tanstack/react-table' {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface TableMeta<TData extends RowData> {
-        updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+        updateData: (rowIndex: number, columnId: string, value: unknown) => boolean;
     }
 }
 
@@ -27,10 +27,12 @@ export default function TableInvoice() {
         page: 0,
         pageSize: 1000000,
     });
+    const [serviceListChoose, setServiceListChoose] = useState<IService[]>([]);
     const createInvoiceMuatation = useCreateInvoiceMutation({
         onSuccess: (data) => {
             console.log(data);
             toast.success('Tạo hóa đơn thành công');
+            navigate('/studio/manage-invoice');
         },
         onError: (error) => {
             console.log(error);
@@ -158,6 +160,9 @@ export default function TableInvoice() {
                                                 return e;
                                             }),
                                     );
+                                    setServiceListChoose((old) => {
+                                        return old.filter((service) => service.id !== row.original.service);
+                                    });
                                 }}
                                 color="red.6"
                             >
@@ -169,6 +174,7 @@ export default function TableInvoice() {
                 enableSorting: false,
             },
         ],
+
         [serviceList],
     );
 
@@ -204,6 +210,18 @@ export default function TableInvoice() {
         columns: column,
         meta: {
             updateData: (rowIndex, columnId, value) => {
+                if (columnId === 'service' && typeof value === 'string' && value.length > 0) {
+                    const service = serviceListChoose.find((service) => service.id === value);
+                    if (service) {
+                        toast.error('Dịch vụ đã được chọn');
+                        return false;
+                    }
+                    setServiceListChoose((old) => {
+                        const service = serviceList!.data.find((service) => service.id === value);
+                        old.push(service!);
+                        return old;
+                    });
+                }
                 setData((old) =>
                     old.map((row, index) => {
                         let amount = row.amount;
@@ -230,6 +248,7 @@ export default function TableInvoice() {
                         return row;
                     }),
                 );
+                return true;
             },
         },
         getCoreRowModel: getCoreRowModel(),
@@ -291,10 +310,17 @@ export default function TableInvoice() {
                                     total: table.getRowModel().rows.reduce((acc, row) => {
                                         return acc + Number(row.original.amount || 0);
                                     }, 0),
+                                    services: table.getRowModel().rows.map((e) => {
+                                        return {
+                                            serviceId: e.original.service,
+                                            quantity: Number(e.original.quantity),
+                                            price: Number(e.original.unitPrice),
+                                            discount: Number(e.original.discount),
+                                        };
+                                    }),
                                     userId: appointment?.user?.id,
                                 });
                                 console.log(table.getRowModel().rows.map((e) => e.original));
-                                navigate('/studio/manage-invoice');
                             }}
                         >
                             Tạo hóa đơn

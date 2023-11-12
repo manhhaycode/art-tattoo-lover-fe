@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 
 const queryConfig: DefaultOptions = {
     queries: {
-        useErrorBoundary: true,
+        // useErrorBoundary: true,
         refetchOnWindowFocus: false,
         retry: false,
     },

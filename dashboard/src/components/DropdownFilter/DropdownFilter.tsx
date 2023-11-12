@@ -10,11 +10,12 @@ interface DropdownFilterProps<T extends object> {
     value: keyof T;
     label: keyof T;
     onChange?: (value: T[]) => void;
+    defaultValue?: T[];
 }
 
 export default function DropdownFilter<T extends object>(props: DropdownFilterProps<T>) {
     const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState<T[]>([]);
+    const [selected, setSelected] = useState<T[]>(props.defaultValue ? props.defaultValue : []);
     const ref = useClickOutside(() => setOpen(false));
 
     useEffect(() => {

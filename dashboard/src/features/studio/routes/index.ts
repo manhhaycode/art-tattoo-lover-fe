@@ -7,6 +7,7 @@ import PreviewStudioPage from './PreviewStudioPage';
 import ManageStudioServicePage from './ManageStudioServicePage';
 import ManageInvoicePage from './ManageInvoicePage';
 import CreateInvoicePage from './CreateInvoicePage';
+import ViewInvoicePage from './ViewInvoicePage';
 export {
     StudioDashBoard,
     StudioMangeUser,
@@ -17,4 +18,5 @@ export {
     ManageStudioServicePage,
     ManageInvoicePage,
     CreateInvoicePage,
+    ViewInvoicePage,
 };
