@@ -42,8 +42,13 @@ export default function InputCell<T, T2 extends object>({
     const [value, setValue] = useState(initialValue as unknown as string);
 
     const onBlur = (valueI?: string | number) => {
-        table.options.meta?.updateData(index, id, valueI !== undefined ? valueI : value);
-        setClick(false);
+        const status = table.options.meta?.updateData(index, id, valueI !== undefined ? valueI : value);
+        if (!status && select) {
+            setValue('');
+            if (selectRef.current) {
+                selectRef.current.focus();
+            }
+        } else setClick(false);
     };
 
     useEffect(() => {

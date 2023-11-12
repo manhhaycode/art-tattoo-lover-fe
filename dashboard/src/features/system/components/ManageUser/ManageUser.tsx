@@ -1,4 +1,4 @@
-import { UserIcon } from '@/assets/icons';
+import { EditIcon, UserIcon } from '@/assets/icons';
 import { roleMap } from '@/features/auth';
 
 import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Modal, Input } from '@mantine/core';
@@ -89,7 +89,7 @@ export default function ManageUser() {
                 accessorKey: 'email',
                 header: 'Địa chỉ Email',
                 cell: ({ row }) => {
-                    return <Text className="text-sm font-semibold max-w-[250px] truncate">{row.original.email}</Text>;
+                    return <Text className="text-sm font-semibold max-w-[240px] truncate">{row.original.email}</Text>;
                 },
             },
             // {
@@ -128,6 +128,7 @@ export default function ManageUser() {
                 cell: (cellContext) => {
                     return (
                         <SelectCell
+                            className="!max-w-[150px]"
                             disabled={
                                 accountType?.role?.id ? accountType.role.id > cellContext.row.original.roleId : false
                             }
@@ -138,7 +139,7 @@ export default function ManageUser() {
                                     value: '0',
                                 },
                                 {
-                                    label: 'Kích hoạt',
+                                    label: 'Đã Kích hoạt',
                                     value: '1',
                                 },
                                 {
@@ -165,6 +166,7 @@ export default function ManageUser() {
                     return (
                         <Group maw={50}>
                             <Button
+                                leftSection={<EditIcon styles={{ fill: 'currentcolor' }} />}
                                 disabled={accountType?.role?.id ? accountType.role.id > row.original.roleId : false}
                                 className="text-sm font-semibold cursor-pointer"
                                 onClick={() => {

@@ -1,5 +1,5 @@
 import * as httpAuth from '@/lib/axios-auth';
-import { CreateInvoiceReq, IInvoiceListStudio, ListInvoiceStudioReq } from '../types';
+import { CreateInvoiceReq, IInvoice, IInvoiceListStudio, ListInvoiceStudioReq } from '../types';
 import { EditRes } from '@/common/types';
 import { ILogout } from '@/features/auth';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -19,6 +19,15 @@ const getListInvoiceStudio = async (filter: ListInvoiceStudioReq): Promise<IInvo
             params: filter,
             paramsSerializer: { indexes: null },
         });
+        return res;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const getInvoiceStudio = async (id: string): Promise<IInvoice> => {
+    try {
+        const res: IInvoice = await httpAuth.get(`/invoice/studio/${id}`);
         return res;
     } catch (error) {
         throw new Error(error);
@@ -48,5 +57,15 @@ export const useGetListInvoiceStudio = (filter: ListInvoiceStudioReq) => {
         queryFn: () => getListInvoiceStudio(filter),
         staleTime: Infinity,
         keepPreviousData: true,
+    });
+};
+
+export const useGetInvoiceStudio = (id: string) => {
+    return useQuery({
+        queryKey: ['invoiceStudio', id],
+        queryFn: () => getInvoiceStudio(id),
+        staleTime: Infinity,
+        keepPreviousData: true,
+        enabled: id.length > 0,
     });
 };

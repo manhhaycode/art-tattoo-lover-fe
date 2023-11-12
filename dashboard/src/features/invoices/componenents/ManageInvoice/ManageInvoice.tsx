@@ -18,6 +18,7 @@ import { useGetListServiceStudio } from '@/features/services';
 import { useAuthStore } from '@/store/authStore';
 import { useUnmount } from 'react-use';
 import queryClient from '@/lib/react-query';
+import { useNavigate } from 'react-router-dom';
 
 export default function ManageInvoice() {
     const { accountType } = useAuthStore();
@@ -28,6 +29,7 @@ export default function ManageInvoice() {
     const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
     const [serviceList, setServiceList] = useState<string[]>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
+    const navigate = useNavigate();
 
     const defaultData = useMemo(() => [], []);
     const { data } = useGetListInvoiceStudio({
@@ -55,7 +57,9 @@ export default function ManageInvoice() {
                             {row.original.user.avatar ? (
                                 <Image src={row.original.user.avatar} className="object-cover w-full h-full" />
                             ) : (
-                                <UserIcon styles={{ height: '24px', width: '24px' }} />
+                                <div>
+                                    <UserIcon styles={{ height: '24px', width: '24px' }} />
+                                </div>
                             )}
                         </AspectRatio>
                         <Text className="text-sm font-semibold w-full">{row.original.user.fullName}</Text>
@@ -79,7 +83,7 @@ export default function ManageInvoice() {
                     const payment = row.original.payMethod;
                     return (
                         <Text className="text-sm font-semibold">
-                            {payment == 0 ? 'Tiền mặt' : payment == 1 ? 'Thẻ' : 'Chuyển khỏan'}
+                            {payment == 0 ? 'Tiền mặt' : payment == 1 ? 'Thẻ' : 'Chuyển khoản'}
                         </Text>
                     );
                 },
@@ -152,6 +156,7 @@ export default function ManageInvoice() {
                 )}
             </Group>
             <TableForm
+                handleClickRow={(row) => navigate(`/studio/manage-invoice/view/${row.id}`)}
                 handlePagination={setPagination}
                 pageIndex={pageIndex}
                 pageSize={pageSize}

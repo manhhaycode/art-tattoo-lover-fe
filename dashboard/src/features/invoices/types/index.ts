@@ -10,6 +10,21 @@ export interface CreateInvoiceReq {
     appointmentId?: string;
     userId?: string;
     isGuest: boolean;
+    services: IServiceInvoiceCreate[];
+}
+
+export interface IServiceInvoiceCreate {
+    serviceId: string;
+    quantity: number;
+    price: number;
+    discount: number;
+}
+
+export interface IServiceInvoice {
+    service: IService;
+    quantity: number;
+    price: number;
+    discount: number;
 }
 
 export interface ITableInvoice {
@@ -23,8 +38,8 @@ export interface ITableInvoice {
 
 export const paymentInvoiceMap: Record<number, string> = {
     0: 'Thanh toán bằng tiền mặt',
-    1: 'Thanh toán chuyển khoản',
-    2: 'Thanh toán bằng thẻ',
+    1: 'Thanh toán bằng thẻ',
+    2: 'Thanh toán chuyển khoản',
 };
 
 export interface IInvoice {
@@ -38,7 +53,7 @@ export interface IInvoice {
     createdAt: string;
     user: IUser;
     appointment: IAppointmentStudio | null;
-    service: IService[];
+    invoiceServices: IServiceInvoice[];
 }
 
 export interface IInvoiceListStudio extends IPagination {

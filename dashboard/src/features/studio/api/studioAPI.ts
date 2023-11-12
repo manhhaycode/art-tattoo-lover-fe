@@ -27,7 +27,7 @@ const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
             total: 0,
         };
     try {
-        const response: IPaginationStudio = await httpRequest.post('/studios', filter);
+        const response: IPaginationStudio = await httpAuth.post('/studios/admin', filter);
         return response;
     } catch (_error) {
         console.log(_error);

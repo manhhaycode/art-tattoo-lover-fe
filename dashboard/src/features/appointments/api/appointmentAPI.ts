@@ -1,5 +1,6 @@
 import * as httpAuth from '@/lib/axios-auth';
 import {
+    IAppointmentStudio,
     IFilterAppointment,
     IPaginationListAppointmentStudio,
     IUpdateAppointment,
@@ -12,6 +13,15 @@ const getListAppointmentStudio = async (filter: IFilterAppointment): Promise<IPa
             params: filter,
             paramsSerializer: { indexes: null },
         });
+        return response;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+const getAppointmentStudio = async (id: string): Promise<IAppointmentStudio> => {
+    try {
+        const response: IAppointmentStudio = await httpAuth.get(`/appointment/studio/${id}`);
         return response;
     } catch (error) {
         throw new Error(error.message);
@@ -35,6 +45,16 @@ export const useGetListAppointmentStudio = (filter: IFilterAppointment, enabled?
         staleTime: Infinity,
         keepPreviousData: true,
         enabled,
+    });
+};
+
+export const useGetAppointmentStudio = (id: string) => {
+    return useQuery({
+        queryKey: ['appointmentStudio', id],
+        queryFn: () => getAppointmentStudio(id),
+        staleTime: Infinity,
+        keepPreviousData: true,
+        enabled: id.length > 0,
     });
 };
 

@@ -20,6 +20,8 @@ export interface IFilter {
         lng: number;
     };
     page?: number;
+    categoryId?: string;
+    statusList?: number[];
     pageSize?: number;
     sort?: string;
 }
