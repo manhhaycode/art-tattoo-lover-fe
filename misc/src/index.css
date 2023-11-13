@@ -190,6 +190,15 @@
     .studio-overlay-view.right {
         transform: translate(calc(0% + 37.8631px), calc(50% + 0px));
     }
+
+    @media (max-width: 640px) {
+        p {
+            font-size: 12px;
+        }
+        span {
+            font-size: 12px !important;
+        }
+    }
 }
 
 :root {

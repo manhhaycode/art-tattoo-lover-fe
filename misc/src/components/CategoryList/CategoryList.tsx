@@ -110,7 +110,7 @@ export default function CategoryList({
         <div className="relative w-full flex h-full">
             <div
                 ref={listRef}
-                className="grid grid-flow-col gap-x-8 items-center overflow-x-auto overscroll-contain w-full h-full"
+                className="grid grid-flow-col gap-x-4  items-center overflow-x-auto overscroll-contain w-full h-full sm:gap-x-8"
             >
                 <div className="h-full flex items-center ">
                     <button
@@ -134,7 +134,7 @@ export default function CategoryList({
                             Tất Cả
                         </span>
                     </button>
-                    <div className="border-[1px] border-solid border-[#B0B3B8] h-12 ml-8"></div>
+                    <div className="border-[1px] border-solid border-[#B0B3B8] h-12 ml-4 sm:ml-8"></div>
                 </div>
 
                 {/* {isLoading && (

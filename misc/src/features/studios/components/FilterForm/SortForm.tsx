@@ -6,7 +6,7 @@ export default function SortForm({ isLoading }: { isLoading?: boolean }) {
     return (
         <div className="h-[80px] flex items-center justify-end font-medium ">
             <div className="w-fit flex items-center gap-x-4">
-                <p>Sắp xếp theo:</p>
+                <p className="hidden xs:!text-base xs:block">Sắp xếp theo:</p>
                 <Select
                     disabled={isLoading}
                     classNames={{

@@ -55,6 +55,8 @@ interface ModalState {
     setIsModalVisible: (isModalVisible: boolean) => void;
     bookingModal: IBookingModal;
     setBookingModal: (bookingModal: IBookingModal) => void;
+    filterMobileModal: boolean;
+    setFilterMobileModal: (filterMobileModal: boolean) => void;
     reset: () => void;
 }
 
@@ -77,12 +79,15 @@ export const useModalStore = create<ModalState>((set) => ({
             bookingModal,
             isModalVisible: bookingModal.visible,
         }),
+    filterMobileModal: false,
+    setFilterMobileModal: (filterMobileModal) => set({ filterMobileModal, isModalVisible: filterMobileModal }),
     reset: () => {
         set({
             isLoginModalVisible: false,
             isRegisterModalVisible: false,
             isModalVisible: false,
             isResetPasswordModalVisible: false,
+            filterMobileModal: false,
             bookingModal: {
                 visible: false,
                 studioId: null,

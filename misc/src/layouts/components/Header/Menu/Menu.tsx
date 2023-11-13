@@ -10,12 +10,15 @@ import Button from '@/components/common/Button';
 import { AvartarIcon } from '@/features/users';
 import { useNavigate } from 'react-router-dom';
 import Image from '@/components/common/Image';
+import { useWindowSize } from 'react-use';
 export default function Menu() {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const { setIsModalVisible, setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
     const menuRef = useClickOutside<HTMLDivElement>(() => setIsOpenMenu(false));
     const { isAuth, accountType, setIsLogout } = useAuthStore();
     const navigate = useNavigate();
+    const { width } = useWindowSize();
+
     return (
         <div ref={menuRef} className="relative">
             <Button
@@ -55,6 +58,38 @@ export default function Menu() {
             </Button>
             <Dropdown animate={isOpenMenu} className="right-0 max-w-[240px] rounded-lg mt-4 origin-[100%_0%]">
                 <div className="flex flex-col -mx-2 -mb-2  text-[15px]">
+                    {width < 580 && (
+                        <div className="flex flex-col">
+                            <button
+                                onClick={() => {
+                                    setIsOpenMenu(false);
+                                    navigate('/');
+                                }}
+                                className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
+                            >
+                                Trang chủ
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setIsOpenMenu(false);
+                                    navigate('/');
+                                }}
+                                className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
+                            >
+                                Artist nổi bật
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setIsOpenMenu(false);
+                                    navigate('/become-studio');
+                                }}
+                                className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
+                            >
+                                Trở thành Studio
+                            </button>
+                            <div className="border-[1px] border-stroke-gray"></div>
+                        </div>
+                    )}
                     {!isAuth ? (
                         <>
                             <button
