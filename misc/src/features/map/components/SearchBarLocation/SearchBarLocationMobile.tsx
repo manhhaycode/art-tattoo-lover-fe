@@ -17,7 +17,7 @@ interface IService {
     image?: string;
 }
 
-export default function SearchBarLocation() {
+export default function SearchBarLocationMobile() {
     const serviceRef = useRef<HTMLButtonElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [locationName, setLocationName] = useDebouncedState('', 400);
@@ -41,10 +41,10 @@ export default function SearchBarLocation() {
     }, []);
 
     return (
-        <div className="w-[90%] flex items-center bg-white shadow-[0_0_0_4px_#fff] mx-auto h-16 rounded-2xl relative">
-            <div className="p-1 h-full w-full sm:w-3/5">
+        <div className="w-[90%] flex items-center bg-white shadow-[0_0_0_4px_#fff] mx-auto h-16 rounded-2xl">
+            <div className="p-1 h-full w-3/5 ">
                 <div
-                    className="input-search-location p-1 rounded-2xl h-full flex items-center sm:relative"
+                    className="input-search-location p-1 rounded-2xl h-full flex items-center relative"
                     onClick={(e) => {
                         if (e.currentTarget.contains(e.target as Node)) e.stopPropagation();
                     }}
@@ -65,7 +65,7 @@ export default function SearchBarLocation() {
                             }
                             if (placeChoose !== null) setPlaceChoose(null);
                         }}
-                        className="mr-1 input-container text-base"
+                        className="mr-1 input-container"
                         type="primary"
                         placeholder="Tìm kiếm theo địa điểm, quận, tên đường..."
                     />
@@ -97,7 +97,7 @@ export default function SearchBarLocation() {
                                 <li>
                                     <button
                                         title="suggest-location-item"
-                                        className="flex items-center w-full p-2 sm:p-4"
+                                        className="flex items-center p-4 w-full"
                                         onClick={() => {
                                             if (
                                                 !geolocation.isGeolocationAvailable ||
@@ -108,7 +108,7 @@ export default function SearchBarLocation() {
                                         }}
                                     >
                                         <TargetIcon />
-                                        <p className="ml-2 sm:ml-4">Vị trí hiện tại</p>
+                                        <p className="ml-4">Vị trí hiện tại</p>
                                     </button>
                                 </li>
                             )}
@@ -125,15 +125,10 @@ export default function SearchBarLocation() {
                                                         inputRef.current.value = prediction.description;
                                                 }}
                                                 title="suggest-location-item"
-                                                className="flex items-center w-full p-2 sm:p-4"
+                                                className="flex items-center p-4 w-full"
                                             >
-                                                <div className="block sm:hidden">
-                                                    <MapPinIcon styles={{ width: 16, minWidth: 16, height: 16 }} />
-                                                </div>
-                                                <div className="hidden sm:block">
-                                                    <MapPinIcon styles={{ width: 20, minWidth: 20, height: 20 }} />
-                                                </div>
-                                                <p className="ml-2 sm:ml-4 text-truncation">{prediction.description}</p>
+                                                <MapPinIcon />
+                                                <p className="ml-4 text-truncation">{prediction.description}</p>
                                             </button>
                                         </li>
                                     );
@@ -142,9 +137,9 @@ export default function SearchBarLocation() {
                     </Dropdown>
                 </div>
             </div>
-            <div className="border-[1px] border-solid border-[#a9afbb] h-10 mx-2 hidden sm:block"></div>
-            <div className="flex items-center relative w-fit h-full p-1 sm:w-2/5">
-                <div className="service-search-location p-1 rounded-2xl hidden items-center w-full sm:flex">
+            <div className="border-[1px] border-solid border-[#a9afbb] h-10 mx-2"></div>
+            <div className="flex items-center relative w-2/5 h-full p-1">
+                <div className="service-search-location p-1 rounded-2xl flex items-center w-full">
                     <button
                         ref={serviceRef}
                         onClick={() => {

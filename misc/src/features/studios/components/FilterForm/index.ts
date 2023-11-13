@@ -1,3 +1,4 @@
 import FilterForm from './FilterForm';
 import SortForm from './SortForm';
-export { FilterForm, SortForm };
+import FilterMobile from './FilterModal';
+export { FilterForm, SortForm, FilterMobile };

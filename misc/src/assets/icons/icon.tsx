@@ -685,7 +685,7 @@ export const InstagramIcon = ({ styles }: { styles?: CSSProperties }) => (
             d="M19.5852 11.8649C19.9776 11.8009 20.244 11.431 20.1801 11.0385C20.1162 10.646 19.7462 10.3797 19.3537 10.4436C18.9612 10.5075 18.6949 10.8775 18.7588 11.27C18.8227 11.6624 19.1927 11.9288 19.5852 11.8649Z"
             fill="white"
         />
-        <defs>
+        <g>
             <linearGradient
                 id="paint0_linear_521_3287"
                 x1="3.5786"
@@ -702,7 +702,7 @@ export const InstagramIcon = ({ styles }: { styles?: CSSProperties }) => (
                 <stop offset="0.5" stopColor="#FE2181" />
                 <stop offset="1" stopColor="#9000DC" />
             </linearGradient>
-        </defs>
+        </g>
     </svg>
 );
 

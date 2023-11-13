@@ -55,7 +55,7 @@ export default function Modal({
                     }
                 }}
                 className={
-                    `modal modal-container bg-gray-dark shadow-modal min-w-[520px] rounded-[20px] !overflow-auto relative ` +
+                    `modal modal-container bg-gray-dark shadow-modal min-w-[60vw] sm:min-w-[520px] !max-w-[calc(100vw-24px)] rounded-[20px] !overflow-auto relative min-h-fit ` +
                     props.className
                 }
             >

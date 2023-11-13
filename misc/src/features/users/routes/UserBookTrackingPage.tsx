@@ -33,7 +33,9 @@ export default function UserBookTrackingPage() {
                 page,
                 pageSize: PAGE_SIZE,
                 startDate:
-                    status !== AppointmentStatusString.CANCELED
+                    status !== AppointmentStatusString.CANCELED &&
+                    status !== AppointmentStatusString.DONE &&
+                    status !== AppointmentStatusString.LATE
                         ? dayjs().startOf('day').format(QUERY_FORMAT)
                         : undefined,
                 statusList: status ? status : undefined,
@@ -135,7 +137,7 @@ export default function UserBookTrackingPage() {
                             </div>
                         </>
                     )}
-                    {appointments?.appointments.length === 0 && (
+                    {appointments?.appointments.length === 0 && status && (
                         <p className="text-sm italic mt-2">
                             Bạn chưa có lịch hẹn nào{' '}
                             {AppointmentStatus[status as keyof typeof AppointmentStatus].toLowerCase()}

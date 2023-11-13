@@ -48,17 +48,17 @@ export default function ListServiceOfStudio({
 
     return (
         <div className="w-full flex flex-col gap-y-3">
-            <h1 className="text-lg font-semibold">
+            <h1 className="text-base sm:text-lg font-semibold">
                 {listCategory ? 'Các loại dịch vụ' : listWorkingTime && 'Khung giờ hoạt động'}
             </h1>
             <div className="overflow-x-hidden w-full category-list-wrapper">
-                <div ref={listRef} className="w-[95%] flex flex-nowrap gap-x-2">
+                <div ref={listRef} className="w-full flex flex-nowrap gap-x-2">
                     {listCategory &&
                         listCategory.slice(0, 6).map((category, index) => {
                             return (
                                 <button
                                     key={category.id}
-                                    className="p-[10px] bg-search-gray-dark rounded-lg"
+                                    className="p-8 rounded-md bg-search-gray-dark sm:p-[10px] sm:rounded-lg"
                                     {...(index >= countInview && { style: { visibility: 'hidden' } })}
                                 >
                                     <p className="whitespace-nowrap overflow-hidden font-medium font-sans leading-5">
