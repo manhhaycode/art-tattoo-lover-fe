@@ -87,3 +87,11 @@ export const resetAuthStore = () => {
     Cookies.remove('tattus-at');
     sessionStorage.removeItem('tattus-session');
 };
+
+export const numbertoPrice = (num: number): string => {
+    const numStr: string = num.toString();
+
+    const formattedStr = numStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ';
+
+    return formattedStr;
+};

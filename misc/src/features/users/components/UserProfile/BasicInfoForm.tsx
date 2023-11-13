@@ -74,7 +74,7 @@ export default function BasicInfoForm() {
         accountType && (
             <div className="basic-info-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid grid-cols-[1fr_1fr] gap-y-6 gap-x-[8%]">
+                    <div className="grid grid-flow-row  gap-y-6 gap-x-[8%] sm:grid-cols-[1fr_1fr]">
                         <div className="w-full flex items-center gap-x-5">
                             <div className="h-24 w-24">
                                 {file === null ? (
@@ -173,7 +173,7 @@ export default function BasicInfoForm() {
                             </DatesProvider>
                         </div>
                     </div>
-                    <div className="flex gap-x-4 mt-6">
+                    <div className="flex gap-x-4 gap-y-4 mt-6 flex-col sm:flex-row">
                         <Button
                             isAnimate={true}
                             disabled={

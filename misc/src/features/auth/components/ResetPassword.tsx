@@ -43,10 +43,10 @@ export default function ResetPassword() {
         resetPassWordMutation.mutate(data);
     };
     return (
-        <div className="flex flex-col justify-between overflow-auto h-full w-[600px]">
+        <div className="flex flex-col justify-between overflow-auto h-full xs:w-[600px]">
             <div className="px-4 mt-10 mb-24">
                 <h1 className="text-2xl font-semibold mb-6 text-center">Đặt lại mật khẩu Tattus</h1>
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-14 gap-y-3">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-3 xs:px-6 lgmax:px-14 gap-y-3">
                     <label className="text-white font-medium text-sm">Nhập địa chỉ Email</label>
                     <Input
                         disabled={resetPassWordMutation.isLoading}

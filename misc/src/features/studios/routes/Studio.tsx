@@ -22,7 +22,7 @@ export default function Studio() {
     // if (isLoading) return <div>Loading...</div>;
     return (
         <div className="pb-16">
-            <div className="my-6 mx-auto xl:w-[1372px] grid grid-flow-row gap-y-6">
+            <div className="my-6 mx-auto 2xl:w-[1372px] flex flex-col gap-y-6 w-[calc(100%-2rem)] sm:w-[calc(100%-4rem)]">
                 <ImageListStudio
                     listImage={data?.listMedia.filter((media) => media.type === 0).map((media) => media.url) || []}
                     isLoading={isLoading}

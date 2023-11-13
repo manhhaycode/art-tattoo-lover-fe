@@ -50,12 +50,12 @@ export default function Register() {
     };
     const isEmailValid = !errors.email && !!watch('email') && watch('email') !== '';
     return (
-        <div className="flex flex-col justify-between overflow-auto h-full w-[800px]">
+        <div className="flex flex-col justify-between overflow-auto h-full md:w-[800px]">
             <div className="px-4 mt-10 mb-24">
                 <h1 className="text-2xl font-semibold mb-6 text-center">Đăng ký tài khoản Tattus</h1>
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-14 gap-y-3">
-                    <div className="flex w-full gap-x-4">
-                        <div className="flex flex-col gap-y-3 w-1/2">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-3 xs:px-6 lgmax:px-14 gap-y-3">
+                    <div className="flex flex-col gap-y-3 w-full gap-x-4 md:flex-row">
+                        <div className="flex flex-col gap-y-3 md:w-1/2">
                             <label className="text-white font-medium text-sm">Nhập họ tên</label>
                             <Input
                                 disabled={registerMutation.isLoading}
@@ -70,7 +70,7 @@ export default function Register() {
                                 <label className="text-sm font-semibold text-red-500">{errors.fullName.message}</label>
                             )}
                         </div>
-                        <div className="flex flex-col gap-y-3 w-1/2">
+                        <div className="flex flex-col gap-y-3 md:w-1/2">
                             <label className="text-white font-medium text-sm">Nhập địa chỉ Email</label>
                             <Input
                                 disabled={registerMutation.isLoading}
@@ -96,8 +96,8 @@ export default function Register() {
                             )}
                         </div>
                     </div>
-                    <div className="flex w-full gap-x-4">
-                        <div className="flex flex-col gap-y-3 w-1/2">
+                    <div className="flex flex-col gap-y-3 w-full gap-x-4 md:flex-row">
+                        <div className="flex flex-col gap-y-3 md:w-1/2">
                             <label className="text-white font-medium text-sm">Nhập mật khẩu</label>
                             <PasswordInput
                                 variant="unstyled"
@@ -123,10 +123,11 @@ export default function Register() {
                             )}
                         </div>
 
-                        <div className="flex flex-col gap-y-3 w-1/2">
+                        <div className="flex flex-col gap-y-3 md:w-1/2">
                             <label className="text-white font-medium text-sm">Nhập Số điện thoại</label>
                             <Input
                                 disabled={registerMutation.isLoading}
+                                placeholder="Số điện thoại"
                                 {...register('phoneNumber', {
                                     pattern: {
                                         value: /^[0-9]{8,15}$/,
@@ -149,8 +150,8 @@ export default function Register() {
                         </div>
                     </div>
 
-                    <div className="flex w-full gap-x-4">
-                        <div className="flex flex-col gap-y-3 w-1/2">
+                    <div className="flex flex-col  justify-start gap-y-3 w-full gap-x-4 xs:flex-row">
+                        <div className="flex flex-col gap-y-3">
                             <label className="text-white font-medium text-sm">Xác thực email đăng ký</label>
                             <Input
                                 disabled={registerMutation.isLoading}
@@ -189,7 +190,7 @@ export default function Register() {
                                 }
                             }}
                             className={
-                                'h-12 !min-w-[180px] ' +
+                                'h-12 !min-w-[140px] ' +
                                 (isEmailValid
                                     ? countDownTime
                                         ? '!bg-transparent text-white shadow-shadow-dropdown cursor-not-allowed '

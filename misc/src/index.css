@@ -193,10 +193,13 @@
 
     @media (max-width: 640px) {
         p {
-            font-size: 12px;
+            font-size: 14px;
         }
         span {
             font-size: 12px !important;
+        }
+        input {
+            font-size: 16px;
         }
     }
 }
