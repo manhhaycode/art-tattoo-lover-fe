@@ -57,6 +57,8 @@ interface ModalState {
     setBookingModal: (bookingModal: IBookingModal) => void;
     filterMobileModal: boolean;
     setFilterMobileModal: (filterMobileModal: boolean) => void;
+    uploadCertificateModal: boolean;
+    seUploadCertificateModal: (uploadCertificateModal: boolean) => void;
     reset: () => void;
 }
 
@@ -81,6 +83,10 @@ export const useModalStore = create<ModalState>((set) => ({
         }),
     filterMobileModal: false,
     setFilterMobileModal: (filterMobileModal) => set({ filterMobileModal, isModalVisible: filterMobileModal }),
+    uploadCertificateModal: false,
+    seUploadCertificateModal: (uploadCertificateModal: boolean) =>
+        set({ uploadCertificateModal, isModalVisible: uploadCertificateModal }),
+
     reset: () => {
         set({
             isLoginModalVisible: false,

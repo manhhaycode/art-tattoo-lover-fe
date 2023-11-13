@@ -1,11 +1,10 @@
 import * as httpRequest from '@/lib/axios';
-import { MediaCredentials } from '../types';
-import { IMedia } from '@/features/studios';
+import { IMediaCreate, MediaCredentials } from '../types';
 import { useMutation } from '@tanstack/react-query';
 
-const uploadMedia = async (media: MediaCredentials): Promise<IMedia> => {
+const uploadMedia = async (media: MediaCredentials): Promise<IMediaCreate> => {
     try {
-        const resMedia: IMedia = await httpRequest.post('/media/upload', media, {
+        const resMedia: IMediaCreate = await httpRequest.post('/media/upload', media, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
         return resMedia;
@@ -16,8 +15,8 @@ const uploadMedia = async (media: MediaCredentials): Promise<IMedia> => {
 
 export const useUploadMediaMutation = (handleFn: {
     onError?: (error: Error, variables: MediaCredentials, context: unknown) => void;
-    onSuccess?: (data: IMedia, variables: MediaCredentials, context: unknown) => void;
-    onMutate?: (variables: MediaCredentials) => Promise<IMedia>;
+    onSuccess?: (data: IMediaCreate, variables: MediaCredentials, context: unknown) => void;
+    onMutate?: (variables: MediaCredentials) => Promise<IMediaCreate>;
 }) => {
     return useMutation({
         mutationFn: (media: MediaCredentials) => uploadMedia(media),

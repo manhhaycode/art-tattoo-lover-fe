@@ -26,7 +26,11 @@ export default function InvoiceCard({ invoice }: { invoice: IInvoice }) {
 
                     <div className="flex items-center gap-1">
                         <IconCalendar size={16} className="text-white w-5" />
-                        <h6 className="text-sm">{formatStringTime(invoice.appointment!.shift.start)}</h6>
+                        <h6 className="text-sm">
+                            {invoice.appointment
+                                ? formatStringTime(invoice.appointment.shift.start)
+                                : 'Không có lịch hẹn'}
+                        </h6>
                     </div>
                     <div className="flex items-center">
                         <p className="text-sm">Tổng tiền: </p>

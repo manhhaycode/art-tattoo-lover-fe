@@ -1,4 +1,10 @@
 export interface IMedia {
+    id: string;
+    url: string;
+    type: typeEnum;
+}
+
+export interface IMediaCreate {
     success: boolean;
     url: string;
 }
@@ -6,11 +12,12 @@ export interface IMedia {
 export enum typeEnum {
     IMAGE = 0,
     VIDEO = 1,
-    AUDIO = 2,
+    CERT = 2,
     FILE = 3,
 }
 
 export interface MediaCredentials {
+    id?: string;
     file: File;
     type: typeEnum;
 }
