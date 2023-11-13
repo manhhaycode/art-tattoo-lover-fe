@@ -1,12 +1,6 @@
 import { TattooIcon } from '@/assets/icons';
+import { ICategory } from '@/features/category';
 import { forwardRef } from 'react';
-
-export interface ICategory {
-    id: string;
-    name: string;
-    icon?: React.ReactNode;
-    image?: string;
-}
 
 const Category = forwardRef(function (
     props: React.ButtonHTMLAttributes<HTMLButtonElement> & {

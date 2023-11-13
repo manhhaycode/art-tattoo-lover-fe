@@ -1,7 +1,8 @@
-import { db } from '@/assets/data';
-import Category, { ICategory } from './Category';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon, HomeIcon } from '@/assets/icons';
+import { ICategory, useGetListCategory } from '@/features/category';
+import { SkeletonLoader } from '../SkeletonLoader';
+import Category from './Category';
 // import { SkeletonLoader } from '../SkeletonLoader';
 
 const CustomRightArrow = ({ onClick, style }: { onClick?: () => void; style?: React.CSSProperties }) => {
@@ -44,10 +45,8 @@ export default function CategoryList({
     isVisible = true,
     onClickCategory,
     onClickAll,
-    isLoading,
 }: {
     initChooose?: string;
-    isLoading?: boolean;
     isVisible?: boolean;
     onClickCategory?: (category: ICategory) => void;
     onClickAll?: () => void;
@@ -56,7 +55,8 @@ export default function CategoryList({
     const listRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0 });
     const [numberItemInView, setNumberItemInView] = useState(0);
-    const [position, setPosition] = useState(db.servicesTattoo.findIndex((item) => item.id === initChooose) + 1 || 0);
+    const { data: categoryList, isLoading } = useGetListCategory();
+    const [position, setPosition] = useState(0);
     const [isEnd, setIsEnd] = useState(false);
     const [isStart, setIsStart] = useState(false);
 
@@ -67,6 +67,12 @@ export default function CategoryList({
             }
         }, 250);
     };
+
+    useEffect(() => {
+        if (categoryList) {
+            setPosition(categoryList.findIndex((item) => item.id === Number(initChooose)) + 1 || 0);
+        }
+    }, [categoryList, initChooose]);
 
     useEffect(() => {
         if (listRef.current) {
@@ -137,36 +143,37 @@ export default function CategoryList({
                     <div className="border-[1px] border-solid border-[#B0B3B8] h-12 ml-4 sm:ml-8"></div>
                 </div>
 
-                {/* {isLoading && (
+                {isLoading && (
                     <>
-                        {[...Array(10)].map(() => {
+                        {[...Array(10)].map((_a, index) => {
                             return (
-                                <div className="w-[130px] h-[63px]">
+                                <div key={index} className="w-[130px] h-[63px]">
                                     <SkeletonLoader />
                                 </div>
                             );
                         })}
                     </>
-                )} */}
+                )}
 
-                {db.servicesTattoo.map((category) => {
-                    return (
-                        <Category
-                            onClick={() => {
-                                setIsSelect(category.id);
-                                onClickCategory && onClickCategory(category);
-                            }}
-                            key={category.id}
-                            category={category}
-                            {...(isSelect === category.id && {
-                                styleSelect: {
-                                    icon: { stroke: '#FF3B5C' },
-                                    text: { color: '#FF3B5C' },
-                                },
-                            })}
-                        />
-                    );
-                })}
+                {categoryList &&
+                    categoryList.map((category) => {
+                        return (
+                            <Category
+                                onClick={() => {
+                                    setIsSelect(category.id.toString());
+                                    onClickCategory && onClickCategory(category);
+                                }}
+                                key={category.id}
+                                category={category}
+                                {...(isSelect === category.id.toString() && {
+                                    styleSelect: {
+                                        icon: { stroke: '#FF3B5C' },
+                                        text: { color: '#FF3B5C' },
+                                    },
+                                })}
+                            />
+                        );
+                    })}
             </div>
 
             {isVisible && (

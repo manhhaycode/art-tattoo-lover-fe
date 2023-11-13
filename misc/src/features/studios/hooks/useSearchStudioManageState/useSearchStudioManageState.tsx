@@ -17,7 +17,7 @@ const useSearchStudioManageState = () => {
         filterData && checkFilterEmpty(filterData)
             ? {
                   searchKeyword: searchKeyword || undefined,
-                  category: category || undefined,
+                  categoryId: Number(category) || undefined,
                   rating: rating?.split(',').map((item) => Number(item)) || undefined,
                   sort: sort || undefined,
                   pageSize,

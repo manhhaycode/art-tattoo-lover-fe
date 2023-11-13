@@ -1,5 +1,5 @@
 import { IStudio } from '@/features/studios';
-import { StudioCardInfo } from '@/features/studios/components';
+import StudioCardMap from '@/features/studios/components/StudioListLocation/StudioCardMap';
 import { useStudioPinStore } from '@/store/componentStore';
 import { OverlayViewF } from '@react-google-maps/api';
 import { memo } from 'react';
@@ -32,7 +32,7 @@ const StudioCardOverlay = ({
                     )}
                 >
                     <div className="w-80">
-                        <StudioCardInfo onClickCloseIcon={onClickCloseIcon} isSlide={true} studio={studio} />
+                        <StudioCardMap onClickCloseIcon={onClickCloseIcon} studio={studio} />
                     </div>
                 </div>
             )}

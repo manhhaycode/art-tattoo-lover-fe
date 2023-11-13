@@ -18,7 +18,8 @@ export default function StudioListLocation() {
         filterData?.viewPortNE && filterData?.viewPortSW
             ? {
                   ...filterData,
-                  page: (search[0].get('page') && Number(search[0].get('page')) - 1) || 0,
+                  page: (search[0].get('page') && Number(search[0].get('page'))) || 0,
+                  categoryId: (search[0].get('category') && Number(search[0].get('category'))) || undefined,
                   pageSize: 15,
               }
             : {},
@@ -72,7 +73,7 @@ export default function StudioListLocation() {
                                 searchParams.append(key, value);
                             }
 
-                            searchParams.set('page', String(value));
+                            searchParams.set('page', String(value - 1));
                             navigate(`/search-location?${searchParams.toString()}`);
                         }}
                         size={'md'}
