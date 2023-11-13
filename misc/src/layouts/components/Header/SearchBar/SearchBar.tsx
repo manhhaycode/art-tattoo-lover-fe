@@ -3,15 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Input from '@/components/common/Input';
 import { DropdownImage } from '@/components/Dropdown';
-import { db } from '@/assets/data';
 import Image from '@/components/common/Image';
 import Button from '@/components/common/Button';
 import { useFilterFormStore } from '@/store/componentStore';
-interface IService {
-    id?: string;
-    name?: string;
-    image?: string;
-}
+import { ICategory, useGetListCategory } from '@/features/category';
 
 export default function SearchBar({
     clickOutside,
@@ -24,7 +19,8 @@ export default function SearchBar({
     const searchSmallRef = useRef<HTMLDivElement>(null);
     const searchBigRef = useRef<HTMLDivElement>(null);
     const serviceRef = useRef<HTMLButtonElement>(null);
-    const [serviceChoose, setServiceChoose] = useState<IService>({});
+    const [categoryChoose, setCategoryChoose] = useState<ICategory>();
+    const { data: listCategory } = useGetListCategory();
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [studioName, setStudioName] = useState('');
     const { reset } = useFilterFormStore();
@@ -162,8 +158,8 @@ export default function SearchBar({
                                         (isDropdownVisible ? '!bg-[rgb(80,82,83)]' : '')
                                     }
                                 >
-                                    {serviceChoose.name ? (
-                                        <p className="text-white">{serviceChoose.name}</p>
+                                    {categoryChoose?.name ? (
+                                        <p className="text-white">{categoryChoose?.name}</p>
                                     ) : (
                                         'Dịch vụ bất kỳ'
                                     )}
@@ -176,12 +172,12 @@ export default function SearchBar({
                                     onClick={() => {
                                         handleCloseSearchBigBar();
                                         setStudioName('');
-                                        setServiceChoose({});
+                                        setCategoryChoose(undefined);
                                         reset();
                                         navigate(
                                             '/search-studio?searchKeyword=' +
                                                 studioName +
-                                                (serviceChoose.id ? '&category=' + serviceChoose.id : ''),
+                                                (categoryChoose?.id ? '&categoryId=' + categoryChoose.id : ''),
                                         );
                                     }}
                                     className="!rounded-3xl ml-3 relative "
@@ -204,28 +200,29 @@ export default function SearchBar({
                                         Tìm kiếm các dịch vụ Tattoo
                                     </h1>
                                     <div className="grid grid-cols-3 gap-x-2 gap-y-4">
-                                        {db.servicesTattoo.map((service) => {
-                                            return (
-                                                <div key={service.id} className="flex flex-col">
-                                                    <Image
-                                                        onClick={() => {
-                                                            setServiceChoose(service);
-                                                            setIsDropdownVisible(false);
-                                                        }}
-                                                        style={
-                                                            serviceChoose.id === service.id
-                                                                ? { borderColor: '#FF3B5C' }
-                                                                : {}
-                                                        }
-                                                        className="rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown"
-                                                        src={service.img}
-                                                    />
-                                                    <div className="flex items-center flex-grow">
-                                                        <p className="text-sm mt-2 mx-px">{service.name}</p>
+                                        {listCategory &&
+                                            listCategory.map((category) => {
+                                                return (
+                                                    <div key={category.id} className="flex flex-col">
+                                                        <Image
+                                                            onClick={() => {
+                                                                setCategoryChoose(category);
+                                                                setIsDropdownVisible(false);
+                                                            }}
+                                                            style={
+                                                                categoryChoose?.id === category.id
+                                                                    ? { borderColor: '#FF3B5C' }
+                                                                    : {}
+                                                            }
+                                                            className="rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown"
+                                                            src={category.image}
+                                                        />
+                                                        <div className="flex items-center flex-grow">
+                                                            <p className="text-sm mt-2 mx-px">{category.name}</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            })}
                                     </div>
                                 </DropdownImage>
                             </div>

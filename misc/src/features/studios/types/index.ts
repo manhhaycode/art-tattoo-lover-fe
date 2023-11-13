@@ -8,7 +8,7 @@ export interface IMedia {
 
 export interface IFilter {
     searchKeyword?: string;
-    category?: string;
+    categoryId?: number;
     rating?: number[];
     viewPortNE?: {
         lat: number;

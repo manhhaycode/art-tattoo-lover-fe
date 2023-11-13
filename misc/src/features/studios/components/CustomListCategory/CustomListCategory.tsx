@@ -1,17 +1,17 @@
 import CategoryList from '@/components/CategoryList';
-import { ICategory } from '@/features/studios';
+import { ICategory } from '@/features/category';
 import { useDropdownStore, useFilterFormStore } from '@/store/componentStore';
 import { useCallback, useEffect } from 'react';
 import { useWindowScroll } from 'react-use';
 
-export default function CustomListCategory({ isLoading, initChoose }: { isLoading?: boolean; initChoose: string }) {
+export default function CustomListCategory({ initChoose }: { initChoose: string }) {
     const { isVisible, setIsVisible } = useDropdownStore();
     const { filterData, setFilterData, setIsQuery } = useFilterFormStore();
     const scroll = useWindowScroll();
 
     const handleSelectCategory = useCallback(
         (category: ICategory) => {
-            setFilterData({ ...filterData, category: category.id });
+            setFilterData({ ...filterData, categoryId: category.id });
             setIsQuery(true);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,11 +37,11 @@ export default function CustomListCategory({ isLoading, initChoose }: { isLoadin
             <div className="2xl:w-[1372px] mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-4rem)] h-full">
                 <CategoryList
                     initChooose={initChoose}
-                    isLoading={isLoading}
                     isVisible={isVisible}
                     onClickCategory={handleSelectCategory}
                     onClickAll={() => {
-                        setFilterData({ ...filterData, category: undefined });
+                        setFilterData({ ...filterData, categoryId: undefined });
+                        setIsQuery(true);
                     }}
                 />
             </div>

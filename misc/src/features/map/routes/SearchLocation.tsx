@@ -12,7 +12,7 @@ export default function SearchLocation() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
     const { placeChoose, setPlaceChoose } = useSearchLocationStore();
-    const { setFilterData, filterData, isQuery } = useFilterFormStore();
+    const { setFilterData, filterData } = useFilterFormStore();
     const [openMap, setOpenMap] = useState(true);
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export default function SearchLocation() {
             setPlaceChoose({ place_id: searchParams.get('placeId')!, description: searchParams.get('location')! });
         }
         if (searchParams.get('category')) {
-            setFilterData({ ...filterData, category: searchParams.get('category')! });
+            setFilterData({ ...filterData, categoryId: Number(searchParams.get('category')) });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams.get('location'), searchParams.get('placeId'), searchParams.get('category')]);
@@ -38,7 +38,6 @@ export default function SearchLocation() {
             <div className="list-category h-20 flex items-center w-full sticky top-20 z-[998] bg-gray-dark category-list-wrapper ">
                 <div className="w-full px-4">
                     <CategoryList
-                        isLoading={isQuery}
                         initChooose={searchParams.get('category') || ''}
                         onClickAll={() => {
                             navigate(
@@ -75,7 +74,7 @@ export default function SearchLocation() {
                         </Suspense>
                     </div>
                 </div>
-                <div className="fixed z-[1000] top-[calc(100vh-60px)] left-1/2 -translate-x-1/2 lgmax:hidden w-fit">
+                <div className="fixed z-[1000] top-[calc(100%-80px)] left-1/2 -translate-x-1/2 lgmax:hidden w-fit">
                     <Button
                         onTap={() => setOpenMap(!openMap)}
                         isAnimate={true}

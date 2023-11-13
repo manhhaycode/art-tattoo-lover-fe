@@ -114,7 +114,7 @@ export default function GoogleMap({ visible }: { visible: boolean }) {
                                 }
                                 if (bounds) {
                                     setFilterData({
-                                        category: filterData?.category,
+                                        categoryId: filterData?.categoryId,
                                         sort: filterData?.sort,
                                         viewPortNE: {
                                             lat: bounds.getNorthEast().lat(),

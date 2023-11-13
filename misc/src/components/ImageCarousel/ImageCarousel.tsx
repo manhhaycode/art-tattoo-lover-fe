@@ -1,4 +1,4 @@
-import Carousel, { CarouselProps } from 'react-multi-carousel';
+import Carousel, { CarouselProps, ResponsiveType } from 'react-multi-carousel';
 import Image, { ImageSlider } from '../common/Image';
 import { ArrowRightIcon, ArrowLeftIcon } from '@/assets/icons';
 import { twMerge } from 'tailwind-merge';
@@ -50,9 +50,13 @@ export default function ImageCarousel({
     isSlide,
     ...props
 }: { listSrc: string[]; isSlide: boolean } & Partial<CarouselProps>) {
-    const responsive = {
+    const responsive: ResponsiveType = {
         all: {
-            breakpoint: { max: 4000, min: 0 },
+            breakpoint: { max: 4000, min: 640 },
+            items: 1,
+        },
+        mobile: {
+            breakpoint: { max: 640, min: 0 },
             items: 1,
         },
     };

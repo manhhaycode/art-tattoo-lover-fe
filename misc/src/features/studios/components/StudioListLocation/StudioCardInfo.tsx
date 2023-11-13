@@ -4,6 +4,7 @@ import StudioCardImage2 from '@/assets/img/tattoo2.jpg';
 import ImageCarousel from '@/components/ImageCarousel';
 import { IStudio } from '@/features/studios';
 import { convertSlugURL } from '@/lib/helper';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
@@ -17,6 +18,10 @@ export default function StudioCardInfo({
     onClickCloseIcon?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate;
+    }, [navigate]);
     return (
         <div
             className={twMerge(
