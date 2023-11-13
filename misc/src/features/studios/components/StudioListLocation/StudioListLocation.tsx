@@ -53,7 +53,7 @@ export default function StudioListLocation() {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-3 item-center gap-y-5 gap-x-5 ">
+            <div className="grid sm:grid-cols-2 xl:grid-cols-3 item-center gap-y-5 gap-x-5 ">
                 <Suspense fallback={<div></div>}>
                     {data && data.data.map((studio) => <StudioCardInfo key={studio.id} studio={studio} />)}
                 </Suspense>

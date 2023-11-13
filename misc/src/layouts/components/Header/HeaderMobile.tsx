@@ -25,7 +25,7 @@ export default function HeaderMobile() {
                             setKeyword(e.target.value);
                         }}
                         placeholder="Tìm studio theo từ khóa"
-                        className="bg-transparent text-white text-sm text-semibold font-sans"
+                        className="bg-transparent text-white text-base text-semibold font-sans sm:text-sm"
                     />
                     <button
                         onClick={() => {
