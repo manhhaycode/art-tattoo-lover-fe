@@ -38,6 +38,7 @@ export const useGetUserMutation = (
     retry?: number,
 ) => {
     return useMutation({
+        mutationKey: ['userProfile'],
         mutationFn: getUser,
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,

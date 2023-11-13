@@ -1,4 +1,5 @@
 import { ILogout } from '@/features/auth/types';
+import { IMedia } from '@/features/media';
 
 export interface IUpdateUser extends ILogout {}
 
@@ -12,6 +13,7 @@ export interface IUser {
     birthday: string | null;
     roleId: number;
     status: number;
+    listMedia: IMedia[];
 }
 
 export interface IArtist {
@@ -23,11 +25,13 @@ export interface IArtist {
 }
 
 export interface UserCredentials {
-    fullName: string;
-    phone: string;
-    address: string | null;
-    avatar: string | null;
-    birthday: string | null;
+    fullName?: string;
+    phone?: string;
+    address?: string | null;
+    avatar?: string | null;
+    birthday?: string | null;
+    listNewMedia?: IMedia[];
+    listRemoveMedia?: string[];
 }
 
 export interface UserPasswordCredentials {

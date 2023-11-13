@@ -8,6 +8,7 @@ import { LazyMotion, domAnimation } from 'framer-motion';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { useThemeStore } from '@/store/componentStore';
+import { Toaster } from 'react-hot-toast';
 
 // const logError = (error: Error, info: { componentStack: string }) => {
 //     console.error(error, info);
@@ -34,6 +35,15 @@ export default function AppProvider({ children }: { children: React.ReactNode })
                 </Suspense>
             </MantineProvider>
             <ToastContainer autoClose={3000} />
+            <Toaster
+                toastOptions={{
+                    className: 'font-semibold text-sm',
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                    },
+                }}
+            />
         </ErrorBoundary>
     );
 }
