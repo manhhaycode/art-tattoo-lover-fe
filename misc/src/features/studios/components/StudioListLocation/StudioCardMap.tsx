@@ -3,7 +3,6 @@ import StudioCardImage from '@/assets/img/studio-card.jpg';
 import { ImageSlider } from '@/components/common/Image';
 import { IStudio } from '@/features/studios';
 import { convertSlugURL } from '@/lib/helper';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
@@ -15,14 +14,17 @@ export default function StudioCardMap({
     onClickCloseIcon?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        navigate;
-    }, [navigate]);
     return (
-        <div className={twMerge('w-full bg-white rounded-2xl text-black !shadow-[0px_5px_15px_rgba(0,0,0,0.35)]')}>
+        <div
+            className={twMerge(
+                'w-full bg-white rounded-2xl text-black !shadow-[0px_5px_15px_rgba(0,0,0,0.35)] relative z-[100000]',
+            )}
+        >
             <div
-                onClick={() => navigate(`/studio/${convertSlugURL(studio.name)}/${studio.id}`)}
+                ref={(ref) => ref && google.maps.OverlayView.preventMapHitsFrom(ref as Element)}
+                onClick={() => {
+                    navigate(`/studio/${convertSlugURL(studio.name)}/${studio.id}`);
+                }}
                 className={twMerge('flex flex-col w-full gap-y-2 font-medium text-sm cursor-pointer p-0 relative')}
             >
                 <button

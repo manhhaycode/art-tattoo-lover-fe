@@ -18,7 +18,7 @@ export default function ImageListStudio({ listImage, isLoading }: { listImage?: 
 
     if (isLoading)
         return (
-            <div className="grid grid-cols-2 gap-x-4">
+            <div className="grid grid-cols-1 lgm:grid-cols-2 gap-x-4">
                 <div className="w-">
                     <div className="rounded-[20px] h-full w-full">
                         <SkeletonLoader />
@@ -56,7 +56,7 @@ export default function ImageListStudio({ listImage, isLoading }: { listImage?: 
     return (
         <>
             {imageList && imageList.length >= 5 && (
-                <div className="grid grid-cols-2 gap-x-4">
+                <div className="grid grid-cols-1 lgm:grid-cols-2 gap-x-4 gap-y-6">
                     {imageList[0].length === 0 ? (
                         <AspectRatio ratio={16 / 9}>
                             <Box className="rounded-xl bg-gray-dark flex justify-center items-center">

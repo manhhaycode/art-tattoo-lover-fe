@@ -50,7 +50,7 @@ export default function Login() {
         <div className="flex flex-col h-full justify-between">
             <div className="px-4 mt-28">
                 <h1 className="text-2xl font-semibold mb-12 text-center">Đăng nhập vào Tattus</h1>
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-14 gap-y-2">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col xs:px-2 lgmax:px-14 gap-y-2">
                     <Input
                         disabled={loginMutation.isLoading}
                         {...register('email', {

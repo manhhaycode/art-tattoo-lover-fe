@@ -6,7 +6,7 @@ export default function NavBar() {
     const location = useLocation();
     const navigate = useNavigate();
     return (
-        <div className="min-w-[350px] bg-gray-dark border-r-2 border-search-gray-dark h-[calc(100vh-80px)] top-20 sticky flex flex-col gap-y-4 p-4">
+        <div className="min-w-[350px] bg-gray-dark border-r-2 border-search-gray-dark h-[calc(100vh-80px)] top-20 sticky flex-col gap-y-4 p-4 hidden lgmax:flex">
             <Button
                 onClick={() => {
                     navigate('/user/profile');

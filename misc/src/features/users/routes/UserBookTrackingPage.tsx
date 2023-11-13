@@ -105,7 +105,7 @@ export default function UserBookTrackingPage() {
                     {appointments && Object.keys(studioData).length > 0 && appointments.appointments.length > 0 && (
                         <>
                             <p className="text-sm mt-2">Lịch hẹn: {appointments?.total || 0}</p>
-                            <div className="grid grid-cols-2 gap-4 mt-4 w-full">
+                            <div className="grid grid-cols-1 gap-4 mt-4 w-full xl:grid-cols-2">
                                 {appointments.appointments.map((appointment) => {
                                     if (!studioData[appointment.shift.studioId]) return null;
                                     return (

@@ -42,7 +42,7 @@ export default function ChangePasswordForm() {
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
                     <div className="flex flex-col gap-y-3 w-full">
                         <label className="text-white font-semibold text-base">Nhập mật khẩu cũ</label>
-                        <div className="w-2/5">
+                        <div className="w-full sm:w-3/5">
                             <PasswordInput
                                 variant="unstyled"
                                 classNames={stylePasswordInput}
@@ -71,7 +71,7 @@ export default function ChangePasswordForm() {
                     </div>
                     <div className="flex flex-col gap-y-3">
                         <label className="text-white font-semibold text-base">Nhập mật khẩu mới</label>
-                        <div className="w-2/5">
+                        <div className="w-full sm:w-3/5">
                             <PasswordInput
                                 variant="unstyled"
                                 classNames={stylePasswordInput}
@@ -100,7 +100,7 @@ export default function ChangePasswordForm() {
                     </div>
                     <div className="flex flex-col gap-y-3">
                         <label className="text-white font-semibold text-base">Nhập lại mật khẩu mới</label>
-                        <div className="w-2/5">
+                        <div className="w-full sm:w-3/5">
                             <PasswordInput
                                 variant="unstyled"
                                 classNames={stylePasswordInput}

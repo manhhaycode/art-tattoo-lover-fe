@@ -58,7 +58,7 @@ export default function ListServiceOfStudio({
                             return (
                                 <button
                                     key={category.id}
-                                    className="p-8 rounded-md bg-search-gray-dark sm:p-[10px] sm:rounded-lg"
+                                    className="p-[10px] rounded-md bg-search-gray-dark sm:p-[10px] sm:rounded-lg"
                                     {...(index >= countInview && { style: { visibility: 'hidden' } })}
                                 >
                                     <p className="whitespace-nowrap overflow-hidden font-medium font-sans leading-5">
