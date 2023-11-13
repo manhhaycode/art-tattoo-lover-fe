@@ -48,7 +48,7 @@ export default function ListServiceOfStudio({
 
     return (
         <div className="w-full flex flex-col gap-y-3">
-            <h1 className="text-lg font-semibold">
+            <h1 className="text-base sm:text-lg font-semibold">
                 {listCategory ? 'Các loại dịch vụ' : listWorkingTime && 'Khung giờ hoạt động'}
             </h1>
             <div className="overflow-x-hidden w-full category-list-wrapper">

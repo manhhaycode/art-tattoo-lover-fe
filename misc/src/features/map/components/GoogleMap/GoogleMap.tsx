@@ -16,8 +16,9 @@ import { useNavigate } from 'react-router-dom';
 import { encodeStringtoURI } from '@/lib/helper';
 import { Loader } from '@mantine/core';
 import StudioListPin from '../StudioListPin';
+import { twMerge } from 'tailwind-merge';
 
-export default function GoogleMap() {
+export default function GoogleMap({ visible }: { visible: boolean }) {
     const { isLoaded } = useJsApiLoader({
         id: '4efdfc21c30d0be0',
         googleMapsApiKey: config.API.API_KEY,
@@ -51,7 +52,13 @@ export default function GoogleMap() {
     }, [isFirstIdle, data?.place_id]);
 
     return (
-        <div id="google-map" className="sticky top-[160px] h-[calc(100vh-160px)] w-full">
+        <div
+            id="google-map"
+            className={twMerge(
+                'sticky top-[160px] h-[calc(100vh-160px)] w-full',
+                visible ? 'visible' : 'invisible lgmax:visible',
+            )}
+        >
             <div className="relative w-full h-full">
                 {!isLoadfull && <SkeletonLoader className="absolute top-0 left-0 z-10" />}
 
