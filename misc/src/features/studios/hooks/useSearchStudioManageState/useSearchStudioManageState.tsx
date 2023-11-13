@@ -7,7 +7,7 @@ import { checkFilterEmpty, createSearchParams } from '@/lib/helper';
 const useSearchStudioManageState = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const searchKeyword = searchParams.get('searchKeyword');
-    const category = searchParams.get('category');
+    const category = searchParams.get('categoryId');
     const rating = searchParams.get('rating');
     const sort = searchParams.get('sort');
     const page = Number(searchParams.get('page') || 0);
@@ -29,7 +29,7 @@ const useSearchStudioManageState = () => {
     useEffect(() => {
         const filter = filterData || {
             searchKeyword: searchKeyword || undefined,
-            category: category || undefined,
+            categoryId: Number(category) || undefined,
             rating: rating?.split(',').map((item) => Number(item)) || undefined,
             sort: sort || undefined,
         };

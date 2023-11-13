@@ -116,7 +116,7 @@ export default function CategoryList({
         <div className="relative w-full flex h-full">
             <div
                 ref={listRef}
-                className="grid grid-flow-col gap-x-4  items-center overflow-x-auto overscroll-contain w-full h-full sm:gap-x-8"
+                className="grid grid-flow-col gap-x-6  items-center overflow-x-auto overscroll-contain w-full h-full sm:gap-x-8"
             >
                 <div className="h-full flex items-center ">
                     <button

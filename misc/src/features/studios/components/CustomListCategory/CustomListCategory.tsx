@@ -11,7 +11,7 @@ export default function CustomListCategory({ initChoose }: { initChoose: string 
 
     const handleSelectCategory = useCallback(
         (category: ICategory) => {
-            setFilterData({ ...filterData, category: category.id.toString() });
+            setFilterData({ ...filterData, categoryId: category.id });
             setIsQuery(true);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,7 +40,8 @@ export default function CustomListCategory({ initChoose }: { initChoose: string 
                     isVisible={isVisible}
                     onClickCategory={handleSelectCategory}
                     onClickAll={() => {
-                        setFilterData({ ...filterData, category: undefined });
+                        setFilterData({ ...filterData, categoryId: undefined });
+                        setIsQuery(true);
                     }}
                 />
             </div>
