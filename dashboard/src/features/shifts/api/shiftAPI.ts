@@ -18,9 +18,13 @@ export const getShiftList = async (filter: IShiftReq): Promise<IShift[]> => {
 };
 
 const generateShift = async (shiftDuration: string): Promise<IGenerateShift> => {
+    const end = new Date();
+    end.setDate(end.getDate() + 7);
+
     try {
         const res: IGenerateShift = await httpAuth.post('/shift/generate', {
             shiftDuration,
+            end: end.toISOString(),
         });
         return res;
     } catch (e) {

@@ -79,6 +79,8 @@ export default function MediaListStudio({ listMedia, isLoading }: { listMedia?: 
                     <div className="w-full pt-[56.25%] relative">
                         <div className="absolute top-0 left-0 bottom-0 right-0 h-full">
                             <DropZoneImage
+                                maxSize={3072}
+                                errorString="Kích thước ảnh quá 3Mb hoặc không đúng định dạng ảnh"
                                 src={imageList[0].url}
                                 handleSave={async (files) => {
                                     const res = await uploadMediaMutation.mutateAsync({
@@ -118,6 +120,8 @@ export default function MediaListStudio({ listMedia, isLoading }: { listMedia?: 
                                 <div key={index} className="w-full pt-[56.25%] relative">
                                     <div className="absolute top-0 left-0 bottom-0 right-0 h-full">
                                         <DropZoneImage
+                                            maxSize={3072}
+                                            errorString="Kích thước ảnh quá 3Mb hoặc không đúng định dạng ảnh"
                                             src={image.url}
                                             handleSave={async (files) => {
                                                 const res = await uploadMediaMutation.mutateAsync({
