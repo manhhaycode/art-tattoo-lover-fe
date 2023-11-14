@@ -69,6 +69,8 @@ export function LazyImage({
             }}
         >
             <DropZoneImage
+                maxSize={3072}
+                errorString="Kích thước ảnh quá 3Mb hoặc không đúng định dạng ảnh"
                 handleSave={(files) => {
                     handleSave && handleSave(files);
                 }}

@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { useUnmount } from 'react-use';
 
 export default function ComboboxAppointment() {
-    const { appointment } = useInvoiceStore();
+    const { appointment, setAppointment } = useInvoiceStore();
     const [selectAppointment, setSelectAppointment] = useState<IAppointmentStudio | undefined>(
         appointment as IAppointmentStudio,
     );
@@ -48,6 +48,7 @@ export default function ComboboxAppointment() {
                 onSubmitOption={(option, setValue) => {
                     setValue(formatStringTime(option.shift.start));
                     setSelectAppointment(option);
+                    setAppointment(option);
                 }}
                 handleFilter={(e, input) => {
                     return e.filter((appointment) => {
