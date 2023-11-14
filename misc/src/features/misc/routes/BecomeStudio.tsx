@@ -7,8 +7,10 @@ import { Suspense } from 'react';
 
 export default function BecomeStudio() {
     return (
-        <Suspense fallback={<Loading />}>
-            <BecomeStudioForm />
-        </Suspense>
+        <div className="pb-32">
+            <Suspense fallback={<Loading />}>
+                <BecomeStudioForm />
+            </Suspense>
+        </div>
     );
 }

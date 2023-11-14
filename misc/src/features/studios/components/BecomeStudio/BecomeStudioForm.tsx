@@ -3,6 +3,7 @@ import Input from '@/components/common/Input';
 import { usePlaceDetailMutation } from '@/features/map/api';
 import { AutocompleteAddress } from '@/features/map/components';
 import { IBecomeStudioReq, useBecomeStudioMutation } from '@/features/studios';
+import { useAuthStore } from '@/store/authStore';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -10,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function BecomeStudioForm() {
     const navigate = useNavigate();
+    const { accountType } = useAuthStore();
     const becomestudioMutation = useBecomeStudioMutation({
         onSuccess: () => {
             toast.success('Đăng ký thành công, vui lòng chờ admin xác nhận');
@@ -34,6 +36,10 @@ export default function BecomeStudioForm() {
     const { placeChoose, sessionToken, setSessionToken, reset: resetLocation } = useSearchLocationStore();
 
     const onsubmit: SubmitHandler<IBecomeStudioReq> = async (data) => {
+        if (accountType === null) {
+            toast.error('Vui lòng đăng nhập để đăng ký studio');
+            return;
+        }
         if (placeChoose === null) {
             toast.error('Vui lòng chọn địa chỉ của studio');
             return;
@@ -62,10 +68,10 @@ export default function BecomeStudioForm() {
     };
 
     return (
-        <div className="bg-gray-dark p-4 my-6 min-w-[1024px] w-fit mx-auto">
+        <div className="bg-gray-dark p-4 my-6 min-w-[90%] lg:min-w-[1024px] w-fit mx-auto">
             <form onSubmit={handleSubmit(onsubmit)}>
                 <h1 className="text-xl font-semibold text-center mb-6">Đăng ký trở thành studio</h1>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
                     <div className="flex flex-col gap-2">
                         <label className="font-semibold text-sm">Nhập tên studio</label>
                         <Input
