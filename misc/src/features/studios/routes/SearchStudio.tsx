@@ -52,7 +52,7 @@ export default function SearchStudio() {
                         </div>
                     )}
                     <div className={twMerge('w-[70%] flex flex-col gap-y-6', width < 1024 ? 'w-full' : '')}>
-                        {data && (
+                        {data && data.data.length > 0 && (
                             <>
                                 <ListStudioIntro listStudio={data.data} />
                                 <Pagination

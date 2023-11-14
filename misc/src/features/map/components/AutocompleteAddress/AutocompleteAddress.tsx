@@ -8,6 +8,7 @@ import { DropwdownInput } from '@/components/Dropdown';
 interface AutocompleteAddressProps extends InputProps {
     isVisible?: boolean;
     navigateOnClickOption?: (location: string, placeId: string) => void;
+    classNameInput?: string;
 }
 
 const AutocompleteAddress = ({ isVisible, navigateOnClickOption, ...props }: AutocompleteAddressProps) => {
@@ -16,14 +17,15 @@ const AutocompleteAddress = ({ isVisible, navigateOnClickOption, ...props }: Aut
     const { sessionToken, placeChoose, setPlaceChoose } = useSearchLocationStore();
     const { data } = useAutoCompleteLocation({ input: value, sessionToken: sessionToken });
     const inputRef = useRef<HTMLInputElement>(null);
+    const { classNameInput, ...resProps } = props;
 
     return (
         <div className="relative" ref={ref}>
             {isVisible && (
                 <Input
-                    {...props}
+                    {...resProps}
                     classNames={{
-                        input: 'bg-white text-black',
+                        input: classNameInput || 'bg-white text-black',
                     }}
                     ref={inputRef}
                     placeholder="Nhập vị trí cần tìm"

@@ -48,7 +48,7 @@ export default function InvoiceCard({ invoice }: { invoice: IInvoice }) {
                     </div>
                     <div className="flex items-center">
                         <p className="text-sm">Tổng tiền: </p>
-                        <p className="text-sm font-semibold ml-1">{numbertoPrice(invoice.total)}đ</p>
+                        <p className="text-sm font-semibold ml-1">{numbertoPrice(invoice.total)}</p>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import * as mapPlaceRequest from '@/lib/axios-map';
 import { PlaceDetailsResponseData } from '@googlemaps/google-maps-services-js';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 export const autoCompleteLocation = async (
@@ -68,5 +68,22 @@ export const usePlaceDetail = (option: google.maps.places.PlaceDetailsRequest) =
         queryFn: () => placeDetail(option),
         staleTime: Infinity,
         keepPreviousData: true,
+    });
+};
+
+export const usePlaceDetailMutation = (
+    handleFn: {
+        onError?: (error: unknown, variables: unknown, context: unknown) => void;
+        onSuccess?: (data: PlaceDetailsResponseData['result'], variables: unknown, context: unknown) => void;
+        onMutate?: (variables: google.maps.places.PlaceDetailsRequest) => Promise<PlaceDetailsResponseData['result']>;
+    },
+    retry?: number,
+) => {
+    return useMutation({
+        mutationFn: (options: google.maps.places.PlaceDetailsRequest) => placeDetail(options),
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
+        retry,
     });
 };

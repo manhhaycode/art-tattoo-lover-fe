@@ -101,6 +101,7 @@ interface InvoiceState {
     setAppointment: (invoiceUser: Partial<IAppointmentStudio> | null) => void;
     payMethod: number;
     setPayMethod: (payMethod: number) => void;
+    reset: () => void;
 }
 
 export const useInvoiceStore = create<InvoiceState>((set) => ({
@@ -108,4 +109,10 @@ export const useInvoiceStore = create<InvoiceState>((set) => ({
     setAppointment: (appointment) => set({ appointment }),
     payMethod: 0,
     setPayMethod: (payMethod) => set({ payMethod }),
+    reset: () => {
+        set({
+            appointment: null,
+            payMethod: 0,
+        });
+    },
 }));

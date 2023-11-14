@@ -29,7 +29,7 @@ export default function HeaderMobile() {
                     <button
                         onClick={() => {
                             reset();
-                            navigate('/search-studio?searchKeyword=' + keyword);
+                            navigate('/search-studio?searchKeyword=' + keyword + '&ratingList=0');
                         }}
                         className="p-3"
                     >

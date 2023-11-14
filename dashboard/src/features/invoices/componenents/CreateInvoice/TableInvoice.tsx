@@ -19,7 +19,7 @@ declare module '@tanstack/react-table' {
 }
 
 export default function TableInvoice() {
-    const { appointment, payMethod } = useInvoiceStore();
+    const { appointment, payMethod, reset } = useInvoiceStore();
     const { accountType } = useAuthStore();
     const navigate = useNavigate();
     const { data: serviceList } = useGetListServiceStudio({
@@ -32,6 +32,7 @@ export default function TableInvoice() {
         onSuccess: (data) => {
             console.log(data);
             toast.success('Tạo hóa đơn thành công');
+            reset();
             navigate('/studio/manage-invoice');
         },
         onError: (error) => {

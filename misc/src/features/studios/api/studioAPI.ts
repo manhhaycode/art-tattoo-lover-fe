@@ -1,28 +1,25 @@
 import * as httpRequest from '@/lib/axios';
-import { IFilter, IPaginationStudio, IStudio, StudioArtist, IServiceListStudioReq, IServiceListStudio } from '../types';
-import { useQuery } from '@tanstack/react-query';
+import * as httpAuth from '@/lib/axios-auth';
+import {
+    IFilter,
+    IPaginationStudio,
+    IStudio,
+    StudioArtist,
+    IServiceListStudioReq,
+    IServiceListStudio,
+    IBecomeStudioReq,
+} from '../types';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import { EditRes } from '@/common/types';
 
 const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
-    if (Object.keys(filter).length === 0)
-        return {
-            data: [],
-            page: 0,
-            pageSize: 0,
-            total: 0,
-        };
     try {
         const response: IPaginationStudio = await httpRequest.post('/studios', filter);
         return response;
     } catch (_error) {
-        console.log(_error);
+        throw new Error(_error);
     }
-    return {
-        data: [],
-        page: 0,
-        pageSize: 0,
-        total: 0,
-    };
 };
 
 export const getStudio = async (id: string): Promise<IStudio | null> => {
@@ -40,6 +37,15 @@ export const getStudio = async (id: string): Promise<IStudio | null> => {
 const getListServiceStudio = async (filter: IServiceListStudioReq): Promise<IServiceListStudio> => {
     try {
         const response: IServiceListStudio = await httpRequest.get('/studio/service', { params: filter });
+        return response;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const becomeStudio = async (data: IBecomeStudioReq): Promise<EditRes> => {
+    try {
+        const response: EditRes = await httpAuth.post('/studios/become-studio', data);
         return response;
     } catch (error) {
         throw new Error(error);
@@ -87,4 +93,21 @@ export const getStudioArtists = async (studioId: string): Promise<StudioArtist[]
         toast.error(error.message);
         return [];
     }
+};
+
+export const useBecomeStudioMutation = (
+    handleFn: {
+        onError?: (error: unknown, variables: IBecomeStudioReq, context: unknown) => void;
+        onSuccess?: (data: EditRes, variables: IBecomeStudioReq, context: unknown) => void;
+        onMutate?: (variables: IBecomeStudioReq) => Promise<EditRes>;
+    },
+    retry?: number,
+) => {
+    return useMutation({
+        mutationFn: becomeStudio,
+        onError: handleFn.onError,
+        onSuccess: handleFn.onSuccess,
+        onMutate: handleFn.onMutate,
+        retry,
+    });
 };

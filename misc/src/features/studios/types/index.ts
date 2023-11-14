@@ -9,7 +9,7 @@ export interface IMedia {
 export interface IFilter {
     searchKeyword?: string;
     categoryId?: number;
-    rating?: number[];
+    ratingList?: number[];
     viewPortNE?: {
         lat: number;
         lng: number;
@@ -41,6 +41,24 @@ export interface IPaginationStudio {
     page: number;
     pageSize: number;
     total: number;
+}
+
+export interface IBecomeStudioReq {
+    name: string;
+    detail: string;
+    logo: string;
+    phone: string;
+    email: string;
+    website: string;
+    facebook: string;
+    instagram: string;
+    address: string;
+    latitude: number;
+    longitude: number;
+    contactName: string;
+    contactPhone: string;
+    contactEmail: string;
+    redirectUrl: string;
 }
 
 export interface IStudio {

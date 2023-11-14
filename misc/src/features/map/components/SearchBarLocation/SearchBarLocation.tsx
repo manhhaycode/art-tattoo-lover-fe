@@ -1,5 +1,4 @@
-import { db } from '@/assets/data';
-import { MapPinIcon, SearchIcon, TargetIcon } from '@/assets/icons';
+import { MapPinIcon, SearchIcon } from '@/assets/icons';
 import { useState, useRef, useEffect } from 'react';
 import Image from '@/components/common/Image';
 import Input from '@/components/common/Input';
@@ -7,27 +6,23 @@ import { Dropdown, DropdownImage } from '@/components/Dropdown';
 import { useNavigate } from 'react-router-dom';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { useAutoCompleteLocation } from '@/features/map/api';
-import { useGeoLocation } from '@/hooks';
 import { encodeStringtoURI } from '@/lib/helper';
 import { useDebouncedState } from '@mantine/hooks';
 import Button from '@/components/common/Button';
-interface IService {
-    id?: string;
-    name?: string;
-    image?: string;
-}
+import { useGetListCategory } from '@/features/category';
+import { ICategory } from '@/features/category';
 
 export default function SearchBarLocation() {
-    const serviceRef = useRef<HTMLButtonElement>(null);
+    const categoryRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [locationName, setLocationName] = useDebouncedState('', 400);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const { data: listCategory } = useGetListCategory();
     const [isAutocompleteVisible, setIsAutocompleteVisible] = useState(false);
-    const [serviceChoose, setServiceChoose] = useState<IService>({});
+    const [categoryChoose, setCategoryChoose] = useState<ICategory>();
     const [isGeolocation, setIsGeolocation] = useState(false);
     const { sessionToken, setPlaceChoose, placeChoose } = useSearchLocationStore();
     const { data, isFetching } = useAutoCompleteLocation({ input: locationName, sessionToken: sessionToken });
-    const geolocation = useGeoLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -80,12 +75,12 @@ export default function SearchBarLocation() {
                                     <p className="w-1/2">Đang Feching</p>
                                 </li>
                             )}
-                            {locationName.length > 0 && !isFetching && data?.predictions.length === 0 && (
+                            {!isFetching && data?.predictions.length === 0 && (
                                 <li className="flex items-center justify-center">
                                     <p className="w-1/2">Không tìm thấy địa điểm</p>
                                 </li>
                             )}
-                            {isGeolocation && (
+                            {/* {isGeolocation && (
                                 <li className="flex items-center justify-center">
                                     <p className="w-1/2">
                                         Chúng tôi không thể xác định vị trí hiện tại của bạn. Vui lòng nhập địa chỉ hoặc
@@ -111,7 +106,7 @@ export default function SearchBarLocation() {
                                         <p className="ml-2 sm:ml-4">Vị trí hiện tại</p>
                                     </button>
                                 </li>
-                            )}
+                            )} */}
                             {locationName.length > 0 &&
                                 !isFetching &&
                                 data?.predictions.map((prediction) => {
@@ -143,22 +138,31 @@ export default function SearchBarLocation() {
                 </div>
             </div>
             <div className="border-[1px] border-solid border-[#a9afbb] h-10 mx-2 hidden sm:block"></div>
-            <div className="flex items-center relative w-fit h-full p-1 sm:w-2/5">
-                <div className="service-search-location p-1 rounded-2xl hidden items-center w-full sm:flex">
+            <div
+                ref={categoryRef}
+                tabIndex={-1}
+                onBlur={(e) => {
+                    if (!categoryRef.current?.contains(e.relatedTarget as Node)) {
+                        e.stopPropagation();
+                        setIsDropdownVisible(false);
+                    }
+                }}
+                className="flex items-center relative w-fit h-full p-1 sm:w-2/5"
+            >
+                <div className="category-search-location p-1 rounded-2xl hidden items-center w-full sm:flex">
                     <button
-                        ref={serviceRef}
                         onClick={() => {
                             if (!isDropdownVisible) setIsDropdownVisible(true);
                         }}
-                        onBlur={() => {
-                            setIsDropdownVisible(false);
-                        }}
+                        // onBlur={() => {
+                        //     setIsDropdownVisible(false);
+                        // }}
                         className={
                             'font-medium font-sans text-[#8e8e8e] w-full h-12 flex items-center rounded-3xl px-2 relative cursor-pointer'
                         }
                     >
-                        {serviceChoose.name ? (
-                            <p className="text-black text-truncation">{serviceChoose.name}</p>
+                        {categoryChoose?.name ? (
+                            <p className="text-black text-truncation">{categoryChoose.name}</p>
                         ) : (
                             'Dịch vụ bất kỳ'
                         )}
@@ -174,12 +178,10 @@ export default function SearchBarLocation() {
                                 navigate(
                                     '/search-location?location=' +
                                         encodeStringtoURI(navigateData.description!) +
-                                        '&service=' +
-                                        (serviceChoose.name || '') +
                                         '&placeId=' +
                                         navigateData.place_id +
                                         '&category=' +
-                                        (serviceChoose.id ? serviceChoose.id : ''),
+                                        (categoryChoose?.id ? categoryChoose.id : ''),
                                 );
                             }
                         }}
@@ -199,25 +201,26 @@ export default function SearchBarLocation() {
                     >
                         <h1 className="font-semibold text-sm ml-1 py-2 mb-5">Tìm kiếm các dịch vụ Tattoo</h1>
                         <div className="grid grid-cols-3 gap-x-3 gap-y-4">
-                            {db.servicesTattoo.map((service) => {
-                                return (
-                                    <div key={service.id} className="flex flex-col">
-                                        <Image
-                                            onClick={() => {
-                                                setServiceChoose(service);
-                                                setIsDropdownVisible(false);
-                                            }}
-                                            className={'rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown '.concat(
-                                                service.id === serviceChoose.id ? '!border-button-primary' : '',
-                                            )}
-                                            src={service.img}
-                                        />
-                                        <div className="flex items-center flex-grow">
-                                            <p className="text-sm mt-2 mx-px">{service.name}</p>
+                            {listCategory &&
+                                listCategory.map((category) => {
+                                    return (
+                                        <div key={category.id} className="flex flex-col">
+                                            <Image
+                                                onClick={() => {
+                                                    setCategoryChoose(category);
+                                                    setIsDropdownVisible(false);
+                                                }}
+                                                className={'rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown '.concat(
+                                                    category.id === categoryChoose?.id ? '!border-button-primary' : '',
+                                                )}
+                                                src={category.image}
+                                            />
+                                            <div className="flex items-center flex-grow">
+                                                <p className="text-sm mt-2 mx-px">{category.name}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
                         </div>
                     </DropdownImage>
                 </div>
