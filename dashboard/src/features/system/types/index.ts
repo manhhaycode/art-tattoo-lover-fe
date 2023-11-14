@@ -43,6 +43,14 @@ export interface IAdminDashboard {
     userData: IUserAdminDashboard;
     testimonialData: ITestimonialAdminDashboard;
     bookingData: IBookingAdminDashboard;
+    revenueData: IRevenueStudioDashboard;
+}
+
+export interface IStudioDashboard {
+    userData: IUserAdminDashboard;
+    testimonialData: ITestimonialAdminDashboard;
+    bookingData: IBookingAdminDashboard;
+    revenueData: IRevenueStudioDashboard;
 }
 
 export interface IStudioAdminDashboard {
@@ -62,6 +70,12 @@ export interface ITestimonialAdminDashboard {
     totalTestimonial: number;
 }
 
+export interface IRevenueStudioDashboard {
+    totalRevenue: number;
+    totalRevenueThisMonth: number;
+    totalRevenueLastMonth: number;
+}
+
 export interface IBookingAdminDashboard {
     totalBooking: number;
     totalBookingThisMonth: number;
@@ -78,4 +92,14 @@ export interface IMostPopularStudio {
     studioId: string;
     totalBooking: number;
     totalRevenue: number;
+}
+
+export interface IMostPopularArtist {
+    artistId: string;
+    totalBooking: number;
+    totalRevenue: number;
+    artist: {
+        userId: string;
+        user: IUser;
+    };
 }

@@ -7,9 +7,11 @@ import {
     ICreateUser,
     ICreateUserReq,
     IDeleteStudio,
+    IMostPopularArtist,
     IMostPopularStudio,
     IPaginationUserList,
     IPaginationUserListReq,
+    IStudioDashboard,
     IUpdateUser,
     IUpdateUserReq,
 } from '../types';
@@ -151,8 +153,25 @@ export const getAdminDashboard = async (): Promise<IAdminDashboard> => {
     }
 };
 
-export const getBookingDaily = async (): Promise<IBookingDaily[]> => {
+export const getStudioDashboard = async (studioId: string): Promise<IStudioDashboard> => {
     try {
+        const response: IStudioDashboard = await httpAuth.get('analytics/studio-dashboard/' + studioId);
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getBookingDaily = async (studioId?: string): Promise<IBookingDaily[]> => {
+    try {
+        if (studioId) {
+            const response: IBookingDaily[] = await httpAuth.get(
+                'analytics/studio-dashboard/booking-daily/' + studioId,
+            );
+
+            return response;
+        }
+
         const response: IBookingDaily[] = await httpAuth.get('analytics/admin-dashboard/booking-daily');
 
         return response;
@@ -164,6 +183,18 @@ export const getBookingDaily = async (): Promise<IBookingDaily[]> => {
 export const getStudioPopular = async (): Promise<IMostPopularStudio> => {
     try {
         const response: IMostPopularStudio = await httpAuth.get('analytics/admin-dashboard/most-popular-studio');
+
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getStudioPopularArtist = async (studioId: string): Promise<IMostPopularArtist> => {
+    try {
+        const response: IMostPopularArtist = await httpAuth.get(
+            'analytics/studio-dashboard/most-popular-artist/' + studioId,
+        );
 
         return response;
     } catch (_error) {

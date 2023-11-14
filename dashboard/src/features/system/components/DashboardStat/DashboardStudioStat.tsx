@@ -1,38 +1,31 @@
-import { calPercentDiff } from '@/lib/helper';
-import { IAdminDashboard } from '../../types';
+import { calPercentDiff, numbertoPrice } from '@/lib/helper';
+import { IStudioDashboard } from '../../types';
 
 import { Group, Paper, Text, SimpleGrid, Skeleton } from '@mantine/core';
-import {
-    IconArrowUpRight,
-    IconArrowDownRight,
-    IconUserPlus,
-    IconBuildingStore,
-    IconCalendarEvent,
-} from '@tabler/icons-react';
+import { IconArrowUpRight, IconArrowDownRight, IconUserPlus, IconCalendarEvent, IconCoin } from '@tabler/icons-react';
 import { useMemo } from 'react';
 
 interface Props {
-    data?: IAdminDashboard;
+    data?: IStudioDashboard;
     isLoading: boolean;
 }
-
-const DashboardAdminStat = ({ data, isLoading }: Props) => {
+const DashboardStudioStat = ({ data, isLoading }: Props) => {
     const statData = useMemo(() => {
         if (!data) {
             return [];
         }
         return [
             {
-                title: 'Người dùng mới',
+                title: 'Khách hàng mới',
                 value: data.userData.totalUserThisMonth,
                 diff: calPercentDiff(data.userData.totalUserThisMonth, data.userData.totalUserLastMonth),
                 icon: IconUserPlus,
             },
             {
-                title: 'Studio mới',
-                value: data.studioData.totalStudioThisMonth,
-                diff: calPercentDiff(data.studioData.totalStudioThisMonth, data.studioData.totalStudioLastMonth),
-                icon: IconBuildingStore,
+                title: 'Doanh thu',
+                value: numbertoPrice(data.revenueData.totalRevenueThisMonth),
+                diff: calPercentDiff(data.revenueData.totalRevenueThisMonth, data.revenueData.totalRevenueLastMonth),
+                icon: IconCoin,
             },
             {
                 title: 'Lượt đặt lịch',
@@ -93,4 +86,4 @@ const DashboardAdminStat = ({ data, isLoading }: Props) => {
     );
 };
 
-export default DashboardAdminStat;
+export default DashboardStudioStat;

@@ -142,6 +142,13 @@ export const numbertoPrice = (num: number): string => {
     return formattedStr;
 };
 
+export const calPercentDiff = (newNum: number, oldNum: number): number => {
+    const diff = newNum - oldNum;
+    if (oldNum === 0) return 1;
+    const percentDiff = diff / oldNum;
+    return percentDiff;
+};
+
 export const QUERY_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
 export const formatStringDate = (date: string | Date) => {
