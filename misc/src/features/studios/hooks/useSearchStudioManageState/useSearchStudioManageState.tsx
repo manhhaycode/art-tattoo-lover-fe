@@ -8,7 +8,7 @@ const useSearchStudioManageState = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const searchKeyword = searchParams.get('searchKeyword');
     const category = searchParams.get('categoryId');
-    const rating = searchParams.get('rating');
+    const ratingList = searchParams.get('ratingList');
     const sort = searchParams.get('sort');
     const page = Number(searchParams.get('page') || 0);
     const pageSize = Number(searchParams.get('pageSize') || 15);
@@ -16,9 +16,9 @@ const useSearchStudioManageState = () => {
     const query = useGetListStudio(
         filterData && checkFilterEmpty(filterData)
             ? {
-                  searchKeyword: searchKeyword || undefined,
+                  searchKeyword: typeof searchKeyword === 'string' ? searchKeyword : '',
                   categoryId: Number(category) || undefined,
-                  rating: rating?.split(',').map((item) => Number(item)) || undefined,
+                  ratingList: ratingList?.split(',').map((item) => Number(item)) || undefined,
                   sort: sort || undefined,
                   pageSize,
                   page,
@@ -28,9 +28,9 @@ const useSearchStudioManageState = () => {
 
     useEffect(() => {
         const filter = filterData || {
-            searchKeyword: searchKeyword || undefined,
+            searchKeyword: typeof searchKeyword === 'string' ? searchKeyword : '',
             categoryId: Number(category) || undefined,
-            rating: rating?.split(',').map((item) => Number(item)) || undefined,
+            ratingList: ratingList?.split(',').map((item) => Number(item)) || undefined,
             sort: sort || undefined,
         };
         if (!filterData) {
@@ -50,7 +50,7 @@ const useSearchStudioManageState = () => {
     }, []);
 
     // if (isLoading) return <div>Loading...</div>;
-    return { ...query, params: { searchKeyword, category, rating, sort }, entries: searchParams.entries() };
+    return { ...query, params: { searchKeyword, category, ratingList, sort }, entries: searchParams.entries() };
 };
 
 export default useSearchStudioManageState;

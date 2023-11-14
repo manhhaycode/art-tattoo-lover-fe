@@ -194,7 +194,7 @@ export default function SearchBar({
                                         e.stopPropagation();
                                     }}
                                     animate={isDropdownVisible}
-                                    className="mt-3 py-4 absolute top-full -right-2 font-medium font-san"
+                                    className="mt-3 py-4 absolute top-full -right-2 font-medium font-sans"
                                 >
                                     <h1 className="font-semibold text-sm ml-1 py-2 mb-5">
                                         Tìm kiếm các dịch vụ Tattoo

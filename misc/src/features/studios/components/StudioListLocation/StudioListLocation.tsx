@@ -1,5 +1,3 @@
-import { FilterIcon } from '@/assets/icons';
-import Button from '@/components/common/Button';
 import { convertAdressComponents } from '@/lib/helper/googleMapHelper';
 import { useFilterFormStore, useGoogleMapStore } from '@/store/componentStore';
 import { Suspense, lazy, useEffect } from 'react';
@@ -43,15 +41,11 @@ export default function StudioListLocation() {
     return (
         <>
             <div className="flex items-center w-full mb-4">
-                {placeDetail?.address_components && (
+                {placeDetail?.address_components && data && (
                     <h1 className="font-medium text-base">
-                        Hơn 100 địa điểm tại {convertAdressComponents(placeDetail.address_components)}
+                        Có {data.total} địa điểm tại {convertAdressComponents(placeDetail.address_components)}
                     </h1>
                 )}
-                <Button className="ml-auto !p-3 !bg-white text-black font-medium h-fit self-center">
-                    <FilterIcon styles={{ stroke: 'black' }} />
-                    Bộ lọc
-                </Button>
             </div>
 
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 item-center gap-y-5 gap-x-5 ">
@@ -59,7 +53,7 @@ export default function StudioListLocation() {
                     {data && data.data.map((studio) => <StudioCardInfo key={studio.id} studio={studio} />)}
                 </Suspense>
             </div>
-            {data && (
+            {data && data.data.length > 0 && (
                 <Group position="left">
                     <Pagination
                         className="ml-auto mt-5"

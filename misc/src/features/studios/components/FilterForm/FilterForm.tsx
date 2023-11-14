@@ -13,12 +13,21 @@ export default function FilterForm({ isLoading }: { isLoading?: boolean }) {
         setSearchKeyword(filterData?.searchKeyword || '');
     }, [filterData?.searchKeyword]);
 
+    useEffect(() => {
+        setValue(filterData?.ratingList?.map((item) => String(item)) || []);
+    }, [filterData?.ratingList]);
+
     return (
         <form
             onSubmit={(e) => {
                 e.preventDefault();
                 e.nativeEvent.preventDefault();
-                setFilterData({ ...filterData, searchKeyword, rating: value.map((item) => Number(item)) });
+                const ratingList = value.map((item) => Number(item));
+                setFilterData({
+                    ...filterData,
+                    searchKeyword,
+                    ratingList: ratingList.length > 0 ? ratingList : undefined,
+                });
                 setIsQuery(true);
             }}
             className="flex flex-col gap-y-5"

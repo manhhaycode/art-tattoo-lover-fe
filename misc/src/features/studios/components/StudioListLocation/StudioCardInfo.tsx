@@ -1,12 +1,13 @@
 import { CloseIcon, MapPinIcon, StarIcon } from '@/assets/icons';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
-import StudioCardImage2 from '@/assets/img/tattoo2.jpg';
 import ImageCarousel from '@/components/ImageCarousel';
+import { typeEnum } from '@/features/media';
 import { IStudio } from '@/features/studios';
 import { convertSlugURL } from '@/lib/helper';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
-
+import { v4 as uuidv4 } from 'uuid';
 export default function StudioCardInfo({
     studio,
     isSlide = false,
@@ -17,6 +18,18 @@ export default function StudioCardInfo({
     onClickCloseIcon?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
     const navigate = useNavigate();
+    const listImage = useMemo(() => {
+        const list = studio.listMedia?.filter((item) => item.type === typeEnum.IMAGE);
+        if (list?.length === 0)
+            return [
+                {
+                    url: StudioCardImage,
+                    type: typeEnum.IMAGE,
+                    id: uuidv4(),
+                },
+            ];
+        return list;
+    }, [studio.listMedia]);
     return (
         <div
             className={twMerge(
@@ -44,14 +57,7 @@ export default function StudioCardInfo({
                 )}
                 <ImageCarousel
                     isSlide={isSlide}
-                    listSrc={[
-                        StudioCardImage,
-                        StudioCardImage2,
-                        StudioCardImage,
-                        StudioCardImage2,
-                        StudioCardImage,
-                        StudioCardImage2,
-                    ]}
+                    listSrc={listImage?.map((item) => item.url) || []}
                     {...(isSlide && { className: 'rounded-b-none' })}
                 />
                 <div className={twMerge('flex flex-col gap-y-2', isSlide && 'p-3 pt-0')}>
