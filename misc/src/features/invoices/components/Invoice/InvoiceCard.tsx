@@ -1,15 +1,29 @@
+import Button from '@/components/common/Button';
 import { ImageSlider } from '@/components/common/Image';
 import { IInvoice } from '@/features/invoices';
 import { numbertoPrice } from '@/lib/helper';
 import { formatStringTime } from '@/lib/helper/dateHelper';
+import { useModalStore } from '@/store/componentStore';
 import { IconCalendar, IconCalendarPin } from '@tabler/icons-react';
 
 export default function InvoiceCard({ invoice }: { invoice: IInvoice }) {
+    const { setTesimonialModal } = useModalStore();
     return (
         <div className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
             <div className="flex flex-col gap-3 xs:flex-row items-center">
-                <div className="w-full min-w-[40%] sm:w-auto">
+                <div className="flex flex-col gap-y-3 w-full min-w-[40%] sm:w-auto">
                     <ImageSlider className="rounded-xl" src={invoice.studio.logo} />
+                    <Button
+                        onClick={() =>
+                            setTesimonialModal({
+                                studio: invoice.studio,
+                                visible: true,
+                            })
+                        }
+                        className="text-sm p-[10px]"
+                    >
+                        Đánh giá studio
+                    </Button>
                 </div>
                 <div className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
