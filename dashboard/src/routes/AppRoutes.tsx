@@ -17,7 +17,7 @@ import {
     ViewInvoicePage,
 } from '@/features/studio';
 import { Login } from '@/features/auth';
-import { SystemManageStudio, SystemManageUser } from '@/features/system';
+import { SystemDashboard, SystemManageStudio, SystemManageUser } from '@/features/system';
 
 export default function AppRoutes() {
     return (
@@ -28,7 +28,7 @@ export default function AppRoutes() {
                 <Route path="/" element={<DefaultLayout />}>
                     <Route path="/system" element={<SystemLayout />}>
                         <Route index element={<Navigate to={'/system/dashboard'} />}></Route>
-                        <Route path="/system/dashboard" element={<div>System dashboard</div>}></Route>
+                        <Route path="/system/dashboard" element={<SystemDashboard/>}></Route>
                         <Route path="/system/manage-users" element={<SystemManageUser />}></Route>
                         <Route path="/system/manage-studios" element={<SystemManageStudio />}></Route>
                         <Route path="/system/manage-category" element={<div>System manage category</div>}></Route>

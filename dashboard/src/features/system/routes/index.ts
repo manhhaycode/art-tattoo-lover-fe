@@ -1,3 +1,4 @@
 import SystemManageUser from './SystemManageUser';
 import SystemManageStudio from './SystemManageStudio';
-export { SystemManageUser, SystemManageStudio };
+import SystemDashboard from './SystemDashboard';
+export { SystemManageUser, SystemManageStudio, SystemDashboard };

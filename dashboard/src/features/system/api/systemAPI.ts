@@ -1,12 +1,17 @@
 // import * as httpRequest from '@/lib/axios';
 import * as httpAuth from '@/lib/axios-auth';
 import {
+    IAdminDashboard,
+    IBookingDaily,
     ICreateStudio,
     ICreateUser,
     ICreateUserReq,
     IDeleteStudio,
+    IMostPopularArtist,
+    IMostPopularStudio,
     IPaginationUserList,
     IPaginationUserListReq,
+    IStudioDashboard,
     IUpdateUser,
     IUpdateUserReq,
 } from '../types';
@@ -137,4 +142,62 @@ export const useDeleteStudioMutation = (
         onMutate: handleFn.onMutate,
         retry,
     });
+};
+
+export const getAdminDashboard = async (): Promise<IAdminDashboard> => {
+    try {
+        const response: IAdminDashboard = await httpAuth.get('analytics/admin-dashboard');
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getStudioDashboard = async (studioId: string): Promise<IStudioDashboard> => {
+    try {
+        const response: IStudioDashboard = await httpAuth.get('analytics/studio-dashboard/' + studioId);
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getBookingDaily = async (studioId?: string): Promise<IBookingDaily[]> => {
+    try {
+        if (studioId) {
+            const response: IBookingDaily[] = await httpAuth.get(
+                'analytics/studio-dashboard/booking-daily/' + studioId,
+            );
+
+            return response;
+        }
+
+        const response: IBookingDaily[] = await httpAuth.get('analytics/admin-dashboard/booking-daily');
+
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getStudioPopular = async (): Promise<IMostPopularStudio> => {
+    try {
+        const response: IMostPopularStudio = await httpAuth.get('analytics/admin-dashboard/most-popular-studio');
+
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getStudioPopularArtist = async (studioId: string): Promise<IMostPopularArtist> => {
+    try {
+        const response: IMostPopularArtist = await httpAuth.get(
+            'analytics/studio-dashboard/most-popular-artist/' + studioId,
+        );
+
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
 };
