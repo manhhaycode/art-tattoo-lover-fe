@@ -48,7 +48,6 @@ export default function Header() {
                 <Link to="/">
                     <LogoIcon styles={schema.colorScheme === 'dark' ? { fill: '#fff' } : { fill: '#000' }} />
                 </Link>
-                <div>Test menu</div>
             </Group>
             <Group gap="xs" mr="md">
                 {getProfileMutation.data && (

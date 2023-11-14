@@ -1,10 +1,13 @@
 // import * as httpRequest from '@/lib/axios';
 import * as httpAuth from '@/lib/axios-auth';
 import {
+    IAdminDashboard,
+    IBookingDaily,
     ICreateStudio,
     ICreateUser,
     ICreateUserReq,
     IDeleteStudio,
+    IMostPopularStudio,
     IPaginationUserList,
     IPaginationUserListReq,
     IUpdateUser,
@@ -137,4 +140,33 @@ export const useDeleteStudioMutation = (
         onMutate: handleFn.onMutate,
         retry,
     });
+};
+
+export const getAdminDashboard = async (): Promise<IAdminDashboard> => {
+    try {
+        const response: IAdminDashboard = await httpAuth.get('analytics/admin-dashboard');
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getBookingDaily = async (): Promise<IBookingDaily[]> => {
+    try {
+        const response: IBookingDaily[] = await httpAuth.get('analytics/admin-dashboard/booking-daily');
+
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
+};
+
+export const getStudioPopular = async (): Promise<IMostPopularStudio> => {
+    try {
+        const response: IMostPopularStudio = await httpAuth.get('analytics/admin-dashboard/most-popular-studio');
+
+        return response;
+    } catch (_error) {
+        throw new Error(_error);
+    }
 };
