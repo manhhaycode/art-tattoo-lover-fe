@@ -2,7 +2,7 @@ import { Center, Group, Paper, RingProgress, rem, Text, Skeleton, Avatar } from 
 import { IMostPopularArtist, ITestimonialAdminDashboard } from '../../types';
 import { IconCalendar, IconCoin, IconStarFilled } from '@tabler/icons-react';
 import { numbertoPrice } from '@/lib/helper';
-import defaultAva from '@/assets/images/default-avatar.png';
+import defaultAva from '@/assets/img/default-ava.png';
 
 interface Props {
     testimonialData?: ITestimonialAdminDashboard;
