@@ -59,6 +59,11 @@ interface ModalState {
     setFilterMobileModal: (filterMobileModal: boolean) => void;
     uploadCertificateModal: boolean;
     seUploadCertificateModal: (uploadCertificateModal: boolean) => void;
+    tesimonialModal: {
+        visible: boolean;
+        studio: IStudio | null;
+    };
+    setTesimonialModal: (tesimonialModal: { visible: boolean; studio: IStudio | null }) => void;
     reset: () => void;
 }
 
@@ -86,6 +91,11 @@ export const useModalStore = create<ModalState>((set) => ({
     uploadCertificateModal: false,
     seUploadCertificateModal: (uploadCertificateModal: boolean) =>
         set({ uploadCertificateModal, isModalVisible: uploadCertificateModal }),
+    tesimonialModal: {
+        visible: false,
+        studio: null,
+    },
+    setTesimonialModal: (tesimonialModal) => set({ tesimonialModal, isModalVisible: tesimonialModal.visible }),
 
     reset: () => {
         set({
@@ -94,6 +104,11 @@ export const useModalStore = create<ModalState>((set) => ({
             isModalVisible: false,
             isResetPasswordModalVisible: false,
             filterMobileModal: false,
+            uploadCertificateModal: false,
+            tesimonialModal: {
+                visible: false,
+                studio: null,
+            },
             bookingModal: {
                 visible: false,
                 studioId: null,

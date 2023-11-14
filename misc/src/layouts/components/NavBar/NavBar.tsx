@@ -1,4 +1,4 @@
-import { BlogIcon, CalendarIcon, HistoryIcon, UserIcon } from '@/assets/icons';
+import { CalendarIcon, HistoryIcon, UserIcon } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -37,16 +37,6 @@ export default function NavBar() {
             >
                 <HistoryIcon />
                 <p className="font-medium text-base justify-start">Lịch sử xăm tại studio</p>
-            </Button>
-            <Button
-                onClick={() => {
-                    navigate('/user/blog');
-                }}
-                className="flex gap-x-3 justify-start"
-                {...(!location.pathname.includes('blog') && { style: { background: 'transparent' } })}
-            >
-                <BlogIcon />
-                <p className="font-medium text-base justify-start">Quản lý bài viết cá nhân</p>
             </Button>
         </div>
     );

@@ -3,6 +3,7 @@ import { useModalStore } from '@/store/componentStore';
 import { Login, Register, ResetPassword } from '@/features/auth/components';
 import BookingModal from '@/features/studios/components/BookingModal';
 import { FilterMobile } from '@/features/studios/components/FilterForm';
+import TestimonialForm from '@/features/testimonials/components/TestimonialForm';
 
 export default function PortalModal({ idModal }: { idModal: string }) {
     const modal = document.getElementById(idModal);
@@ -12,6 +13,7 @@ export default function PortalModal({ idModal }: { idModal: string }) {
         isResetPasswordModalVisible,
         bookingModal,
         filterMobileModal,
+        tesimonialModal,
     } = useModalStore();
     return (
         <>
@@ -20,6 +22,7 @@ export default function PortalModal({ idModal }: { idModal: string }) {
             {isResetPasswordModalVisible && createPortal(<ResetPassword />, modal!)}
             {bookingModal.visible && bookingModal.studioId && createPortal(<BookingModal />, modal!)}
             {filterMobileModal && createPortal(<FilterMobile />, modal!)}
+            {tesimonialModal.visible && createPortal(<TestimonialForm />, modal!)}
         </>
     );
 }
