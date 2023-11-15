@@ -1,3 +1,4 @@
+import { StarIcon } from '@/assets/icons';
 import { IStudio } from '@/features/studios';
 import { OverlayViewF } from '@react-google-maps/api';
 import { HTMLMotionProps, m } from 'framer-motion';
@@ -36,12 +37,17 @@ const StudioPin = ({
                 <button
                     {...propsButton}
                     className={twMerge(
-                        'bg-button-primary text-white text-sm font-bold rounded-lg px-2 py-1 border-2 border-solid border-black ',
+                        'bg-button-primary text-white text-sm font-bold rounded-lg px-2 py-1 border-2 border-solid border-black flex gap-x-1 ',
                         propsButton?.className || '',
                         isSelect ? 'bg-black' : '',
                     )}
                 >
-                    {/* {(Math.random() * 5).toFixed(2)} */} 4.53
+                    <StarIcon
+                        styles={{
+                            fill: 'white',
+                        }}
+                    />
+                    {studio.rating.toFixed(2) || '0.00'}
                 </button>
             </m.div>
         </OverlayViewF>

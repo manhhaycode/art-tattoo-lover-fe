@@ -11,6 +11,7 @@ import { useDebouncedState } from '@mantine/hooks';
 import Button from '@/components/common/Button';
 import { useGetListCategory } from '@/features/category';
 import { ICategory } from '@/features/category';
+import serviceDefault from '@/assets/img/services.jpg';
 
 export default function SearchBarLocation() {
     const categoryRef = useRef<HTMLDivElement>(null);
@@ -201,6 +202,21 @@ export default function SearchBarLocation() {
                     >
                         <h1 className="font-semibold text-sm ml-1 py-2 mb-5">Tìm kiếm các dịch vụ Tattoo</h1>
                         <div className="grid grid-cols-3 gap-x-3 gap-y-4">
+                            <div className="flex flex-col">
+                                <Image
+                                    onClick={() => {
+                                        setCategoryChoose(undefined);
+                                        setIsDropdownVisible(false);
+                                    }}
+                                    className={'rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown '.concat(
+                                        !categoryChoose ? '!border-button-primary' : '',
+                                    )}
+                                    src={serviceDefault}
+                                />
+                                <div className="flex items-center flex-grow">
+                                    <p className="text-sm mt-2 mx-px">Dịch vụ bất kỳ</p>
+                                </div>
+                            </div>
                             {listCategory &&
                                 listCategory.map((category) => {
                                     return (
