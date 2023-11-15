@@ -3,7 +3,7 @@ import SearchBarLocation from '@/features/map/components/SearchBarLocation';
 
 export default function Home() {
     return (
-        <div id="content" className="pt-6 w-full h-[3000px]">
+        <div id="content" className="pt-6 w-full min-h-[140vh]">
             <div className="mx-auto w-full mb-9 xl:w-[1372px]">
                 <div className="h-[504px] relative" style={{ backgroundImage: `url(${Slider1})` }}>
                     <div className="absolute top-11 w-full font-serif-slide text-white text-center">
@@ -21,7 +21,7 @@ export default function Home() {
                 <h2 className="text-center text-white mb-10 text-xl font-light ">Xem nhiều đánh giá hơn ở Tattus</h2>
             </div>
 
-            <div className="grid grid-cols-3 gap-x-8 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 max-w-7xl mx-auto">
                 <div>
                     <div className="h-96 mb-5 transition-all duration-300 ease-in-out hover:scale-90">
                         <img
@@ -70,7 +70,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="mx-auto w-full xl:w-[900px] pt-24 " >
+            <div className="mx-auto w-full xl:w-[900px] pt-24 max-md:hidden" >
                 <div>
                     <div className="h-96 mb-12 transition-all duration-300 ease-in-out hover:scale-110">
                         <img
@@ -86,7 +86,7 @@ export default function Home() {
                 
                 </div>
             </div>
-            <div className="mx-auto w-full xl:w-[900px] pt-24 " >
+            <div className="mx-auto w-full xl:w-[900px] pt-24 max-md:hidden" >
                 <h1 className="text-[64px] mb-2 text-center font-bold">Tattoo Gallery</h1>
                 <h2 className="text-[16px] mb-2 text-center font-medium mt-10">Tất cả hình ảnh trong bộ sưu tập đều là ảnh xăm thực tế được chụp bởi các nghệ sĩ xăm hình của Tattus</h2>
 
