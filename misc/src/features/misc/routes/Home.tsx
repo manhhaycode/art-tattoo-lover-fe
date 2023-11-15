@@ -83,13 +83,11 @@ export default function Home() {
                     <span className="block text-center font-medium text-gray-200 text-sm mb-1">
                         {' '}Chúng tôi đã tuyển chọn một bộ sưu tập các hình xăm đẹp để bạn phám phá.
                     </span>
-                    <div className="flex justify-center">
-                        <button className="inline-button justify-center py-3 px-10 m-5  text-white bg-[gray] hover:bg-gray-400 rounded-lg transition-colors">Tatto gallery</button>
-                    </div>
+                
                 </div>
             </div>
             <div className="mx-auto w-full xl:w-[900px] pt-24 " >
-                <h1 className="text-[64px] mb-2 text-center font-bold">Tatto Gallery</h1>
+                <h1 className="text-[64px] mb-2 text-center font-bold">Tattoo Gallery</h1>
                 <h2 className="text-[16px] mb-2 text-center font-medium mt-10">Tất cả hình ảnh trong bộ sưu tập đều là ảnh xăm thực tế được chụp bởi các nghệ sĩ xăm hình của Tattus</h2>
 
                 <div className=" flex h-96 mb-12 transition-all duration-300 ease-in-out hover:scale-110 ">
