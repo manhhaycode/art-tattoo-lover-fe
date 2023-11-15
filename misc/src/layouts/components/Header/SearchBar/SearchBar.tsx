@@ -7,6 +7,7 @@ import Image from '@/components/common/Image';
 import Button from '@/components/common/Button';
 import { useFilterFormStore } from '@/store/componentStore';
 import { ICategory, useGetListCategory } from '@/features/category';
+import serviceDefault from '@/assets/img/services.jpg';
 
 export default function SearchBar({
     clickOutside,
@@ -23,7 +24,7 @@ export default function SearchBar({
     const { data: listCategory } = useGetListCategory();
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [studioName, setStudioName] = useState('');
-    const { reset } = useFilterFormStore();
+    const { setFilterData } = useFilterFormStore();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -173,12 +174,16 @@ export default function SearchBar({
                                         handleCloseSearchBigBar();
                                         setStudioName('');
                                         setCategoryChoose(undefined);
-                                        reset();
+                                        // reset();
                                         navigate(
                                             '/search-studio?searchKeyword=' +
                                                 studioName +
                                                 (categoryChoose?.id ? '&categoryId=' + categoryChoose.id : ''),
                                         );
+                                        setFilterData({
+                                            searchKeyword: studioName,
+                                            categoryId: categoryChoose?.id,
+                                        });
                                     }}
                                     className="!rounded-3xl ml-3 relative "
                                 >
@@ -200,6 +205,21 @@ export default function SearchBar({
                                         Tìm kiếm các dịch vụ Tattoo
                                     </h1>
                                     <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+                                        <div className="flex flex-col">
+                                            <Image
+                                                onClick={() => {
+                                                    setCategoryChoose(undefined);
+                                                    setIsDropdownVisible(false);
+                                                }}
+                                                className={'rounded-xl border-2 border-solid border-transparent hover:shadow-shadow-dropdown '.concat(
+                                                    !categoryChoose ? '!border-button-primary' : '',
+                                                )}
+                                                src={serviceDefault}
+                                            />
+                                            <div className="flex items-center flex-grow">
+                                                <p className="text-sm mt-2 mx-px">Dịch vụ bất kỳ</p>
+                                            </div>
+                                        </div>
                                         {listCategory &&
                                             listCategory.map((category) => {
                                                 return (

@@ -68,11 +68,15 @@ export default function CategoryList({
         }, 250);
     };
 
+    // useEffect(() => {
+    //     if (categoryList) {
+    //         setPosition(categoryList.findIndex((item) => item.id === Number(initChooose)) + 1 || 0);
+    //     }
+    // }, [categoryList, initChooose]);
+
     useEffect(() => {
-        if (categoryList) {
-            setPosition(categoryList.findIndex((item) => item.id === Number(initChooose)) + 1 || 0);
-        }
-    }, [categoryList, initChooose]);
+        setIsSelect(initChooose);
+    }, [initChooose]);
 
     useEffect(() => {
         if (listRef.current) {
