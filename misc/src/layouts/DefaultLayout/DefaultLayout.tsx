@@ -1,3 +1,4 @@
+import Footer from '@/layouts/components/Footer';
 import Header from '@/layouts/components/Header';
 import { useModalStore } from '@/store/componentStore';
 import { lazy, useEffect } from 'react';
@@ -28,6 +29,7 @@ export default function DefaultLayout() {
             </main>
             <Modal animate={isModalVisible} onClose={() => reset()} />
             <PortalModal idModal="main-modal" />
+            <Footer />
         </div>
     );
 }
