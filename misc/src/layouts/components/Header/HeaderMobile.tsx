@@ -30,10 +30,9 @@ export default function HeaderMobile() {
                         onClick={() => {
                             setFilterData({
                                 searchKeyword: keyword,
-                                ratingList: [0],
                             });
 
-                            navigate('/search-studio?searchKeyword=' + keyword + '&ratingList=0');
+                            navigate('/search-studio?searchKeyword=' + keyword);
                         }}
                         className="p-3"
                     >

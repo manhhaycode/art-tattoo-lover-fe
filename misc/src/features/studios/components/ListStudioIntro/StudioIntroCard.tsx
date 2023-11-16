@@ -90,9 +90,9 @@ export default function StudioIntroCard({
                         <p className="truncate sm:max-w-full">{studio.slogan}</p>
                         <Rating
                             className="flex sm:hidden"
-                            defaultValue={Number((Math.random() * 5).toFixed(2))}
+                            defaultValue={studio.rating}
                             fractions={3}
-                            size="xs"
+                            size="sm"
                             readOnly
                         />
                     </div>
