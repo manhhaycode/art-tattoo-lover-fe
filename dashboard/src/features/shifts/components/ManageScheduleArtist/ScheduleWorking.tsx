@@ -5,7 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import viLocate from '@fullcalendar/core/locales/vi';
 import EventContent from './EventContent';
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { updateShift, useGetShiftList } from '@/features/shifts';
+import { updateShift, useGetShiftList, useGetShiftListArtist } from '@/features/shifts';
 import { useAuthStore } from '@/store/authStore';
 import { Button, Group, Text, rem, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useToggle } from '@mantine/hooks';
@@ -28,6 +28,17 @@ export default function ScheduleWorking() {
     const { accountType } = useAuthStore();
     const [date, setDate] = useState<{ start: string; end: string }>({ start: '', end: '' });
     const shift = useGetShiftList({ start: date.start, end: date.end, studioId: accountType?.studioId || '' });
+    const shiftArtist = useGetShiftListArtist(
+        accountType?.role?.id === 5
+            ? {
+                  start: date.start,
+                  end: date.end,
+              }
+            : {
+                  start: '',
+                  end: '',
+              },
+    );
     const manageShiftState = useDisclosure();
     const [isDelete, setIsDelete] = useState(false);
     const registerShiftState = useDisclosure();
@@ -47,12 +58,29 @@ export default function ScheduleWorking() {
     }, []);
 
     useEffect(() => {
-        if (shift.data && calendarRef.current) {
-            calendarRef.current.getApi().removeAllEvents();
-            calendarRef.current.getApi().removeAllEventSources();
-            calendarRef.current.getApi().addEventSource(shift.data);
+        if (accountType?.role?.id !== 5) {
+            if (shift.data && calendarRef.current) {
+                calendarRef.current.getApi().removeAllEvents();
+                calendarRef.current.getApi().removeAllEventSources();
+                calendarRef.current.getApi().addEventSource(shift.data);
+            }
+        } else {
+            if (shiftArtist.data && calendarRef.current && shift.data) {
+                shiftArtist.data.forEach((event) => {
+                    const index = shift.data.findIndex((e) => e.id === event.id);
+                    if (index !== -1) {
+                        shift.data[index] = event;
+                    } else {
+                        shift.data.push(event);
+                    }
+                });
+                calendarRef.current.getApi().removeAllEvents();
+                calendarRef.current.getApi().removeAllEventSources();
+                calendarRef.current.getApi().addEventSource(shift.data);
+            }
         }
-    }, [shift.data]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shift.data, shiftArtist.data]);
 
     useUnmount(() => {
         queryClient.invalidateQueries(['shifts']);

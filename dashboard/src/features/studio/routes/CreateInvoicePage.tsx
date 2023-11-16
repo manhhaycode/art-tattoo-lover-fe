@@ -15,11 +15,7 @@ export default function CreateInvoicePage() {
     useEffect(() => {
         if (accountType?.permissions) {
             const permissions = accountType.permissions;
-            if (
-                permissions.includes(EPermission.MANAGE_OWNED_STUDIO) ||
-                permissions.includes(EPermission.VIEW_STUDIO_INVOICE)
-            )
-                setDisplay(true);
+            if (permissions.includes(EPermission.MANAGE_OWNED_STUDIO)) setDisplay(true);
             else {
                 setDisplay(false);
                 navigate('/studio/dashboard');

@@ -15,6 +15,7 @@ import { twMerge } from 'tailwind-merge';
 import EditWorkingTime from '../EditWorkingTime/EditWorkingTime';
 import { useNavigate } from 'react-router-dom';
 import Load from '@/components/common/Load';
+import { EPermission } from '@/features/auth';
 
 const previewImage = (file: FileWithPath) => {
     const imageUrl = URL.createObjectURL(file);
@@ -136,32 +137,46 @@ export default function BasicInfoForm() {
                                             previewImage(file)
                                         )}
                                     </AspectRatio>
-                                    <Dropzone
-                                        variant="filled"
-                                        multiple={false}
-                                        onDrop={(files) => {
-                                            setFile(files[0]);
-                                            setValue('logo', files[0].name, { shouldDirty: true });
-                                            toast.success('Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật');
-                                        }}
-                                        onReject={() => {
-                                            toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
+                                    {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) && (
+                                        <Dropzone
+                                            disabled={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
+                                            variant="filled"
+                                            multiple={false}
+                                            onDrop={(files) => {
+                                                setFile(files[0]);
+                                                setValue('logo', files[0].name, { shouldDirty: true });
+                                                toast.success(
+                                                    'Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật',
+                                                );
+                                            }}
+                                            onReject={() => {
+                                                toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
 
-                                            // console.log('rejected files', files)
-                                        }}
-                                        maxSize={100 * 1024}
-                                        accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
-                                    >
-                                        <Text className="font-semibold">Tải ảnh mới</Text>
-                                    </Dropzone>
+                                                // console.log('rejected files', files)
+                                            }}
+                                            maxSize={100 * 1024}
+                                            accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
+                                        >
+                                            <Text className="font-semibold">Tải ảnh mới</Text>
+                                        </Dropzone>
+                                    )}
                                 </Group>
                                 <div className="flex flex-col justify-between">
-                                    <Button onClick={() => navigate('/studio/preview-studio')} className="w-fit">
-                                        Xem và sửa trang giới thiệu studio
-                                    </Button>
+                                    {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ? (
+                                        <Button onClick={() => navigate('/studio/preview-studio')} className="w-fit">
+                                            Xem và sửa trang giới thiệu studio
+                                        </Button>
+                                    ) : (
+                                        <div></div>
+                                    )}
                                     <div className="flex flex-col gap-y-2 self-end w-full">
                                         <label className="text-sm font-semibold">Địa chỉ Email</label>
                                         <Input
+                                            disabled={
+                                                updateStudioMutation.isLoading ||
+                                                uploadMediaMutation.isLoading ||
+                                                !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            }
                                             {...register('email', {
                                                 pattern: {
                                                     value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
@@ -183,6 +198,11 @@ export default function BasicInfoForm() {
                                 <div className="flex flex-col gap-y-2 self-end">
                                     <label className="text-sm font-semibold">Tên studio</label>
                                     <Input
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                        }
                                         {...register('name', {
                                             required: 'Tên studio không được để trống',
                                         })}
@@ -196,6 +216,11 @@ export default function BasicInfoForm() {
                                 <div className="flex flex-col gap-y-2 self-end">
                                     <label className="text-sm font-semibold">Số điện thoại của studio</label>
                                     <Input
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                        }
                                         {...register('phone', {
                                             required: 'Số điện thoại của studio',
                                         })}
@@ -209,6 +234,11 @@ export default function BasicInfoForm() {
                                 <div className="flex flex-col gap-y-2 self-end">
                                     <label className="text-sm font-semibold">Câu slogan của studio</label>
                                     <Input
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                        }
                                         {...register('slogan', {
                                             required: 'Câu slogan không được để trống',
                                         })}
@@ -222,6 +252,11 @@ export default function BasicInfoForm() {
                                 <div className="flex flex-col gap-y-2 self-end">
                                     <label className="text-sm font-semibold">Đoạn giới thiệu studio</label>
                                     <Input
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                        }
                                         {...register('introduction', {
                                             required: 'Đoạn giới thiệu không được để trống',
                                         })}
@@ -234,7 +269,14 @@ export default function BasicInfoForm() {
                                 </div>
                                 <div className="flex flex-col gap-y-2 self-end">
                                     <label className="text-sm font-semibold">Trang web của studio</label>
-                                    <Input {...register('website')} />
+                                    <Input
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                        }
+                                        {...register('website')}
+                                    />
                                     {errors.website && (
                                         <label className="text-xs font-semibold text-red-500">
                                             {errors.website.message}
@@ -243,7 +285,14 @@ export default function BasicInfoForm() {
                                 </div>
                                 <div className="flex flex-col gap-y-2 self-end">
                                     <label className="text-sm font-semibold">Trang facebook của studio</label>
-                                    <Input {...register('facebook')} />
+                                    <Input
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                        }
+                                        {...register('facebook')}
+                                    />
                                     {errors.facebook && (
                                         <label className="text-xs font-semibold text-red-500">
                                             {errors.facebook.message}
@@ -252,7 +301,14 @@ export default function BasicInfoForm() {
                                 </div>
                                 <div className="flex flex-col gap-y-2 self-end">
                                     <label className="text-sm font-semibold">Trang instagram của studio</label>
-                                    <Input {...register('instagram')} />
+                                    <Input
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                        }
+                                        {...register('instagram')}
+                                    />
                                     {errors.instagram && (
                                         <label className="text-xs font-semibold text-red-500">
                                             {errors.instagram.message}
@@ -263,6 +319,11 @@ export default function BasicInfoForm() {
                                     <label className="text-sm font-semibold">Địa chỉ của studio</label>
                                     {basicInfoStudio.address && (
                                         <AutocompleteAddress
+                                            disabled={
+                                                updateStudioMutation.isLoading ||
+                                                uploadMediaMutation.isLoading ||
+                                                !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            }
                                             reset={isReset}
                                             setIsReset={setIsReset}
                                             defaultValue={watch('address')}
@@ -275,6 +336,11 @@ export default function BasicInfoForm() {
                                     <div className="flex flex-col gap-y-5 my-4">
                                         {
                                             <EditWorkingTime
+                                                disabled={
+                                                    updateStudioMutation.isLoading ||
+                                                    uploadMediaMutation.isLoading ||
+                                                    !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                                }
                                                 handleChange={(e) => {
                                                     setValue('workingTimes', e, { shouldDirty: true });
                                                 }}
@@ -289,28 +355,30 @@ export default function BasicInfoForm() {
                                     )}
                                 </div>
                             </div>
-                            <Group mt={rem(16)}>
-                                <Button
-                                    type="submit"
-                                    disabled={
-                                        updateStudioMutation.isLoading ||
-                                        uploadMediaMutation.isLoading ||
-                                        !isValid ||
-                                        !isDirty
-                                    }
-                                    loading={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
-                                >
-                                    Thay đổi thông tin studio
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        reset();
-                                        setIsReset(true);
-                                    }}
-                                >
-                                    Đặt lại thông tin studio
-                                </Button>
-                            </Group>
+                            {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) && (
+                                <Group mt={rem(16)}>
+                                    <Button
+                                        type="submit"
+                                        disabled={
+                                            updateStudioMutation.isLoading ||
+                                            uploadMediaMutation.isLoading ||
+                                            !isValid ||
+                                            !isDirty
+                                        }
+                                        loading={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
+                                    >
+                                        Thay đổi thông tin studio
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            reset();
+                                            setIsReset(true);
+                                        }}
+                                    >
+                                        Đặt lại thông tin studio
+                                    </Button>
+                                </Group>
+                            )}
                         </form>
                     </Container>
                 )

@@ -174,27 +174,6 @@ export default function StudioNav() {
                         )}
                         {(permissions.includes(EPermission.MANAGE_STUDIO_INVOICE) ||
                             permissions.includes(EPermission.VIEW_STUDIO_INVOICE)) && (
-                            // <Button
-                            //     fullWidth
-                            //     mih={40}
-                            //     {...(!location.pathname.includes('manage-invoice')
-                            //         ? {
-                            //               ...{
-                            //                   ...(schema.colorScheme === 'light' && {
-                            //                       classNames: { inner: '!text-black' },
-                            //                   }),
-                            //               },
-                            //               variant: 'subtle',
-                            //           }
-                            //         : { variant: 'gradient' })}
-                            //     onClick={() => {
-                            //         navigate('/studio/manage-invoice');
-                            //     }}
-                            //     className="flex gap-x-3 justify-start active:transform-none text-base"
-                            //     leftSection={<MdPayment size={24} />}
-                            // >
-                            //     Quản lý thanh toán
-                            // </Button>
                             <div className="w-full">
                                 <NavLink
                                     {...(schema.colorScheme === 'light'
@@ -232,18 +211,20 @@ export default function StudioNav() {
                                         className="mt-2 hover:!bg-[var(--mantine-primary-color-light-hover)] rounded"
                                         label={<Text className="text-base font-semibold">Quản lý hóa đơn</Text>}
                                     />
-                                    <NavLink
-                                        {...(location.pathname.includes('manage-invoice/create') && {
-                                            style: {
-                                                background:
-                                                    'linear-gradient(45deg, var(--mantine-color-blue-filled) 0%, var(--mantine-primary-color-filled) 100%)',
-                                            },
-                                        })}
-                                        onClick={() => navigate('/studio/manage-invoice/create')}
-                                        leftSection={<TbFileDollar size={24} />}
-                                        className="mt-2 hover:!bg-[var(--mantine-primary-color-light-hover)] rounded"
-                                        label={<Text className="text-base font-semibold">Tạo hóa đơn mới</Text>}
-                                    />
+                                    {permissions.includes(EPermission.MANAGE_STUDIO_INVOICE) && (
+                                        <NavLink
+                                            {...(location.pathname.includes('manage-invoice/create') && {
+                                                style: {
+                                                    background:
+                                                        'linear-gradient(45deg, var(--mantine-color-blue-filled) 0%, var(--mantine-primary-color-filled) 100%)',
+                                                },
+                                            })}
+                                            onClick={() => navigate('/studio/manage-invoice/create')}
+                                            leftSection={<TbFileDollar size={24} />}
+                                            className="mt-2 hover:!bg-[var(--mantine-primary-color-light-hover)] rounded"
+                                            label={<Text className="text-base font-semibold">Tạo hóa đơn mới</Text>}
+                                        />
+                                    )}
                                 </NavLink>
                             </div>
                         )}

@@ -1,6 +1,14 @@
 import * as httpRequest from '@/lib/axios';
 import * as httpAuth from '@/lib/axios-auth';
-import { ICreateShift, ICreateShiftReq, IDeleteShift, IGenerateShift, IShift, IShiftReq } from '../types';
+import {
+    ICreateShift,
+    ICreateShiftReq,
+    IDeleteShift,
+    IGenerateShift,
+    IShift,
+    IShiftListArtistReq,
+    IShiftReq,
+} from '../types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const getShiftList = async (filter: IShiftReq): Promise<IShift[]> => {
@@ -9,6 +17,17 @@ export const getShiftList = async (filter: IShiftReq): Promise<IShift[]> => {
     }
     try {
         const res: IShift[] = await httpAuth.get('/shift/studio', {
+            params: filter,
+        });
+        return res;
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+export const getShiftListArtist = async (filter: IShiftListArtistReq): Promise<IShift[]> => {
+    try {
+        const res: IShift[] = await httpAuth.get('/shift/artist', {
             params: filter,
         });
         return res;
@@ -84,6 +103,16 @@ export const useGetShiftList = (filter: IShiftReq) => {
     return useQuery({
         queryKey: ['shifts', filter],
         queryFn: () => getShiftList(filter),
+        staleTime: Infinity,
+        keepPreviousData: true,
+        enabled: filter.end.length > 0 && filter.start.length > 0,
+    });
+};
+
+export const useGetShiftListArtist = (filter: IShiftListArtistReq) => {
+    return useQuery({
+        queryKey: ['shiftsArtist', filter],
+        queryFn: () => getShiftListArtist(filter),
         staleTime: Infinity,
         keepPreviousData: true,
         enabled: filter.end.length > 0 && filter.start.length > 0,
