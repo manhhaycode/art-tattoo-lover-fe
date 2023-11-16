@@ -44,7 +44,7 @@ export default function SearchStudio() {
                                 </div>
                             )}
                             {!isFetching && data && (
-                                <p className="text-xl font-medium">Tìm thấy: {data.data.length} kết quả</p>
+                                <p className="text-xl font-medium">Tìm thấy: {data.total} kết quả</p>
                             )}
                             <div className="mt-5">
                                 <FilterForm isLoading={isFetching} />

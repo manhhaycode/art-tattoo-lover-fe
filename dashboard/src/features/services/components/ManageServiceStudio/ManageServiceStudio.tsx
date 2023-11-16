@@ -139,11 +139,11 @@ export default function ManageServiceStudio() {
                             cellContext={cellContext}
                             data={[
                                 {
-                                    label: 'Đã kích hoạt',
+                                    label: 'Hiển thị dịch vụ',
                                     value: 'false',
                                 },
                                 {
-                                    label: 'Đã tạm khóa',
+                                    label: 'Ẩn dịch vụ',
                                     value: 'true',
                                 },
                             ]}

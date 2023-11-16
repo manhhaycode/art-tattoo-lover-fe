@@ -4,6 +4,7 @@ import { PlaceData } from '@googlemaps/google-maps-services-js';
 import { IFilter, IStudio } from '@/features/studios';
 import { EPositionOverlayView } from '@/features/map/types';
 import { AppointmentType } from '@/features/users/types/appointment';
+import { IService } from '@/features/services';
 interface SearchLocationState {
     placeChoose: Partial<google.maps.places.AutocompletePrediction> | null;
     setPlaceChoose: (placeId: Partial<google.maps.places.AutocompletePrediction> | null) => void;
@@ -42,6 +43,7 @@ interface IBookingModal {
     visible: boolean;
     studioId: string | null;
     appointmentReschedule: AppointmentType | null;
+    service: IService | null;
 }
 
 interface ModalState {
@@ -81,6 +83,7 @@ export const useModalStore = create<ModalState>((set) => ({
     bookingModal: {
         visible: false,
         studioId: null,
+        service: null,
         appointmentReschedule: null,
     },
     setBookingModal: (bookingModal: IBookingModal) =>
@@ -108,6 +111,7 @@ export const useModalStore = create<ModalState>((set) => ({
             isModalVisible: false,
             isResetPasswordModalVisible: false,
             filterMobileModal: false,
+            filterMapModal: false,
             uploadCertificateModal: false,
             tesimonialModal: {
                 visible: false,
@@ -116,6 +120,7 @@ export const useModalStore = create<ModalState>((set) => ({
             bookingModal: {
                 visible: false,
                 studioId: null,
+                service: null,
                 appointmentReschedule: null,
             },
         });

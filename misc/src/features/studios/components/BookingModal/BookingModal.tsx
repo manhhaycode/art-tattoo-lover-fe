@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import queryClient from '@/lib/react-query';
 import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';
 import { IService } from '../../types';
+import { convertTimeToDisplayFormat, numbertoPrice } from '@/lib/helper';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -127,6 +128,7 @@ const BookingModal = () => {
                 visible: false,
                 studioId: null,
                 appointmentReschedule: null,
+                service: null,
             });
             toast.success('Đặt lịch thành công');
             navigate('/user/book-tracking');
@@ -154,6 +156,12 @@ const BookingModal = () => {
             reset();
         }
     }, [bookingModal.appointmentReschedule, bookingModal.visible]);
+
+    useEffect(() => {
+        if (bookingModal.service?.id) {
+            setSelectedService(bookingModal.service);
+        }
+    }, [bookingModal.service]);
 
     return (
         <div className="flex flex-col overflow-auto h-full w-full max-w-lg px-10 pb-8">
@@ -218,6 +226,16 @@ const BookingModal = () => {
                         />
                     )}
                 </div>
+                {selectedService && (
+                    <div className="flex flex-col gap-y-3">
+                        <p className="font-semibold text-sm">
+                            Giá: {numbertoPrice(selectedService.minPrice)} - {numbertoPrice(selectedService.maxPrice)}
+                        </p>
+                        <p className="font-semibold text-sm">
+                            Thời gian dự kiến: {convertTimeToDisplayFormat(selectedService.expectDuration)}
+                        </p>
+                    </div>
+                )}
 
                 <div className="">
                     <h4 className="text-lg font-semibold mb-1">Lựa chọn khung giờ</h4>
