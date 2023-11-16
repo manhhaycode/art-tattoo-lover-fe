@@ -4,7 +4,7 @@ import StudioCardImage from '@/assets/img/studio-card.jpg';
 import Button from '@/components/common/Button';
 import { formatStringTime } from '@/lib/helper/dateHelper';
 
-import { IconCalendar, IconCalendarPin, IconCalendarRepeat, IconCalendarX } from '@tabler/icons-react';
+import { IconCalendar, IconCalendarPin, IconCalendarRepeat, IconCalendarX, IconCategory } from '@tabler/icons-react';
 import AppointmentStatusTag from './AppointmentStatus';
 import { useMutation } from '@tanstack/react-query';
 import { cancelAppointment } from '../../api/appointmentAPI';
@@ -66,6 +66,10 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                         <IconCalendar size={16} className="text-white w-5" />
                         <h6 className="text-sm">{formatStringTime(appointment.shift.start)}</h6>
                     </div>
+                    <div className="flex items-center gap-1">
+                        <IconCategory size={16} className="text-white w-5" />
+                        <h6 className="text-sm">Dịch vụ: {appointment.service.name}</h6>
+                    </div>
                 </div>
             </div>
 
@@ -98,6 +102,7 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                             visible: true,
                             studioId: studio.id,
                             appointmentReschedule: appointment,
+                            service: appointment.service,
                         });
                     }}
                     {...(appointment.status.toString() === AppointmentStatusString.CANCELED && {

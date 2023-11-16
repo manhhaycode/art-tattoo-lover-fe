@@ -1,4 +1,4 @@
-import { Button, Group, Input, Modal, Select, Text, Image, AspectRatio } from '@mantine/core';
+import { Button, Group, Input, Modal, Select, Text, Image, AspectRatio, Textarea } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { IService, useCreateServiceMutation, useUpdateServiceMutation } from '@/features/services';
@@ -29,6 +29,7 @@ export default function BasicInfoService({
         name: '',
         expectDuration: '',
         isDisabled: false,
+        description: '',
         listMedia: [],
     };
 
@@ -79,7 +80,7 @@ export default function BasicInfoService({
         if (serviceInfo) {
             updateServiceMutation.mutate({ ...data, id: serviceInfo.id, thumbnail, expectDuration });
         } else {
-            createServiceMutation.mutate({ ...data, thumbnail, expectDuration, listMedia: [], description: '' });
+            createServiceMutation.mutate({ ...data, thumbnail, expectDuration, listMedia: [] });
         }
     };
 
@@ -329,11 +330,11 @@ export default function BasicInfoService({
                                 value={watch('isDisabled') ? 'true' : 'false'}
                                 data={[
                                     {
-                                        label: 'Đã tạm khóa',
+                                        label: 'Ẩn dịch vụ',
                                         value: 'true',
                                     },
                                     {
-                                        label: 'Đã kích hoạt',
+                                        label: 'Hiển thị dịch vụ',
                                         value: 'false',
                                     },
                                 ]}
@@ -357,6 +358,12 @@ export default function BasicInfoService({
                         </div>
                     )}
                 </div>
+                <Textarea
+                    {...register('description')}
+                    label="Chi tiết về dịch vụ"
+                    className="mt-6"
+                    classNames={{ label: 'mb-2' }}
+                />
                 <Group justify="flex-end" className="mt-8">
                     <Button
                         onClick={() => {

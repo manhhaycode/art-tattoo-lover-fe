@@ -7,7 +7,7 @@ import { EditRes } from '@/common/types';
 
 const getListServiceStudio = async (filter: IServiceListStudioReq): Promise<IServiceListStudio> => {
     try {
-        const response: IServiceListStudio = await httpAuth.get('/studio/service/owned', { params: filter });
+        const response: IServiceListStudio = await httpAuth.get('/studio/service', { params: filter });
         return response;
     } catch (error) {
         throw new Error(error);

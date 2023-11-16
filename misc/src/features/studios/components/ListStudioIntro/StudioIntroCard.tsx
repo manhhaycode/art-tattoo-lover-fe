@@ -3,16 +3,15 @@ import { CalendarIcon, FacebookIcon, InstagramIcon, MapPinIcon, PhoneCallIcon, W
 import Button from '@/components/common/Button';
 import { ImageSlider } from '@/components/common/Image';
 import { IStudio } from '@/features/studios';
-import { convertSlugURL } from '@/lib/helper';
+import { convertSlugURL, convertWorkingTimeToDisplayFormat } from '@/lib/helper';
 import { Rating } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
-import ListServiceOfStudio from '@/components/ListServiceOfStudio';
-import { db } from '@/assets/data';
 import { useModalStore } from '@/store/componentStore';
 import { toast } from 'react-toastify';
 import { useAuthStore } from '@/store/authStore';
 import webLink from '@/assets/img/web-link.png';
+import ListItemOfStudio from '@/components/ListItemOfStudio';
 
 export default function StudioIntroCard({
     studio,
@@ -28,7 +27,7 @@ export default function StudioIntroCard({
 
     return (
         <div className="w-full p-3 bg-gray-dark flex gap-x-6 gap-y-4 rounded-[20px] shadow-shadow-dropdown relative flex-col sm:flex-row sm:px-6 sm:py-4">
-            <div className="flex gap-y-3  flex-col sm:w-1/3 sm:max-w-[300px]">
+            <div className="flex gap-y-3 flex-col sm:min-w-[300px] sm:max-w-[300px] justify-end">
                 <ImageSlider
                     className="cursor-pointer rounded-xl"
                     onClick={() => navigator(`/studio/${convertSlugURL(studio.name!)}/${studio.id}`)}
@@ -48,6 +47,7 @@ export default function StudioIntroCard({
                                         studioId: studio.id as string,
                                         appointmentReschedule: null,
                                         visible: true,
+                                        service: null,
                                     });
                                 }
                             }
@@ -60,50 +60,78 @@ export default function StudioIntroCard({
                     {callButton && (
                         <Button className="py-[10px] bg-white text-black flex-1">
                             <PhoneCallIcon />
-                            <p className="hidden sm:text-base sm:block">Gọi điện tư vấn</p>
-                            <p className="!text-sm block sm:hidden">Tư vấn</p>
+                            <p className="sm:text-base block">Gọi điện tư vấn</p>
                         </Button>
                     )}
                 </div>
             </div>
-            <div className="flex flex-col gap-y-2  mt-auto w-full h-full justify-end font-medium text-white text-sm sm:w-2/3 sm:gap-y-3">
-                <div className="w-full flex justify-between">
-                    <Link
-                        to={`/studio/${convertSlugURL(studio.name!)}/${studio.id}`}
-                        className="text-base font-semibold sm:font-bold sm:text-xl max-w-fit"
-                    >
-                        {studio.name}
-                    </Link>
-                    <div className="flex gap-x-2 items-center sm:hidden">
-                        <a href={studio.facebook} target="_blank" rel="noreferrer">
-                            <FacebookIcon styles={{ width: 20, minWidth: 20, height: 20 }} />
-                        </a>
-                        <a href={studio.instagram} target="_blank" rel="noreferrer">
-                            <InstagramIcon styles={{ width: 20, minWidth: 20, height: 20 }} />
-                        </a>
-                        <a href={studio.website} target="_blank" rel="noreferrer">
-                            <WebsiteIcon styles={{ width: 20, minWidth: 20, height: 20 }} />
-                        </a>
+            <div className="w-full flex flex-col gap-y-2 sm:max-w-[calc(100%-324px)]">
+                <div className="flex flex-col gap-y-2  mt-auto w-full font-medium text-white text-sm sm:w-[calc(100%-146px)] sm:gap-y-3">
+                    <div className="w-full flex justify-between">
+                        <Link
+                            to={`/studio/${convertSlugURL(studio.name!)}/${studio.id}`}
+                            className="text-base font-semibold sm:font-bold sm:text-xl max-w-fit"
+                        >
+                            {studio.name}
+                        </Link>
+                        <div className="flex gap-x-2 items-center sm:hidden">
+                            <a href={studio.facebook} target="_blank" rel="noreferrer">
+                                <FacebookIcon styles={{ width: 20, minWidth: 20, height: 20 }} />
+                            </a>
+                            <a href={studio.instagram} target="_blank" rel="noreferrer">
+                                <InstagramIcon styles={{ width: 20, minWidth: 20, height: 20 }} />
+                            </a>
+                            <a href={studio.website} target="_blank" rel="noreferrer">
+                                <WebsiteIcon styles={{ width: 20, minWidth: 20, height: 20 }} />
+                            </a>
+                        </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                        <p className="truncate sm:max-w-full">{studio.slogan}</p>
+                        <Rating
+                            className="flex sm:hidden"
+                            defaultValue={Number((Math.random() * 5).toFixed(2))}
+                            fractions={3}
+                            size="xs"
+                            readOnly
+                        />
+                    </div>
+
+                    <div className="flex items-center">
+                        <MapPinIcon styles={{ height: '16px', width: '16px', minWidth: '16px' }} />
+                        <p className="ml-2 max-w-full truncate sm:max-w-full">{studio.address}</p>
                     </div>
                 </div>
-                <div className="flex justify-between items-center">
-                    <p>{studio.slogan}</p>
-                    <Rating
-                        className="flex sm:hidden"
-                        defaultValue={Number((Math.random() * 5).toFixed(2))}
-                        fractions={3}
-                        size="xs"
-                        readOnly
-                    />
-                </div>
+                <div className="w-full flex flex-col gap-2 text-sm font-medium">
+                    {!studio.listCategory && <p className={'line-clamp-3'}>{studio.introduction}</p>}
 
-                <div className="flex items-center">
-                    <MapPinIcon styles={{ height: '16px', width: '16px', minWidth: '16px' }} />
-                    <p className="ml-2 max-w-full truncate sm:max-w-[calc(100%-160px)]">{studio.address}</p>
+                    {studio.workingTimes && studio.workingTimes.length > 0 ? (
+                        <ListItemOfStudio
+                            listItem={convertWorkingTimeToDisplayFormat(studio.workingTimes)}
+                            name="Khung giờ hoạt động"
+                        />
+                    ) : (
+                        <div className="flex flex-col gap-y-2">
+                            <h1 className="text-base sm:text-lg font-semibold">Khung giờ hoạt động</h1>
+                            <p className="text-sm font-medium italic">Studio chưa có khung giờ hoạt động</p>
+                        </div>
+                    )}
+                    {studio.listService ? (
+                        studio.listService.length > 0 ? (
+                            <ListItemOfStudio
+                                listItem={studio.listService.map((service) => service.name)}
+                                name="Các dịch vụ"
+                            />
+                        ) : (
+                            <div className="flex flex-col gap-y-2">
+                                <h1 className="text-base sm:text-lg font-semibold">Các dịch vụ</h1>
+                                <p className="text-sm font-medium italic">Studio chưa có dịch vụ</p>
+                            </div>
+                        )
+                    ) : (
+                        <></>
+                    )}
                 </div>
-                {!studio.listCategory && <p className={'line-clamp-3'}>{studio.introduction}</p>}
-                {studio.workingTimes && <ListServiceOfStudio listWorkingTime={studio.workingTimes} />}
-                {studio.listCategory && <ListServiceOfStudio listCategory={db.servicesTattoo} />}
             </div>
             <div className="absolute right-6 font-medium hidden sm:block">
                 <div className="flex flex-col gap-y-3 items-end">

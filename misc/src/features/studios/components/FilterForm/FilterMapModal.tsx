@@ -20,9 +20,10 @@ export default function FilterMapModal({ isLoading }: { isLoading?: boolean }) {
                     e.nativeEvent.preventDefault();
                     const ratingList = value.map((item) => Number(item));
                     params.set('searchKeyword', searchKeyword);
-                    params.set('rating', ratingList.join(','));
-                    navigate('/search-location' + '?' + params);
+                    if (ratingList.length > 0) params.set('rating', ratingList.join(','));
+                    else params.delete('rating');
                     reset();
+                    navigate('/search-location' + '?' + params);
                 }}
                 className="flex flex-col gap-y-5"
             >
