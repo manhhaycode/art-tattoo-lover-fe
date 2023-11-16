@@ -1,5 +1,5 @@
 import { UserIcon } from '@/assets/icons';
-import { roleMap } from '@/features/auth';
+import { EPermission, roleMap } from '@/features/auth';
 
 import { useAuthStore } from '@/store/authStore';
 import { Checkbox, Text, Group, AspectRatio, Image, rem, Button, Input } from '@mantine/core';
@@ -319,7 +319,9 @@ export default function ManageStaffStudio() {
                     placeholder="Tìm kiếm nhân viên studio"
                     className="w-1/2"
                 />
-                <AddNewUserStudio refreshData={refreshData} />
+                {accountType?.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) && (
+                    <AddNewUserStudio refreshData={refreshData} />
+                )}
             </Group>
             <TableForm
                 handlePagination={setPagination}

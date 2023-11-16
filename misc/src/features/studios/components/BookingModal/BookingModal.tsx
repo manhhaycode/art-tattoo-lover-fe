@@ -166,7 +166,9 @@ const BookingModal = () => {
     return (
         <div className="flex flex-col overflow-auto h-full w-full max-w-lg px-10 pb-8">
             <div className="mt-10 w-full">
-                <h1 className="text-2xl font-semibold text-center">Đặt lịch ngay</h1>
+                <h1 className="text-2xl font-semibold text-center">
+                    {bookingModal.appointmentReschedule ? 'Đặt lại lịch' : 'Đặt lịch ngay'}
+                </h1>
             </div>
             <div className="flex flex-col gap-4 mt-6">
                 <div className="">
@@ -288,7 +290,7 @@ const BookingModal = () => {
                         bookMutate();
                     }}
                 >
-                    Đặt lịch
+                    {bookingModal.appointmentReschedule ? 'Xác nhận đặt lại lịch' : 'Đặt lịch'}
                 </Button>
             </div>
         </div>

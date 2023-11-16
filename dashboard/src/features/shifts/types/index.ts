@@ -8,6 +8,11 @@ export interface IShiftReq {
     artistId?: string;
 }
 
+export interface IShiftListArtistReq {
+    start: string;
+    end: string;
+}
+
 export interface IShift {
     id: string;
     start: string;

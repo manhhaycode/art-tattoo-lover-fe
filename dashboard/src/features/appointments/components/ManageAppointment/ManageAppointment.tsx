@@ -26,6 +26,7 @@ import ViewAppointment from './ViewAppointment';
 import DropdownFilter from '@/components/DropdownFilter/DropdownFilter';
 import { useGetListServiceStudio } from '@/features/services';
 import { useAuthStore } from '@/store/authStore';
+import { EPermission } from '@/features/auth';
 
 export default function ManageAppointment() {
     const { accountType } = useAuthStore();
@@ -158,7 +159,10 @@ export default function ManageAppointment() {
                     return (
                         <Group>
                             <ActionIcon
-                                disabled={row.original.status > 2}
+                                disabled={
+                                    row.original.status > 2 ||
+                                    !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
+                                }
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     editModalState[1].open();
@@ -170,7 +174,10 @@ export default function ManageAppointment() {
                             </ActionIcon>
 
                             <ActionIcon
-                                disabled={row.original.status !== 0}
+                                disabled={
+                                    row.original.status !== 0 ||
+                                    !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
+                                }
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     editModalState[1].open();
@@ -182,7 +189,11 @@ export default function ManageAppointment() {
                                 <AiOutlineCheck />
                             </ActionIcon>
                             <ActionIcon
-                                disabled={!row.getIsSelected() || row.original.status >= 2}
+                                disabled={
+                                    !row.getIsSelected() ||
+                                    row.original.status >= 2 ||
+                                    !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
+                                }
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     cancelModalState[1].open();

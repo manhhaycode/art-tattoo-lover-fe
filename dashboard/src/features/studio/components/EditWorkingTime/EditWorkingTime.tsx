@@ -7,9 +7,11 @@ const listDayOfWeeks = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 export default function EditWorkingTime({
     list,
     handleChange,
+    disabled,
 }: {
     list: IWorkingTime[];
     handleChange: (data: IWorkingTime[]) => void;
+    disabled?: boolean;
 }) {
     const [data, setData] = useState<IWorkingTime[]>(list);
 
@@ -23,6 +25,7 @@ export default function EditWorkingTime({
                 return (
                     <Group key={index} gap={12}>
                         <Checkbox
+                            disabled={disabled}
                             checked={data.find((item) => item.dayOfWeek === index) ? true : false}
                             onChange={(e) => {
                                 if (e.target.checked) {
@@ -43,6 +46,7 @@ export default function EditWorkingTime({
                         />
                         <Text className="font-semibold text-sm">{dayOfWeek}</Text>
                         <TimeInput
+                            disabled={disabled}
                             onBlur={() => handleChange(data)}
                             value={data.find((item) => item.dayOfWeek === index)?.openAt || ''}
                             onChange={(e) => {
@@ -60,6 +64,7 @@ export default function EditWorkingTime({
                             }}
                         />
                         <TimeInput
+                            disabled={disabled}
                             value={data.find((item) => item.dayOfWeek === index)?.closeAt || ''}
                             onBlur={() => handleChange(data)}
                             onChange={(e) => {
