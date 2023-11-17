@@ -137,29 +137,34 @@ export default function BasicInfoForm() {
                                             previewImage(file)
                                         )}
                                     </AspectRatio>
-                                    {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) && (
-                                        <Dropzone
-                                            disabled={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
-                                            variant="filled"
-                                            multiple={false}
-                                            onDrop={(files) => {
-                                                setFile(files[0]);
-                                                setValue('logo', files[0].name, { shouldDirty: true });
-                                                toast.success(
-                                                    'Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật',
-                                                );
-                                            }}
-                                            onReject={() => {
-                                                toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
+                                    {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ||
+                                        (accountType.permissions?.includes(EPermission.MANAGE_STUDIO) && (
+                                            <Dropzone
+                                                disabled={
+                                                    updateStudioMutation.isLoading || uploadMediaMutation.isLoading
+                                                }
+                                                variant="filled"
+                                                multiple={false}
+                                                onDrop={(files) => {
+                                                    setFile(files[0]);
+                                                    setValue('logo', files[0].name, { shouldDirty: true });
+                                                    toast.success(
+                                                        'Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật',
+                                                    );
+                                                }}
+                                                onReject={() => {
+                                                    toast.error(
+                                                        'Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh',
+                                                    );
 
-                                                // console.log('rejected files', files)
-                                            }}
-                                            maxSize={100 * 1024}
-                                            accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
-                                        >
-                                            <Text className="font-semibold">Tải ảnh mới</Text>
-                                        </Dropzone>
-                                    )}
+                                                    // console.log('rejected files', files)
+                                                }}
+                                                maxSize={100 * 1024}
+                                                accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
+                                            >
+                                                <Text className="font-semibold">Tải ảnh mới</Text>
+                                            </Dropzone>
+                                        ))}
                                 </Group>
                                 <div className="flex flex-col justify-between">
                                     {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ? (
@@ -175,7 +180,8 @@ export default function BasicInfoForm() {
                                             disabled={
                                                 updateStudioMutation.isLoading ||
                                                 uploadMediaMutation.isLoading ||
-                                                !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                                (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                    !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                             }
                                             {...register('email', {
                                                 pattern: {
@@ -201,7 +207,8 @@ export default function BasicInfoForm() {
                                         disabled={
                                             updateStudioMutation.isLoading ||
                                             uploadMediaMutation.isLoading ||
-                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                         }
                                         {...register('name', {
                                             required: 'Tên studio không được để trống',
@@ -219,7 +226,8 @@ export default function BasicInfoForm() {
                                         disabled={
                                             updateStudioMutation.isLoading ||
                                             uploadMediaMutation.isLoading ||
-                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                         }
                                         {...register('phone', {
                                             required: 'Số điện thoại của studio',
@@ -237,7 +245,8 @@ export default function BasicInfoForm() {
                                         disabled={
                                             updateStudioMutation.isLoading ||
                                             uploadMediaMutation.isLoading ||
-                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                         }
                                         {...register('slogan', {
                                             required: 'Câu slogan không được để trống',
@@ -255,7 +264,8 @@ export default function BasicInfoForm() {
                                         disabled={
                                             updateStudioMutation.isLoading ||
                                             uploadMediaMutation.isLoading ||
-                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                         }
                                         {...register('introduction', {
                                             required: 'Đoạn giới thiệu không được để trống',
@@ -273,7 +283,8 @@ export default function BasicInfoForm() {
                                         disabled={
                                             updateStudioMutation.isLoading ||
                                             uploadMediaMutation.isLoading ||
-                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                         }
                                         {...register('website')}
                                     />
@@ -289,7 +300,8 @@ export default function BasicInfoForm() {
                                         disabled={
                                             updateStudioMutation.isLoading ||
                                             uploadMediaMutation.isLoading ||
-                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                         }
                                         {...register('facebook')}
                                     />
@@ -305,7 +317,8 @@ export default function BasicInfoForm() {
                                         disabled={
                                             updateStudioMutation.isLoading ||
                                             uploadMediaMutation.isLoading ||
-                                            !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                            (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                         }
                                         {...register('instagram')}
                                     />
@@ -322,7 +335,8 @@ export default function BasicInfoForm() {
                                             disabled={
                                                 updateStudioMutation.isLoading ||
                                                 uploadMediaMutation.isLoading ||
-                                                !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                                (!accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) &&
+                                                    !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                             }
                                             reset={isReset}
                                             setIsReset={setIsReset}
@@ -339,7 +353,10 @@ export default function BasicInfoForm() {
                                                 disabled={
                                                     updateStudioMutation.isLoading ||
                                                     uploadMediaMutation.isLoading ||
-                                                    !accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO)
+                                                    (!accountType.permissions?.includes(
+                                                        EPermission.MANAGE_OWNED_STUDIO,
+                                                    ) &&
+                                                        !accountType.permissions?.includes(EPermission.MANAGE_STUDIO))
                                                 }
                                                 handleChange={(e) => {
                                                     setValue('workingTimes', e, { shouldDirty: true });
@@ -355,30 +372,31 @@ export default function BasicInfoForm() {
                                     )}
                                 </div>
                             </div>
-                            {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) && (
-                                <Group mt={rem(16)}>
-                                    <Button
-                                        type="submit"
-                                        disabled={
-                                            updateStudioMutation.isLoading ||
-                                            uploadMediaMutation.isLoading ||
-                                            !isValid ||
-                                            !isDirty
-                                        }
-                                        loading={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
-                                    >
-                                        Thay đổi thông tin studio
-                                    </Button>
-                                    <Button
-                                        onClick={() => {
-                                            reset();
-                                            setIsReset(true);
-                                        }}
-                                    >
-                                        Đặt lại thông tin studio
-                                    </Button>
-                                </Group>
-                            )}
+                            {accountType.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ||
+                                (accountType.permissions?.includes(EPermission.MANAGE_STUDIO) && (
+                                    <Group mt={rem(16)}>
+                                        <Button
+                                            type="submit"
+                                            disabled={
+                                                updateStudioMutation.isLoading ||
+                                                uploadMediaMutation.isLoading ||
+                                                !isValid ||
+                                                !isDirty
+                                            }
+                                            loading={updateStudioMutation.isLoading || uploadMediaMutation.isLoading}
+                                        >
+                                            Thay đổi thông tin studio
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                reset();
+                                                setIsReset(true);
+                                            }}
+                                        >
+                                            Đặt lại thông tin studio
+                                        </Button>
+                                    </Group>
+                                ))}
                         </form>
                     </Container>
                 )
