@@ -92,12 +92,17 @@ export default function EditAppointment({
                         e.preventDefault();
                         const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
                         if (appointmentInfo.status > 3) {
-                            if (appointmentInfo.status !== 4)
+                            return;
+                        }
+
+                        if (selectedStatus && selectedStatus > 3) {
+                            if (selectedStatus !== 4) {
                                 updateAppointmentMutation.mutate({
-                                    status: appointmentInfo.status,
+                                    status: selectedStatus,
                                     id: appointmentInfo.id,
                                 });
-                            return;
+                                return;
+                            }
                         }
 
                         if (!isEdit || selectedStatus == 1 || selectedStatus == 2) {
