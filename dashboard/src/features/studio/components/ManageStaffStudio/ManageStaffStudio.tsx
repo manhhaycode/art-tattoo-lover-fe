@@ -120,7 +120,12 @@ export default function ManageStaffStudio() {
                                     disabled={
                                         accountType?.role?.id
                                             ? accountType.role.id > cellContext.row.original.user.roleId ||
-                                              accountType.user?.id === cellContext.row.original.user.id
+                                              accountType.user?.id === cellContext.row.original.user.id ||
+                                              !(
+                                                  accountType?.permissions?.includes(
+                                                      EPermission.MANAGE_STUDIO_ARTISTS,
+                                                  ) || accountType?.permissions?.includes(EPermission.MANAGE_STUDIO)
+                                              )
                                             : false
                                     }
                                     className="!max-w-[180px]"
@@ -136,7 +141,12 @@ export default function ManageStaffStudio() {
                                     disabled={
                                         accountType?.role?.id
                                             ? accountType.role.id > cellContext.row.original.user.roleId ||
-                                              accountType.user?.id === cellContext.row.original.user.id
+                                              accountType.user?.id === cellContext.row.original.user.id ||
+                                              !(
+                                                  accountType?.permissions?.includes(
+                                                      EPermission.MANAGE_STUDIO_ARTISTS,
+                                                  ) || accountType?.permissions?.includes(EPermission.MANAGE_STUDIO)
+                                              )
                                             : false
                                     }
                                     className="!max-w-[180px]"
@@ -174,7 +184,11 @@ export default function ManageStaffStudio() {
                             disabled={
                                 accountType?.role?.id
                                     ? accountType.role.id > cellContext.row.original.user.roleId ||
-                                      accountType.user?.id === cellContext.row.original.user.id
+                                      accountType.user?.id === cellContext.row.original.user.id ||
+                                      !(
+                                          accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_ARTISTS) ||
+                                          accountType?.permissions?.includes(EPermission.MANAGE_STUDIO)
+                                      )
                                     : false
                             }
                             className="!max-w-[150px]"
@@ -210,7 +224,13 @@ export default function ManageStaffStudio() {
                             <Button
                                 color="red.6"
                                 className="text-sm font-semibold cursor-pointer"
-                                disabled={!row.getIsSelected()}
+                                disabled={
+                                    !row.getIsSelected() ||
+                                    !(
+                                        accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_ARTISTS) ||
+                                        accountType?.permissions?.includes(EPermission.MANAGE_STUDIO)
+                                    )
+                                }
                                 onClick={open}
                             >
                                 Xóa
@@ -319,10 +339,10 @@ export default function ManageStaffStudio() {
                     placeholder="Tìm kiếm nhân viên studio"
                     className="w-1/2"
                 />
-                {accountType?.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ||
-                    (accountType?.permissions?.includes(EPermission.MANAGE_STUDIO) && (
-                        <AddNewUserStudio refreshData={refreshData} />
-                    ))}
+                {(accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_ARTISTS) ||
+                    accountType?.permissions?.includes(EPermission.MANAGE_STUDIO)) && (
+                    <AddNewUserStudio refreshData={refreshData} />
+                )}
             </Group>
             <TableForm
                 handlePagination={setPagination}
@@ -331,10 +351,10 @@ export default function ManageStaffStudio() {
                 table={table}
                 total={(dataQuery.data?.total && Math.ceil(dataQuery.data?.total / pageSize)) || 0}
             />
-            {accountType?.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ||
-                (accountType?.permissions?.includes(EPermission.MANAGE_STUDIO) && (
-                    <DeleteUserStudio dataList={dataDelete} opened={opened} close={close} refreshData={refreshData} />
-                ))}
+            {(accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_ARTISTS) ||
+                accountType?.permissions?.includes(EPermission.MANAGE_STUDIO)) && (
+                <DeleteUserStudio dataList={dataDelete} opened={opened} close={close} refreshData={refreshData} />
+            )}
         </>
     );
 }

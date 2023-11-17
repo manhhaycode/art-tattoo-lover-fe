@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const WithAuthencation = ({ children }: { children: React.ReactNode }) => {
-    const { reset, accountType } = useAuthStore();
+    const { reset, accountType, isLogout } = useAuthStore();
     const navigate = useNavigate();
     const location = useLocation();
     const at = Cookies.get('tattus-at');
@@ -17,10 +17,12 @@ const WithAuthencation = ({ children }: { children: React.ReactNode }) => {
             reset();
             resetAuthStore();
             if (!(roleId && roleId > 5)) {
-                navigate('/login', {
-                    replace: true,
-                    state: { message: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại' },
-                });
+                if (!isLogout) {
+                    navigate('/login', {
+                        replace: true,
+                        state: { message: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại' },
+                    });
+                }
             }
         } else if (roleId && roleId < 6 && roleId > 2 && location.pathname.includes('system')) {
             navigate('/studio/dashboard', { replace: true });

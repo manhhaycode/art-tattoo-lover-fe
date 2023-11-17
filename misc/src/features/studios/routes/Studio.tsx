@@ -5,7 +5,6 @@ import ImageListStudio from '../components/ImageListStudio';
 import { StudioIntroCard } from '../components/ListStudioIntro';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import Loading from '@/components/Loading';
-import { useGetListServiceStudio } from '@/features/services';
 
 const Editor = lazy(() => import('@/components/Editor'));
 const TestimonialTab = lazy(() => import('../components/Testimonial'));
@@ -14,12 +13,6 @@ const ServiceTab = lazy(() => import('../components/Service'));
 export default function Studio() {
     const { studioId } = useParams();
     const { data, isLoading } = useGetStudio(studioId || '');
-
-    const { data: services } = useGetListServiceStudio({
-        studioId: studioId || '',
-        page: 0,
-        pageSize: 1000,
-    });
 
     const [tab, setTab] = useState<{
         detail: boolean;
@@ -40,11 +33,11 @@ export default function Studio() {
                         <SkeletonLoader />
                     </div>
                 )}
-                {data && services?.data && (
+                {data && (
                     <div className="flex flex-col gap-y-8 font-sans">
                         <StudioIntroCard
                             callButton={true}
-                            studio={{ ...data, listCategory: [], listService: services.data }}
+                            studio={{ ...data, listCategory: [], services: data.services }}
                         />
                         <div className="flex gap-x-4">
                             <button
@@ -83,7 +76,7 @@ export default function Studio() {
                         )}
                         {tab?.service && (
                             <Suspense fallback={<Loading />}>
-                                <ServiceTab serviceList={services.data} studioId={data.id} />
+                                <ServiceTab serviceList={data.services} studioId={data.id} />
                             </Suspense>
                         )}
                     </div>

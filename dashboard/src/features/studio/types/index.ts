@@ -1,4 +1,5 @@
 import { ILogout } from '@/features/auth';
+import { IService } from '@/features/services';
 import { IUser } from '@/features/users';
 
 export interface IMedia {
@@ -114,4 +115,5 @@ export interface IStudio {
     listCategory: ICategory[];
     listMedia: IMedia[];
     workingTimes: IWorkingTime[];
+    service: IService[];
 }
