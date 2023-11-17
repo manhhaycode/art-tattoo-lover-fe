@@ -91,7 +91,14 @@ export default function EditAppointment({
                     onSubmit={(e) => {
                         e.preventDefault();
                         const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-                        if (appointmentInfo.status > 3) return;
+                        if (appointmentInfo.status > 3) {
+                            if (appointmentInfo.status !== 4)
+                                updateAppointmentMutation.mutate({
+                                    status: appointmentInfo.status,
+                                    id: appointmentInfo.id,
+                                });
+                            return;
+                        }
 
                         if (!isEdit || selectedStatus == 1 || selectedStatus == 2) {
                             if (duration.length > 0 && !duration.match(regex))
@@ -116,13 +123,7 @@ export default function EditAppointment({
                         <div className="flex flex-col gap-y-2">
                             <label className="text-sm font-semibold">Thời gian dự kiến hoàn thành</label>
                             <Input
-                                disabled={
-                                    isEdit &&
-                                    (selectedStatus === 0 ||
-                                        selectedStatus === 3 ||
-                                        selectedStatus === 4 ||
-                                        selectedStatus === 5)
-                                }
+                                disabled={isEdit && selectedStatus !== 1 && selectedStatus !== 2}
                                 onChange={(e) => setDuration(e.currentTarget.value)}
                                 value={duration}
                                 placeholder="Nhập thời gian dự kiến hoàn thành (dạng hh:mm)"
@@ -133,7 +134,10 @@ export default function EditAppointment({
                             {data && (
                                 <ComboboxInfo
                                     placeholder="Nhập tên artist hoặc email artist"
-                                    disabled={isEdit && selectedStatus !== 1 && selectedStatus !== 2}
+                                    disabled={
+                                        (isEdit && selectedStatus !== 1 && selectedStatus !== 2) ||
+                                        (appointmentInfo.status === 1 && selectedStatus == 1)
+                                    }
                                     defaultValue={appointmentInfo.artist?.user.fullName}
                                     options={data.shiftArtists.map((artist) => artist.stuUser)}
                                     optionElement={(option) => (
@@ -293,13 +297,14 @@ export default function EditAppointment({
                     <Group justify="flex-end" mt={rem(16)}>
                         <Button
                             disabled={
+                                selectedStatus === 0 ||
                                 isFetching ||
                                 shiftList.isFetching ||
-                                !selectedArtist ||
-                                !selectedShift ||
+                                (selectedStatus !== 3 && selectedStatus !== 6 && (!selectedArtist || !selectedShift)) ||
+                                (appointmentInfo.status === 1 && selectedStatus == 1 && duration.length === 0) ||
                                 (selectedStatus === 2 &&
-                                    selectedArtist.id === appointmentInfo.artist?.id &&
-                                    selectedShift.id === appointmentInfo.shift.id)
+                                    selectedArtist?.id === appointmentInfo.artist?.id &&
+                                    selectedShift?.id === appointmentInfo.shift.id)
                             }
                             onClick={() => {
                                 if (selectedStatus === 4) {

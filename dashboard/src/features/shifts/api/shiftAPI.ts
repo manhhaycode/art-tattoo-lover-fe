@@ -123,8 +123,9 @@ export const useGetShiftDetail = (shiftId: string) => {
     return useQuery({
         queryKey: ['shift', shiftId],
         queryFn: () => getShiftDetail(shiftId),
-        staleTime: Infinity,
-        keepPreviousData: true,
+        staleTime: 0,
+        cacheTime: 0,
+        keepPreviousData: false,
         enabled: shiftId.length > 0,
     });
 };
