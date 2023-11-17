@@ -319,9 +319,10 @@ export default function ManageStaffStudio() {
                     placeholder="Tìm kiếm nhân viên studio"
                     className="w-1/2"
                 />
-                {accountType?.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) && (
-                    <AddNewUserStudio refreshData={refreshData} />
-                )}
+                {accountType?.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ||
+                    (accountType?.permissions?.includes(EPermission.MANAGE_STUDIO) && (
+                        <AddNewUserStudio refreshData={refreshData} />
+                    ))}
             </Group>
             <TableForm
                 handlePagination={setPagination}
@@ -330,7 +331,10 @@ export default function ManageStaffStudio() {
                 table={table}
                 total={(dataQuery.data?.total && Math.ceil(dataQuery.data?.total / pageSize)) || 0}
             />
-            <DeleteUserStudio dataList={dataDelete} opened={opened} close={close} refreshData={refreshData} />
+            {accountType?.permissions?.includes(EPermission.MANAGE_OWNED_STUDIO) ||
+                (accountType?.permissions?.includes(EPermission.MANAGE_STUDIO) && (
+                    <DeleteUserStudio dataList={dataDelete} opened={opened} close={close} refreshData={refreshData} />
+                ))}
         </>
     );
 }
