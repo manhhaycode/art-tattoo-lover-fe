@@ -1,10 +1,11 @@
-import { AspectRatio, Box, Button, Group, Image, Modal, Text, rem } from '@mantine/core';
-import { useGetShiftDetail, useRegisterShiftMutation } from '@/features/shifts';
+import { AspectRatio, Box, Button, Group, Image, Loader, Modal, Text, rem } from '@mantine/core';
+import { IShiftArtists, useGetShiftDetail, useRegisterShiftMutation } from '@/features/shifts';
 import toast from 'react-hot-toast';
 import queryClient from '@/lib/react-query';
 import { convertDateToString } from '@/lib/helper';
 import { EventImpl } from '@fullcalendar/core/internal';
 import { UserIcon } from '@/assets/icons';
+import { useAuthStore } from '@/store/authStore';
 
 export default function RegisterShift({
     handleModal,
@@ -21,15 +22,17 @@ export default function RegisterShift({
     shiftInfo?: EventImpl;
 }) {
     const { data } = useGetShiftDetail(shiftInfo ? shiftInfo._def.publicId : '');
+    const { accountType } = useAuthStore();
     const registerShiftMutation = useRegisterShiftMutation({
         onSuccess: () => {
             toast.success('Đăng ký ca làm việc thành công');
-            queryClient.invalidateQueries(['shifts']);
-            queryClient.invalidateQueries(['shift']);
             handleModal[1].close();
+            queryClient.invalidateQueries(['shifts']);
+            queryClient.invalidateQueries(['shift', shiftInfo ? shiftInfo._def.publicId : '']);
+            queryClient.invalidateQueries(['shiftsArtist']);
         },
-        onError: (error) => {
-            toast.error(error.message);
+        onError: () => {
+            toast.error('Có lỗi xảy ra, hoặc bạn đã đăng ký ca này');
             handleModal[1].close();
         },
     });
@@ -50,10 +53,16 @@ export default function RegisterShift({
                         Thời gian làm việc từ {convertDateToString(shiftInfo.start!)} -{' '}
                         {convertDateToString(shiftInfo.end!)}
                     </Text>
-                    {data && data.shiftArtists.length > 0 ? (
-                        <Text className="text-sm font-semibold">Các artist đã đăng ký ca này</Text>
+                    {data ? (
+                        data.shiftArtists.length > 0 ? (
+                            <Text className="text-sm font-semibold">Các artist đã đăng ký ca này</Text>
+                        ) : (
+                            <Text className="text-sm font-semibold">Chưa có artist nào đăng ký ca này</Text>
+                        )
                     ) : (
-                        <Text className="text-sm font-semibold">Chưa có artist nào đăng ký ca này</Text>
+                        <div className="h-full w-full flex items-center justify-center">
+                            <Loader size={'sm'} />
+                        </div>
                     )}
                     {data &&
                         data.shiftArtists.map((artist) => {
@@ -86,9 +95,19 @@ export default function RegisterShift({
                                 </Group>
                             );
                         })}
-                    <Group justify="flex-end" mt={rem(16)}>
-                        <Button onClick={() => registerShiftMutation.mutate(shiftInfo._def.publicId)}>Đăng ký</Button>
-                    </Group>
+                    {(shiftInfo.extendedProps.shiftArtists as IShiftArtists[]).findIndex((shiftArtist) => {
+                        return shiftArtist.stuUser.user.id === accountType?.user?.id;
+                    }) < 0 && (
+                        <Group justify="flex-end" mt={rem(16)}>
+                            <Button
+                                disabled={registerShiftMutation.isLoading}
+                                loading={registerShiftMutation.isLoading}
+                                onClick={() => registerShiftMutation.mutate(shiftInfo._def.publicId)}
+                            >
+                                Đăng ký
+                            </Button>
+                        </Group>
+                    )}
                 </Box>
             )}
         </Modal>
