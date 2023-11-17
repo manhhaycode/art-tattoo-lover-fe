@@ -95,7 +95,7 @@ export default function EditAppointment({
                             return;
                         }
 
-                        if (selectedStatus && selectedStatus > 3) {
+                        if (selectedStatus && selectedStatus > 2) {
                             if (selectedStatus !== 4) {
                                 updateAppointmentMutation.mutate({
                                     status: selectedStatus,
@@ -302,7 +302,7 @@ export default function EditAppointment({
                     <Group justify="flex-end" mt={rem(16)}>
                         <Button
                             disabled={
-                                selectedStatus === 0 ||
+                                (selectedStatus === 0 && isEdit) ||
                                 isFetching ||
                                 shiftList.isFetching ||
                                 (selectedStatus !== 3 && selectedStatus !== 6 && (!selectedArtist || !selectedShift)) ||
