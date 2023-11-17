@@ -11,7 +11,7 @@ export default function StudioNav() {
     const location = useLocation();
     const navigate = useNavigate();
     const schema = useMantineColorScheme();
-    const { accountType } = useAuthStore();
+    const { accountType, setIsLogout } = useAuthStore();
     const permissions = accountType?.permissions;
 
     return (
@@ -232,6 +232,7 @@ export default function StudioNav() {
                 </ScrollArea>
                 <Logout
                     onSuccess={() => {
+                        setIsLogout(true);
                         navigate('/login');
                     }}
                 />
