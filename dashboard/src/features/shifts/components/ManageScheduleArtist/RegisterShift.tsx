@@ -1,11 +1,10 @@
 import { AspectRatio, Box, Button, Group, Image, Loader, Modal, Text, rem } from '@mantine/core';
-import { IShiftArtists, useGetShiftDetail, useRegisterShiftMutation } from '@/features/shifts';
+import { useGetShiftDetail, useRegisterShiftMutation } from '@/features/shifts';
 import toast from 'react-hot-toast';
 import queryClient from '@/lib/react-query';
 import { convertDateToString } from '@/lib/helper';
 import { EventImpl } from '@fullcalendar/core/internal';
 import { UserIcon } from '@/assets/icons';
-import { useAuthStore } from '@/store/authStore';
 
 export default function RegisterShift({
     handleModal,
@@ -22,7 +21,6 @@ export default function RegisterShift({
     shiftInfo?: EventImpl;
 }) {
     const { data } = useGetShiftDetail(shiftInfo ? shiftInfo._def.publicId : '');
-    const { accountType } = useAuthStore();
     const registerShiftMutation = useRegisterShiftMutation({
         onSuccess: () => {
             toast.success('Đăng ký ca làm việc thành công');
@@ -95,9 +93,7 @@ export default function RegisterShift({
                                 </Group>
                             );
                         })}
-                    {(shiftInfo.extendedProps.shiftArtists as IShiftArtists[]).findIndex((shiftArtist) => {
-                        return shiftArtist.stuUser.user.id === accountType?.user?.id;
-                    }) < 0 && (
+                    {!shiftInfo.backgroundColor && (
                         <Group justify="flex-end" mt={rem(16)}>
                             <Button
                                 disabled={registerShiftMutation.isLoading}
