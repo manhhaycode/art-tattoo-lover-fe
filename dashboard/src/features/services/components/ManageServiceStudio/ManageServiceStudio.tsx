@@ -139,11 +139,11 @@ export default function ManageServiceStudio() {
                             cellContext={cellContext}
                             data={[
                                 {
-                                    label: 'Đã kích hoạt',
+                                    label: 'Hiển thị dịch vụ',
                                     value: 'false',
                                 },
                                 {
-                                    label: 'Đã tạm khóa',
+                                    label: 'Ẩn dịch vụ',
                                     value: 'true',
                                 },
                             ]}
@@ -166,6 +166,7 @@ export default function ManageServiceStudio() {
                     return (
                         <Group>
                             <ActionIcon
+                                disabled={!accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_SERVICES)}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     basicInfoState[1].open();
@@ -176,7 +177,10 @@ export default function ManageServiceStudio() {
                             </ActionIcon>
 
                             <ActionIcon
-                                disabled={!row.getIsSelected()}
+                                disabled={
+                                    !row.getIsSelected() ||
+                                    !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_SERVICES)
+                                }
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     deleteServiceState[1].open();
@@ -205,20 +209,12 @@ export default function ManageServiceStudio() {
             sorting,
         },
         enableRowSelection: true,
-        // (row) => {
-        //     return accountType?.role?.id
-        //         ? accountType.role.id <= row.original.user.roleId || accountType.user?.id === row.original.user.id
-        //         : false;
-        // },
-        // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
         onRowSelectionChange: setRowSelection,
         enableMultiSort: true,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
         getRowId: (row) => row.id,
-        // getFilteredRowModel: getFilteredRowModel(),
-        // getPaginationRowModel: getPaginationRowModel(),
         debugTable: true,
     });
 
@@ -290,14 +286,16 @@ export default function ManageServiceStudio() {
                         placeholder="Tìm kiếm dịch vụ"
                         className="w-1/2"
                     />
-                    <Button
-                        onClick={() => {
-                            basicInfoState[1].open();
-                            setServiceChoose(undefined);
-                        }}
-                    >
-                        Thêm dịch vụ
-                    </Button>
+                    {accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_SERVICES) && (
+                        <Button
+                            onClick={() => {
+                                basicInfoState[1].open();
+                                setServiceChoose(undefined);
+                            }}
+                        >
+                            Thêm dịch vụ
+                        </Button>
+                    )}
                 </Group>
                 <TableForm
                     handlePagination={setPagination}
@@ -306,12 +304,20 @@ export default function ManageServiceStudio() {
                     table={table}
                     total={(data?.total && Math.ceil(data?.total / pageSize)) || 0}
                 />
-                <BasicInfoService
-                    handleModalState={basicInfoState}
-                    serviceInfo={serviceChoose}
-                    refreshData={refreshData}
-                />
-                <DeleteService dataList={dataDelete} handleModalState={deleteServiceState} refreshData={refreshData} />
+                {accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_SERVICES) && (
+                    <>
+                        <BasicInfoService
+                            handleModalState={basicInfoState}
+                            serviceInfo={serviceChoose}
+                            refreshData={refreshData}
+                        />
+                        <DeleteService
+                            dataList={dataDelete}
+                            handleModalState={deleteServiceState}
+                            refreshData={refreshData}
+                        />
+                    </>
+                )}
             </>
         )
     );

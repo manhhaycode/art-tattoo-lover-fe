@@ -45,28 +45,30 @@ export default function ViewInvoice({ invoiceId }: { invoiceId: string }) {
                         <Text className="text-xl font-semibold">Thông tin khách hàng</Text>
                     </Group>
                 </Group>
-                {invoice?.appointment?.user ? (
+                {invoice && invoice.user.id !== '00000000-0000-0000-0000-000000000888' ? (
                     <Box className="grid grid-cols-2 gap-x-14 gap-y-6 mt-6">
                         <Box className="flex flex-col gap-y-3">
                             <Text className="font-semibold text-sm">Tên khách hàng</Text>
-                            <Text className="font-semibold text-sm">{invoice.appointment.user.fullName}</Text>
+                            <Text className="font-semibold text-sm">{invoice.user.fullName}</Text>
                         </Box>
                         <Box className="flex flex-col gap-y-3">
                             <Text className="font-semibold text-sm">Địa chí khách hàng</Text>
-                            <Text className="font-semibold text-sm">{invoice.appointment.user.address}</Text>
+                            <Text className="font-semibold text-sm">{invoice.user.address}</Text>
                         </Box>
                         <Box className="flex flex-col gap-y-3">
                             <Text className="font-semibold text-sm">Số điện thoại khách hàng</Text>
-                            <Text className="font-semibold text-sm">{invoice.appointment.user.phone}</Text>
+                            <Text className="font-semibold text-sm">{invoice.user.phone}</Text>
                         </Box>
                         <Box className="flex flex-col gap-y-3">
                             <Text className="font-semibold text-sm">Địa chỉ email khách hàng</Text>
-                            <Text className="font-semibold text-sm">{invoice.appointment.user.email}</Text>
+                            <Text className="font-semibold text-sm">{invoice.user.email}</Text>
                         </Box>
                         <Box className="flex flex-col gap-y-3">
                             <Text className="font-semibold text-sm">Lịch hẹn của khách hàng</Text>
                             <Text className="font-semibold text-sm">
-                                {formatStringTime(invoice.appointment.shift.start)}
+                                {invoice.appointment
+                                    ? formatStringTime(invoice.appointment.shift.start)
+                                    : 'Không có lịch hẹn'}
                             </Text>
                         </Box>
                     </Box>

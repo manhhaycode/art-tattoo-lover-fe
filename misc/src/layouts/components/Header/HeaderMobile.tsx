@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 export default function HeaderMobile() {
     const navigate = useNavigate();
     const [keyword, setKeyword] = useState('');
-    const { filterData, reset } = useFilterFormStore();
+    const { filterData, setFilterData } = useFilterFormStore();
 
     useEffect(() => {
         setKeyword(filterData?.searchKeyword || '');
@@ -28,8 +28,11 @@ export default function HeaderMobile() {
                     />
                     <button
                         onClick={() => {
-                            reset();
-                            navigate('/search-studio?searchKeyword=' + keyword + '&ratingList=0');
+                            setFilterData({
+                                searchKeyword: keyword,
+                            });
+
+                            navigate('/search-studio?searchKeyword=' + keyword);
                         }}
                         className="p-3"
                     >

@@ -10,6 +10,7 @@ const tagColor: {
     3: 'red',
     4: 'teal',
     5: 'yellow',
+    6: 'red.6',
 };
 
 const AppointmentStatusTag = ({ status }: { status: keyof typeof statusAppointmentMap }) => {

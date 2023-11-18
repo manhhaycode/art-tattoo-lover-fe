@@ -1,6 +1,7 @@
 import { EPermission } from '@/features/auth';
 import { IUser } from '@/features/users';
 import { create } from 'zustand';
+import Cookies from 'js-cookie';
 
 interface IAuth {
     role?: {
@@ -33,5 +34,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     isChange: false,
     setIsChange: (isChange: boolean) => set({ isChange }),
     setIsAuth: (isAuth) => set({ isAuth }),
-    reset: () => set({ accountType: null, isAuth: false }),
+    reset: () => {
+        set({ accountType: null, isAuth: false, isLogout: false });
+        Cookies.remove('tattus-at');
+        Cookies.remove('tattus-rft');
+    },
 }));

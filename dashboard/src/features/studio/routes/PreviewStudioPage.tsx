@@ -17,11 +17,7 @@ export default function PreviewStudioPage() {
     useEffect(() => {
         if (accountType?.permissions) {
             const permissions = accountType.permissions;
-            if (
-                permissions.includes(EPermission.MANAGE_OWNED_STUDIO) ||
-                permissions.includes(EPermission.VIEW_STUDIO_SERVICES)
-            )
-                setDisplay(true);
+            if (permissions.includes(EPermission.MANAGE_OWNED_STUDIO)) setDisplay(true);
             else {
                 setDisplay(false);
                 navigate('/studio/dashboard');

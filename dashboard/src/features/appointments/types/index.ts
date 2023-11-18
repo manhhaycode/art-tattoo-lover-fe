@@ -53,6 +53,7 @@ export enum EStatusAppointment {
     CANCELED = 'Đã hủy',
     COMPLETED = 'Đã hoàn thành',
     LATE = 'Quá hạn xác nhận',
+    BUSY = 'Studio bận',
 }
 
 export const statusAppointmentMap: Record<number, EStatusAppointment> = {
@@ -62,4 +63,5 @@ export const statusAppointmentMap: Record<number, EStatusAppointment> = {
     3: EStatusAppointment.CANCELED,
     4: EStatusAppointment.COMPLETED,
     5: EStatusAppointment.LATE,
+    6: EStatusAppointment.BUSY,
 };

@@ -1,6 +1,7 @@
 import { Shift } from '@/features/studios';
 import { IUser } from '.';
 import { PaginationResp } from '@/config/types/pagination';
+import { IService } from '@/features/services';
 
 export const AppointmentStatus = {
     '0': 'Chờ xác nhận',
@@ -9,6 +10,7 @@ export const AppointmentStatus = {
     '3': 'Đã hủy',
     '4': 'Đã hoàn thành',
     '5': 'Đã quá hạn',
+    '6': 'Studio bận',
 };
 
 export const AppointmentStatusString = {
@@ -18,6 +20,7 @@ export const AppointmentStatusString = {
     CANCELED: '3',
     DONE: '4',
     LATE: '5',
+    BUSY: '6',
 };
 
 export type ShiftUser = {
@@ -36,6 +39,7 @@ export type AppointmentType = {
     artist: ShiftUser | null;
     shift: Shift;
     status: keyof typeof AppointmentStatus;
+    service: IService;
 };
 
 export type AppointmentRescheduleReq = {

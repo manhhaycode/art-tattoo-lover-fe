@@ -27,7 +27,9 @@ export default function TableInvoice() {
         page: 0,
         pageSize: 1000000,
     });
-    const [serviceListChoose, setServiceListChoose] = useState<IService[]>([]);
+    const [serviceListChoose, setServiceListChoose] = useState<IService[]>(
+        appointment?.service ? [appointment.service] : [],
+    );
     const createInvoiceMuatation = useCreateInvoiceMutation({
         onSuccess: (data) => {
             console.log(data);
@@ -211,7 +213,13 @@ export default function TableInvoice() {
         columns: column,
         meta: {
             updateData: (rowIndex, columnId, value) => {
-                if (columnId === 'service' && typeof value === 'string' && value.length > 0) {
+                const serviceOld = table.getCoreRowModel().rows[rowIndex].original.service;
+                if (columnId === 'service' && typeof value === 'string' && value !== serviceOld) {
+                    if (value === '') {
+                        setServiceListChoose((old) => {
+                            return old.filter((service) => service.id !== serviceOld);
+                        });
+                    }
                     const service = serviceListChoose.find((service) => service.id === value);
                     if (service) {
                         toast.error('Dịch vụ đã được chọn');
@@ -219,27 +227,27 @@ export default function TableInvoice() {
                     }
                     setServiceListChoose((old) => {
                         const service = serviceList!.data.find((service) => service.id === value);
-                        old.push(service!);
+                        old = [...old.filter((service) => service.id !== serviceOld)];
+                        service && old.push(service);
                         return old;
                     });
                 }
                 setData((old) =>
                     old.map((row, index) => {
-                        let amount = row.amount;
-                        if (columnId === 'quantity') {
-                            const rootAmount = (value as number) * row.unitPrice;
-                            amount = rootAmount - (rootAmount * (row.discount as number)) / 100;
-                        }
-                        if (columnId === 'unitPrice') {
-                            const rootAmount = (value as number) * row.quantity;
-                            amount = rootAmount - rootAmount * ((row.discount as number) / 100);
-                        }
-                        if (columnId === 'discount' && Number(value) !== row.discount) {
-                            const rootAmount = row.unitPrice * row.quantity;
-                            amount = rootAmount - ((value as number) / 100) * rootAmount;
-                        }
-
                         if (index === rowIndex) {
+                            let amount = row.amount;
+                            if (columnId === 'quantity') {
+                                const rootAmount = (value as number) * row.unitPrice;
+                                amount = rootAmount - (rootAmount * (row.discount as number)) / 100;
+                            }
+                            if (columnId === 'unitPrice') {
+                                const rootAmount = (value as number) * row.quantity;
+                                amount = rootAmount - rootAmount * ((row.discount as number) / 100);
+                            }
+                            if (columnId === 'discount' && Number(value) !== row.discount) {
+                                const rootAmount = row.unitPrice * row.quantity;
+                                amount = rootAmount - ((value as number) / 100) * rootAmount;
+                            }
                             return {
                                 ...old[rowIndex]!,
                                 [columnId]: value,

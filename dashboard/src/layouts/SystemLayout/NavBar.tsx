@@ -4,10 +4,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { VscDashboard } from 'react-icons/vsc';
 import { Logout } from '@/features/auth';
 import { BiCategory } from 'react-icons/bi';
+import { useAuthStore } from '@/store/authStore';
 export default function SystemNav() {
     const location = useLocation();
     const navigate = useNavigate();
     const schema = useMantineColorScheme();
+    const { setIsLogout } = useAuthStore();
     return (
         <>
             <Group gap={16}>
@@ -116,6 +118,7 @@ export default function SystemNav() {
             </Group>
             <Logout
                 onSuccess={() => {
+                    setIsLogout(true);
                     navigate('/login');
                 }}
             />

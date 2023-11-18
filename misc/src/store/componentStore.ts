@@ -4,6 +4,7 @@ import { PlaceData } from '@googlemaps/google-maps-services-js';
 import { IFilter, IStudio } from '@/features/studios';
 import { EPositionOverlayView } from '@/features/map/types';
 import { AppointmentType } from '@/features/users/types/appointment';
+import { IService } from '@/features/services';
 interface SearchLocationState {
     placeChoose: Partial<google.maps.places.AutocompletePrediction> | null;
     setPlaceChoose: (placeId: Partial<google.maps.places.AutocompletePrediction> | null) => void;
@@ -42,6 +43,7 @@ interface IBookingModal {
     visible: boolean;
     studioId: string | null;
     appointmentReschedule: AppointmentType | null;
+    service: IService | null;
 }
 
 interface ModalState {
@@ -57,6 +59,8 @@ interface ModalState {
     setBookingModal: (bookingModal: IBookingModal) => void;
     filterMobileModal: boolean;
     setFilterMobileModal: (filterMobileModal: boolean) => void;
+    filterMapModal: boolean;
+    setFilterMapModal: (filterMapModal: boolean) => void;
     uploadCertificateModal: boolean;
     seUploadCertificateModal: (uploadCertificateModal: boolean) => void;
     tesimonialModal: {
@@ -79,6 +83,7 @@ export const useModalStore = create<ModalState>((set) => ({
     bookingModal: {
         visible: false,
         studioId: null,
+        service: null,
         appointmentReschedule: null,
     },
     setBookingModal: (bookingModal: IBookingModal) =>
@@ -88,6 +93,8 @@ export const useModalStore = create<ModalState>((set) => ({
         }),
     filterMobileModal: false,
     setFilterMobileModal: (filterMobileModal) => set({ filterMobileModal, isModalVisible: filterMobileModal }),
+    filterMapModal: false,
+    setFilterMapModal: (filterMapModal: boolean) => set({ filterMapModal, isModalVisible: filterMapModal }),
     uploadCertificateModal: false,
     seUploadCertificateModal: (uploadCertificateModal: boolean) =>
         set({ uploadCertificateModal, isModalVisible: uploadCertificateModal }),
@@ -104,6 +111,7 @@ export const useModalStore = create<ModalState>((set) => ({
             isModalVisible: false,
             isResetPasswordModalVisible: false,
             filterMobileModal: false,
+            filterMapModal: false,
             uploadCertificateModal: false,
             tesimonialModal: {
                 visible: false,
@@ -112,6 +120,7 @@ export const useModalStore = create<ModalState>((set) => ({
             bookingModal: {
                 visible: false,
                 studioId: null,
+                service: null,
                 appointmentReschedule: null,
             },
         });

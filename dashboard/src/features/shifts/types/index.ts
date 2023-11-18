@@ -8,12 +8,19 @@ export interface IShiftReq {
     artistId?: string;
 }
 
+export interface IShiftListArtistReq {
+    start: string;
+    end: string;
+}
+
 export interface IShift {
     id: string;
     start: string;
     end: string;
     studioId: string;
     shiftArtists: IShiftArtists[];
+    color?: string;
+    backgroundColor?: string;
 }
 
 export interface IShiftArtists {
@@ -21,6 +28,7 @@ export interface IShiftArtists {
     stuUserId: string;
     stuUser: IUserStudio;
     isBooked: boolean;
+    color?: string;
 }
 
 export interface ICreateShiftReq {

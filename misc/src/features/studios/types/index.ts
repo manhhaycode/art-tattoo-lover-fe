@@ -83,6 +83,7 @@ export interface IStudio {
     listCategory: ICategory[];
     listMedia: IMedia[];
     workingTimes: IWorkingTime[];
+    services: IService[];
 }
 
 export type StudioArtist = {

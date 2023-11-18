@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import queryClient from '@/lib/react-query';
 import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';
 import { IService } from '../../types';
+import { convertTimeToDisplayFormat, numbertoPrice } from '@/lib/helper';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -127,6 +128,7 @@ const BookingModal = () => {
                 visible: false,
                 studioId: null,
                 appointmentReschedule: null,
+                service: null,
             });
             toast.success('Đặt lịch thành công');
             navigate('/user/book-tracking');
@@ -155,10 +157,18 @@ const BookingModal = () => {
         }
     }, [bookingModal.appointmentReschedule, bookingModal.visible]);
 
+    useEffect(() => {
+        if (bookingModal.service?.id) {
+            setSelectedService(bookingModal.service);
+        }
+    }, [bookingModal.service]);
+
     return (
         <div className="flex flex-col overflow-auto h-full w-full max-w-lg px-10 pb-8">
             <div className="mt-10 w-full">
-                <h1 className="text-2xl font-semibold text-center">Đặt lịch ngay</h1>
+                <h1 className="text-2xl font-semibold text-center">
+                    {bookingModal.appointmentReschedule ? 'Đặt lại lịch' : 'Đặt lịch ngay'}
+                </h1>
             </div>
             <div className="flex flex-col gap-4 mt-6">
                 <div className="">
@@ -218,6 +228,16 @@ const BookingModal = () => {
                         />
                     )}
                 </div>
+                {selectedService && (
+                    <div className="flex flex-col gap-y-3">
+                        <p className="font-semibold text-sm">
+                            Giá: {numbertoPrice(selectedService.minPrice)} - {numbertoPrice(selectedService.maxPrice)}
+                        </p>
+                        <p className="font-semibold text-sm">
+                            Thời gian dự kiến: {convertTimeToDisplayFormat(selectedService.expectDuration)}
+                        </p>
+                    </div>
+                )}
 
                 <div className="">
                     <h4 className="text-lg font-semibold mb-1">Lựa chọn khung giờ</h4>
@@ -270,7 +290,7 @@ const BookingModal = () => {
                         bookMutate();
                     }}
                 >
-                    Đặt lịch
+                    {bookingModal.appointmentReschedule ? 'Xác nhận đặt lại lịch' : 'Đặt lịch'}
                 </Button>
             </div>
         </div>

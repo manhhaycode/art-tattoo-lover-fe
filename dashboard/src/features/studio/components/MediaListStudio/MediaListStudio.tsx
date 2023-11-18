@@ -28,12 +28,15 @@ export default function MediaListStudio({ listMedia, isLoading }: { listMedia?: 
             setImageList(listMedia.slice(0, 5));
         } else {
             const listImageArray = listMedia || [];
-            const listImageDefault = Array(5 - listImageArray.length).fill({
-                id: uuidv4(),
-                url: '',
-                type: typeEnum.IMAGE,
-            });
-            setImageList([...listImageArray, ...listImageDefault]);
+            const lenght = listImageArray.length;
+            for (let i = 0; i < 5 - lenght; i++) {
+                listImageArray.push({
+                    id: uuidv4(),
+                    url: '',
+                    type: typeEnum.IMAGE,
+                });
+            }
+            setImageList([...listImageArray]);
         }
     }, [listMedia]);
 
