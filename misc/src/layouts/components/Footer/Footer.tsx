@@ -30,7 +30,7 @@
 // };
 export default function Footer() {
     return (
-        <footer className="">
+        <footer className="pt-40 w-full">
             <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div className="md:flex md:justify-between">
                     <div className="mb-6 md:mb-0">
@@ -50,6 +50,10 @@ export default function Footer() {
                             <h2 className="mb-6 text-sm font-semibold uppercase text-white">Tài nguyên</h2>
                             <ul className=" text-gray-400 font-medium">
                                 <li className="mb-4">
+                                    <a href="https://art-tattoo-lover.vercel.app/discovery/" className="hover:underline">Khám phá</a>
+                                </li>
+                                <li>
+                                    <a href="https://art-tattoo-lover.vercel.app/become-studio" className="hover:underline">Trở thành Studio</a>
                                     <a href="https://art-tattoo-lover.vercel.app/" className="hover:underline">
                                         Khám phá
                                     </a>

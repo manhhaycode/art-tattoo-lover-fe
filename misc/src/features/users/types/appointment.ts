@@ -10,6 +10,7 @@ export const AppointmentStatus = {
     '3': 'Đã hủy',
     '4': 'Đã hoàn thành',
     '5': 'Đã quá hạn',
+    '6': 'Studio bận',
 };
 
 export const AppointmentStatusString = {
@@ -19,6 +20,7 @@ export const AppointmentStatusString = {
     CANCELED: '3',
     DONE: '4',
     LATE: '5',
+    BUSY: '6',
 };
 
 export type ShiftUser = {

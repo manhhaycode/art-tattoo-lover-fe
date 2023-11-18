@@ -69,6 +69,7 @@ export default function ScheduleWorking() {
                 shiftArtist.data.forEach((event) => {
                     const index = shift.data.findIndex((e) => e.id === event.id);
                     if (index !== -1) {
+                        event.backgroundColor = '#FF3B5C';
                         shift.data[index] = event;
                     } else {
                         shift.data.push(event);
@@ -84,6 +85,7 @@ export default function ScheduleWorking() {
 
     useUnmount(() => {
         queryClient.invalidateQueries(['shifts']);
+        queryClient.invalidateQueries(['shiftsArtist']);
         queryClient.invalidateQueries(['shift']);
     });
 
