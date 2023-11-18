@@ -31,7 +31,7 @@ export default function Home() {
                         />
                     </div>
                     <h3 className="text-center font-medium text-lg mb-3">THỰC SỰ DỄ DÀNG SỬ DỤNG ! </h3>
-                    <span className="block text-center  font-medium text-white-200 text-sm mb-2">
+                    <span className="block text-center  font-medium text-white-200 text-sm mb-3">
                         {' '}
                         "Nó thực sự dễ sử dụng. Nó cho tôi thấy vô số ví dụ khác nhau về các nghệ sĩ, vì vậy nếu tôi không thích một phong cách, tôi có thể xem qua các lựa chọn khác.”
                     </span>
@@ -46,8 +46,8 @@ export default function Home() {
                             className="w-full h-full rounded-lg object-cover "
                         />
                     </div>
-                    <h3 className="text-center font-medium text-lg mb-3">DỊCH VỤ TUYỆT VỜI</h3>
-                    <span className="block text-center  font-medium text-white-200 text-sm mb-7">
+                    <h3 className="text-center font-medium text-lg mb-3">DỊCH VỤ TUYỆT VỜI !</h3>
+                    <span className="block text-center  font-medium text-white-200 text-sm mb-4">
                         {' '}
                         “Tôi thích Tattus vì bạn có thể thấy nhiều nghệ sĩ và nhiều phong cách xăm khác nhau. Nó thực sự dễ sử dụng.”
                     </span>
@@ -63,7 +63,7 @@ export default function Home() {
                         />
                     </div>
                     <h3 className="text-center font-medium text-lg mb-3"> TÔI YÊU TRẢI NGHIỆM NÀY !</h3>
-                    <span className="block text-center font-medium text-white-200 text-sm mb-1">
+                    <span className="block text-center font-medium text-white-200 text-sm mb-3">
                         {' '}“Tattus đã giúp tôi dễ dàng tìm được một nghệ sĩ có thể tạo ra một thiết kế có mức giá phù hợp cho tôi và một người nào đó mà tôi có thể hợp tác.”
                     </span>
                     <h4 className="text-center font-medium text-lg mb-24 ">Zaynab </h4>
