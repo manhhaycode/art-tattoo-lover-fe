@@ -10,6 +10,7 @@ import { IStudio } from '@/features/studio';
 import { AutocompleteAddress } from '@/features/map/components';
 import { useSearchLocationStore } from '@/store/componentStore';
 import { usePlaceDetailMutation } from '@/features/map/api';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 const previewImage = (file: FileWithPath) => {
     const imageUrl = URL.createObjectURL(file);
@@ -38,8 +39,13 @@ export default function CreateStudio({ refreshData }: { refreshData: () => void 
             toast.success('Tạo studio mới thành công');
             refreshData();
         },
-        onError: () => {
-            toast.error('Có lỗi xảy ra, vui lòng thử lại');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
 

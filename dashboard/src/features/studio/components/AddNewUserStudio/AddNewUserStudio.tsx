@@ -6,6 +6,7 @@ import { ICreateUserStudioReq } from '@/features/studio';
 import { toast } from 'react-hot-toast';
 import { roleMap } from '@/features/auth';
 import { useAuthStore } from '@/store/authStore';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 export default function AddNewUserStudio({ refreshData }: { refreshData: () => void }) {
     const [opened, { open, close }] = useDisclosure(false);
@@ -24,8 +25,13 @@ export default function AddNewUserStudio({ refreshData }: { refreshData: () => v
             toast.success('Thêm tài khoản thành công');
             refreshData();
         },
-        onError: () => {
-            toast.error('Có lỗi xảy ra, vui lòng thử lại');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
 

@@ -115,7 +115,7 @@ export const requestCode = async (email: string): Promise<IVerifyEmail> => {
 
 export const useLoginMutation = (
     handleFn: {
-        onError?: (error: unknown, variables: LoginCredentials, context: unknown) => void;
+        onError?: (error: Error, variables: LoginCredentials, context: unknown) => void;
         onSuccess?: (data: ILogin, variables: LoginCredentials, context: unknown) => void;
         onMutate?: (variables: LoginCredentials) => Promise<ILogin>;
     },
@@ -132,7 +132,7 @@ export const useLoginMutation = (
 
 export const useLogoutMutation = (
     handleFn: {
-        onError?: (error: unknown, variables: unknown, context: unknown) => void;
+        onError?: (error: Error, variables: unknown, context: unknown) => void;
         onSuccess?: (data: ILogout, variables: unknown, context: unknown) => void;
         onMutate?: () => Promise<ILogout>;
     },
@@ -149,7 +149,7 @@ export const useLogoutMutation = (
 
 export const useRefreshTokenMutation = (
     handleFn: {
-        onError?: (error: unknown, variables: unknown, context: unknown) => void;
+        onError?: (error: Error, variables: unknown, context: unknown) => void;
         onSuccess?: (data: IRefreshToken, variables: unknown, context: unknown) => void;
         onMutate?: () => Promise<IRefreshToken>;
     },
@@ -166,7 +166,7 @@ export const useRefreshTokenMutation = (
 
 export const useGetSessionMutation = (
     handleFn: {
-        onError?: (error: unknown, variables: unknown, context: unknown) => void;
+        onError?: (error: Error, variables: unknown, context: unknown) => void;
         onSuccess?: (data: ISession, variables: unknown, context: unknown) => void;
         onMutate?: (variables: unknown) => Promise<ISession>;
     },

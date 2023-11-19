@@ -10,6 +10,7 @@ import { useGetShiftDetail, useGetShiftList } from '@/features/shifts';
 import { convertDuration, convertStartEndTimeToDisplayFormat, getDateShiftList } from '@/lib/helper';
 import { useInvoiceStore } from '@/store/componentStore';
 import { useNavigate } from 'react-router-dom';
+import { ErrorCode } from '@/common/types/error';
 export default function EditAppointment({
     handleModalState,
     isEdit,
@@ -46,8 +47,9 @@ export default function EditAppointment({
             queryClient.invalidateQueries(['appointmentsStudio']);
             handleModalState[1].close();
         },
-        onError: (error) => {
-            toast.error(error.message);
+        onError: (e) => {
+            const error = e.message as ErrorCode;
+            toast.error(error);
         },
     });
 
