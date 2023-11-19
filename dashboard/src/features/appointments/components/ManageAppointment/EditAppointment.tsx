@@ -10,7 +10,7 @@ import { useGetShiftDetail, useGetShiftList } from '@/features/shifts';
 import { convertDuration, convertStartEndTimeToDisplayFormat, getDateShiftList } from '@/lib/helper';
 import { useInvoiceStore } from '@/store/componentStore';
 import { useNavigate } from 'react-router-dom';
-import { ErrorCode } from '@/common/types/error';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 export default function EditAppointment({
     handleModalState,
     isEdit,
@@ -49,7 +49,7 @@ export default function EditAppointment({
         },
         onError: (e) => {
             const error = e.message as ErrorCode;
-            toast.error(error);
+            toast.error(errorMsg[error] || 'Đã có lỗi xảy ra, vui lòng thử lại sau');
         },
     });
 
