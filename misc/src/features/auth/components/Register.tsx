@@ -9,22 +9,22 @@ import CountDown from '@/components/CountDown';
 import { useState } from 'react';
 import { useRegisterMutation, useVerifyEmailMutation } from '../api';
 import { RegisterCredentials } from '../types';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
 export default function Register() {
     const { setIsLoginModalVisible, setIsRegisterModalVisible } = useModalStore();
     const [countDownTime, setCountDownTime] = useState<Date | null>(null);
     const verifyEmailMutation = useVerifyEmailMutation({
         onSuccess: () => {
-            toast('Mã xác thực đã được gửi về email của bạn', { type: 'success', theme: 'dark' });
+            toast.error('Mã xác thực đã được gửi về email của bạn');
         },
         onError: () => {
-            toast('Email đã tồn tại', { type: 'error', theme: 'dark' });
+            toast.error('Email đã tồn tại');
         },
     });
     const registerMutation = useRegisterMutation({
         onSuccess: () => {
-            toast('Đăng ký thành công, đăng nhập ngay để trải nghiệm', { type: 'success', theme: 'dark' });
+            toast.success('Đăng ký thành công, đăng nhập ngay để trải nghiệm');
             setIsRegisterModalVisible(false);
             setIsLoginModalVisible(true);
         },
@@ -35,7 +35,7 @@ export default function Register() {
             else if (error.message.includes('code')) message = 'Mã xác thực không đúng';
             else message = 'Đã có lỗi xảy ra';
 
-            toast(message, { type: 'error', theme: 'dark' });
+            toast.error(message);
         },
     });
     const {

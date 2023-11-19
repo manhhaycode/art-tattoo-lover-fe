@@ -6,7 +6,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 import AuthProvider from './AuthProvider';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { Suspense } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { useThemeStore } from '@/store/componentStore';
 import { Toaster } from 'react-hot-toast';
 
@@ -34,12 +33,12 @@ export default function AppProvider({ children }: { children: React.ReactNode })
                     </LazyMotion>
                 </Suspense>
             </MantineProvider>
-            <ToastContainer autoClose={3000} />
             <Toaster
                 toastOptions={{
                     className: 'font-semibold text-sm',
                     style: {
                         background: '#363636',
+                        border: '3px solid #424249',
                         color: '#fff',
                     },
                 }}

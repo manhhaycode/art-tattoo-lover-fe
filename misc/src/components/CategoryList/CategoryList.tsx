@@ -13,7 +13,7 @@ const CustomRightArrow = ({ onClick, style }: { onClick?: () => void; style?: Re
                 if (onClick) onClick();
                 e.preventDefault();
             }}
-            className="absolute right-3 p-[10px] rounded-[50%] bg-black top-[calc(50%-16px)]"
+            className="absolute right-3 p-[10px] rounded-[50%] bg-black top-[calc(50%-16px)] hidden sm:block"
         >
             <ArrowRightIcon />
         </button>
@@ -28,7 +28,7 @@ const CustomLeftArrow = ({ onClick, style }: { onClick?: () => void; style?: Rea
                 if (onClick) onClick();
                 e.preventDefault();
             }}
-            className="absolute left-3 p-[10px] rounded-[50%] bg-black top-[calc(50%-16px)]"
+            className="absolute left-3 p-[10px] rounded-[50%] bg-black top-[calc(50%-16px)] hidden sm:block"
         >
             <ArrowLeftIcon />
         </button>

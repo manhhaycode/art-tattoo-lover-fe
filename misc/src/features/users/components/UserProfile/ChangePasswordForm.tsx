@@ -5,7 +5,7 @@ import { stylePasswordInput } from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { Loader, PasswordInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 export default function ChangePasswordForm() {
     const { accountType } = useAuthStore();
     const [visible, { toggle }] = useDisclosure(false);
@@ -13,13 +13,13 @@ export default function ChangePasswordForm() {
     const changePasswordMutation = useChangePasswordMutation({
         onSuccess: () => {
             reset();
-            toast('Thay đổi mật khẩu thành công', { type: 'success', theme: 'dark' });
+            toast.success('Thay đổi mật khẩu thành công');
         },
         onError: (error) => {
             if (error.message === 'Old password is not correct') {
-                toast('Mật khẩu cũ không đúng', { type: 'error', theme: 'dark' });
+                toast.error('Mật khẩu cũ không đúng');
             } else {
-                toast('Có lỗi xảy ra, vui lòng thử lại sau', { type: 'error', theme: 'dark' });
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau');
             }
         },
     });

@@ -36,6 +36,7 @@ export default function Studio() {
                 {data && (
                     <div className="flex flex-col gap-y-8 font-sans">
                         <StudioIntroCard
+                            withServices={true}
                             callButton={true}
                             studio={{ ...data, listCategory: [], services: data.services }}
                         />

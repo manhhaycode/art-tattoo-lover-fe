@@ -1,6 +1,6 @@
 import * as httpAuth from '@/lib/axios-auth';
 import { AppointmentRescheduleReq, AppointmentResp } from '../types/appointment';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { PaginationQuery } from '@/config/types/pagination';
 
 export const getAppointments = async (query: PaginationQuery): Promise<AppointmentResp> => {

@@ -10,7 +10,7 @@ import {
     IBecomeStudioReq,
 } from '../types';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { EditRes } from '@/common/types';
 
 const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {

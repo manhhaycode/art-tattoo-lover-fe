@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import queryClient from '@/lib/react-query';
 import ComboboxInfo from '@/components/common/Combobox';
 import { useGetShiftDetail, useGetShiftList } from '@/features/shifts';
-import { convertStartEndTimeToDisplayFormat, getDateShiftList } from '@/lib/helper';
+import { convertDuration, convertStartEndTimeToDisplayFormat, getDateShiftList } from '@/lib/helper';
 import { useInvoiceStore } from '@/store/componentStore';
 import { useNavigate } from 'react-router-dom';
 export default function EditAppointment({
@@ -56,8 +56,17 @@ export default function EditAppointment({
             setSelectedStatus(appointmentInfo.status);
             setSelectedShift(appointmentInfo.shift);
             setSelectedArtist(appointmentInfo.artist || undefined);
-            const listTime = appointmentInfo.duration.split(':');
-            setDuration(`${listTime[0]}:${listTime[1]}`);
+            if (appointmentInfo.duration !== '00:00:00') {
+                const listTime = appointmentInfo.duration.split(':');
+                setDuration(`${listTime[0]}:${listTime[1]}`);
+            } else {
+                const durationTime = convertDuration(
+                    new Date(appointmentInfo.shift.end),
+                    new Date(appointmentInfo.shift.start),
+                );
+                setDuration(durationTime);
+            }
+
             setDate(getDateShiftList());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -317,7 +326,10 @@ export default function EditAppointment({
                                 (selectedStatus === 0 && isEdit) ||
                                 isFetching ||
                                 shiftList.isFetching ||
-                                (selectedStatus !== 3 && selectedStatus !== 6 && (!selectedArtist || !selectedShift)) ||
+                                (selectedStatus !== 3 &&
+                                    selectedStatus !== 5 &&
+                                    selectedStatus !== 6 &&
+                                    (!selectedArtist || !selectedShift)) ||
                                 (appointmentInfo.status === 1 && selectedStatus === 1) ||
                                 (selectedStatus === 2 &&
                                     duration + ':00' === appointmentInfo.duration &&
