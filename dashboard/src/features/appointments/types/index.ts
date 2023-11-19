@@ -33,6 +33,7 @@ export interface IAppointmentStudio {
     artist: IUserStudio | null;
     shift: IShift;
     service: IService | null;
+    duration: string;
 }
 
 export interface IUpdateAppointmentReq {

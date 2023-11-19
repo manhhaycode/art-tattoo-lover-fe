@@ -56,7 +56,8 @@ export default function EditAppointment({
             setSelectedStatus(appointmentInfo.status);
             setSelectedShift(appointmentInfo.shift);
             setSelectedArtist(appointmentInfo.artist || undefined);
-            setDuration('');
+            const listTime = appointmentInfo.duration.split(':');
+            setDuration(`${listTime[0]}:${listTime[1]}`);
             setDate(getDateShiftList());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +67,7 @@ export default function EditAppointment({
         if (appointmentInfo) {
             setSelectedShift(appointmentInfo.shift);
             setSelectedArtist(appointmentInfo.artist || undefined);
-            setDuration('');
+            // setDuration('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedStatus]);
@@ -108,6 +109,14 @@ export default function EditAppointment({
                         if (!isEdit || selectedStatus == 1 || selectedStatus == 2) {
                             if (duration.length > 0 && !duration.match(regex))
                                 return toast.error('Vui lòng nhập đúng định dạng hh:mm', { duration: 1000 });
+                            const shiftDuration =
+                                new Date(selectedShift!.end).getTime() - new Date(selectedShift!.start).getTime();
+                            const timeList = duration.split(':');
+                            const durationTime = Number(timeList[0]) * 60 + Number(timeList[1]);
+                            if (durationTime < shiftDuration / 60000)
+                                return toast.error('Thời gian dự kiến hoàn thành không được nhỏ hơn thời gian ca', {
+                                    duration: 2000,
+                                });
                         } else if (duration) return;
 
                         if (!selectedArtist)
@@ -128,7 +137,10 @@ export default function EditAppointment({
                         <div className="flex flex-col gap-y-2">
                             <label className="text-sm font-semibold">Thời gian dự kiến hoàn thành</label>
                             <Input
-                                disabled={isEdit && selectedStatus !== 1 && selectedStatus !== 2}
+                                disabled={
+                                    (isEdit && selectedStatus !== 2 && selectedStatus !== 1) ||
+                                    (appointmentInfo.status === 1 && selectedStatus === 1)
+                                }
                                 onChange={(e) => setDuration(e.currentTarget.value)}
                                 value={duration}
                                 placeholder="Nhập thời gian dự kiến hoàn thành (dạng hh:mm)"
@@ -276,7 +288,7 @@ export default function EditAppointment({
                                         value={selectedStatus?.toString()}
                                         onChange={(e) => {
                                             setSelectedStatus(Number(e!));
-                                            setDuration('');
+                                            // setDuration('');
                                         }}
                                         className="text-sm font-semibold"
                                         classNames={{ input: '!px-4 ', dropdown: 'text-sm font-semibold' }}
@@ -306,8 +318,9 @@ export default function EditAppointment({
                                 isFetching ||
                                 shiftList.isFetching ||
                                 (selectedStatus !== 3 && selectedStatus !== 6 && (!selectedArtist || !selectedShift)) ||
-                                (appointmentInfo.status === 1 && selectedStatus == 1 && duration.length === 0) ||
+                                (appointmentInfo.status === 1 && selectedStatus === 1) ||
                                 (selectedStatus === 2 &&
+                                    duration + ':00' === appointmentInfo.duration &&
                                     selectedArtist?.id === appointmentInfo.artist?.id &&
                                     selectedShift?.id === appointmentInfo.shift.id)
                             }

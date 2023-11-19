@@ -4,12 +4,20 @@ import StudioCardImage from '@/assets/img/studio-card.jpg';
 import Button from '@/components/common/Button';
 import { formatStringTime } from '@/lib/helper/dateHelper';
 
-import { IconCalendar, IconCalendarPin, IconCalendarRepeat, IconCalendarX, IconCategory } from '@tabler/icons-react';
+import {
+    IconCalendar,
+    IconCalendarPin,
+    IconCalendarRepeat,
+    IconCalendarX,
+    IconCategory,
+    IconClock,
+} from '@tabler/icons-react';
 import AppointmentStatusTag from './AppointmentStatus';
 import { useMutation } from '@tanstack/react-query';
 import { cancelAppointment } from '../../api/appointmentAPI';
 import { toast } from 'react-toastify';
 import { useModalStore } from '@/store/componentStore';
+import { convertTimeToDisplayFormat } from '@/lib/helper';
 
 interface Props {
     appointment: AppointmentType;
@@ -66,6 +74,14 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                         <IconCalendar size={16} className="text-white w-5" />
                         <h6 className="text-sm">{formatStringTime(appointment.shift.start)}</h6>
                     </div>
+                    {appointment.duration !== '00:00:00' && (
+                        <div className="flex items-center gap-1">
+                            <IconClock size={16} className="text-white w-5" />
+                            <h6 className="text-sm">
+                                Dự kiến hoàn thành trong: {convertTimeToDisplayFormat(appointment.duration)}
+                            </h6>
+                        </div>
+                    )}
                     <div className="flex items-center gap-1">
                         <IconCategory size={16} className="text-white w-5" />
                         <h6 className="text-sm">Dịch vụ: {appointment.service.name}</h6>

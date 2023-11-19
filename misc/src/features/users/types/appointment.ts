@@ -40,6 +40,7 @@ export type AppointmentType = {
     shift: Shift;
     status: keyof typeof AppointmentStatus;
     service: IService;
+    duration: string;
 };
 
 export type AppointmentRescheduleReq = {
