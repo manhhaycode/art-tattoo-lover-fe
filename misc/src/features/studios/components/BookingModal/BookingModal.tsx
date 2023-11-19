@@ -9,7 +9,7 @@ import { QUERY_FORMAT, formatStringDate } from '@/lib/helper/dateHelper';
 import { clsx } from '@mantine/core';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import queryClient from '@/lib/react-query';
 import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';

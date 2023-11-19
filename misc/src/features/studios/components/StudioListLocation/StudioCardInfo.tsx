@@ -60,9 +60,9 @@ export default function StudioCardInfo({
                     listSrc={listImage?.map((item) => item.url) || []}
                     {...(isSlide && { className: 'rounded-b-none' })}
                 />
-                <div className={twMerge('flex flex-col gap-y-2', isSlide && 'p-3 pt-0')}>
-                    <div className="flex items-center justify-between font-semibold text-[15px]">
-                        <p className="name-studio truncate max-w-[65%]">{studio.name}</p>
+                <div className={twMerge('flex flex-col gap-y-2 w-full max-w-full', isSlide && 'p-3 pt-0')}>
+                    <div className="flex items-center justify-between font-semibold text-[15px] w-full max-w-full'">
+                        <p className="name-studio max-w-[65%]">{studio.name}</p>
                         <div className="flex items-center">
                             <StarIcon />
                             <p className="ml-1 font-medium text-sm">

@@ -96,12 +96,21 @@ export const convertWorkingTimeToDisplayFormat = (listWorkingTime: IWorkingTime[
 export const convertDateToString = (date: Date) => {
     const hours = date.getUTCHours().toString().padStart(2, '0');
     const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-    // const day = date.getDay();
-    // const seconds = date.getUTCSeconds();
 
     const formattedDate = `${hours}:${minutes}`;
 
     return formattedDate;
+};
+
+export const convertDuration = (end: Date, start: Date) => {
+    const duration = end.getTime() - start.getTime();
+    const hours = Math.floor(duration / (1000 * 60 * 60))
+        .toString()
+        .padStart(2, '0');
+    const minutes = Math.floor((duration / (1000 * 60)) % 60)
+        .toString()
+        .padStart(2, '0');
+    return `${hours}:${minutes}`;
 };
 
 export const convertStartEndTimeToDisplayFormat = (startTime: Date, endTime: Date) => {

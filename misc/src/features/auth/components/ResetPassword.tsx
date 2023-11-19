@@ -1,7 +1,7 @@
 import { useModalStore } from '@/store/componentStore';
 import { useRequestCodeMutation, useResestPasswordMutation } from '../api';
 import Input, { stylePasswordInput } from '@/components/common/Input';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { ResetPasswordCredentials } from '../types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Loader, PasswordInput } from '@mantine/core';
@@ -13,20 +13,20 @@ export default function ResetPassword() {
     const { setIsLoginModalVisible, setIsRegisterModalVisible, setIsResetPasswordModalVisible } = useModalStore();
     const requestCodeMutation = useRequestCodeMutation({
         onSuccess: () => {
-            toast('Mã xác thực đã được gửi về email của bạn', { type: 'success', theme: 'dark' });
+            toast.success('Mã xác thực đã được gửi về email của bạn');
         },
         onError: () => {
-            toast('Email chưa đăng ký tài khoản Tattus', { type: 'error', theme: 'dark' });
+            toast.error('Email chưa đăng ký tài khoản Tattus');
         },
     });
     const resetPassWordMutation = useResestPasswordMutation({
         onSuccess: () => {
-            toast('Đặt lại mật khẩu thành công', { type: 'success', theme: 'dark' });
+            toast.success('Đặt lại mật khẩu thành công');
             setIsLoginModalVisible(true);
             setIsResetPasswordModalVisible(false);
         },
         onError: () => {
-            toast('Email chưa đăng ký hoặc code không hợp lệ', { type: 'error', theme: 'dark' });
+            toast.error('Email chưa đăng ký hoặc code không hợp lệ');
         },
     });
     const {

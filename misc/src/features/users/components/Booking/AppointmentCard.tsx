@@ -15,7 +15,7 @@ import {
 import AppointmentStatusTag from './AppointmentStatus';
 import { useMutation } from '@tanstack/react-query';
 import { cancelAppointment } from '../../api/appointmentAPI';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useModalStore } from '@/store/componentStore';
 import { convertTimeToDisplayFormat } from '@/lib/helper';
 
@@ -47,7 +47,7 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
     });
 
     return (
-        <div className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
+        <div className="px-6 py-4 flex flex-col justify-between  rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
             <div className="flex flex-col w-full gap-x-2 gap-y-3  xs:flex-row">
                 <img
                     className="cursor-pointer rounded-xl w-full aspect-video xs:w-40"
@@ -78,13 +78,13 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                         <div className="flex items-center gap-1">
                             <IconClock size={16} className="text-white w-5" />
                             <h6 className="text-sm">
-                                Dự kiến hoàn thành trong: {convertTimeToDisplayFormat(appointment.duration)}
+                                Hoàn thành trong: {convertTimeToDisplayFormat(appointment.duration)}
                             </h6>
                         </div>
                     )}
                     <div className="flex items-center gap-1">
                         <IconCategory size={16} className="text-white w-5" />
-                        <h6 className="text-sm">Dịch vụ: {appointment.service.name}</h6>
+                        <h6 className="text-sm">{appointment.service.name}</h6>
                     </div>
                 </div>
             </div>
