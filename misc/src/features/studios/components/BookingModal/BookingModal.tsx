@@ -15,6 +15,7 @@ import queryClient from '@/lib/react-query';
 import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';
 import { IService } from '../../types';
 import { convertTimeToDisplayFormat, numbertoPrice } from '@/lib/helper';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -135,8 +136,9 @@ const BookingModal = () => {
             queryClient.invalidateQueries(['appointments']);
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError(error: any) {
-            toast.error(error.message as string);
+        onError(e) {
+            const error = (e as { error: ErrorCode }).error;
+            toast.error(errorMsg[error]);
         },
     });
 

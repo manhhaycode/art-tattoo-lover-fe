@@ -2,6 +2,7 @@ import { Modal, Text, Group, Button, AspectRatio, Image, rem } from '@mantine/co
 import { IUserStudio, useDeleteUserStudioMutation } from '@/features/studio';
 import { UserIcon } from '@/assets/icons';
 import { toast } from 'react-hot-toast';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 export default function DeleteUserStudio({
     dataList,
     opened,
@@ -19,8 +20,13 @@ export default function DeleteUserStudio({
             refreshData();
             toast.success('Xóa tài khoản thành công');
         },
-        onError: () => {
-            toast.error('Có lỗi xảy ra, vui lòng thử lại');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
 

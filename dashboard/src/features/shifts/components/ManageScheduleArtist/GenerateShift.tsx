@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useGenerateShiftMutation } from '@/features/shifts';
 import toast from 'react-hot-toast';
 import queryClient from '@/lib/react-query';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 export default function GenerateShift({
     handleModal,
@@ -22,8 +23,13 @@ export default function GenerateShift({
             queryClient.invalidateQueries(['shifts']);
             handleModal[1].close();
         },
-        onError: (error) => {
-            toast.error(error.message);
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
             handleModal[1].close();
         },
     });

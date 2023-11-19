@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { convertDateToString } from '@/lib/helper';
 import { EventImpl } from '@fullcalendar/core/internal';
 import { useAuthStore } from '@/store/authStore';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 export default function CreateShift({
     handleModal,
     shiftCreate,
@@ -36,8 +37,13 @@ export default function CreateShift({
             shiftInfo!.setExtendedProp('studioId', shift[0].studioId);
             toast.success('Đăng ký lịch mới thành công');
         },
-        onError: () => {
-            toast.error('Có lỗi xảy ra trong quá trình đăng ký lịch');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
 
