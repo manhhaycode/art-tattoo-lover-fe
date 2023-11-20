@@ -27,6 +27,7 @@ export interface ISession {
     studioId?: string;
     sessionId: string;
     permissions: EPermission[];
+    status: number;
 }
 
 export enum EPermission {

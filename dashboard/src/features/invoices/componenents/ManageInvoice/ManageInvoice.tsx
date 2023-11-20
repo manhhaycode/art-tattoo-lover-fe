@@ -10,7 +10,7 @@ import {
 } from '@tanstack/react-table';
 import { AspectRatio, Group, Text, rem, Image, Input } from '@mantine/core';
 import { UserIcon } from '@/assets/icons';
-import { formatStringTime, numbertoPrice } from '@/lib/helper';
+import { convertGMTtoGMTPlus7, formatStringTime, numbertoPrice } from '@/lib/helper';
 import { useDebouncedState } from '@mantine/hooks';
 import TableForm from '@/components/TableForm';
 import DropdownFilter from '@/components/DropdownFilter/DropdownFilter';
@@ -104,7 +104,9 @@ export default function ManageInvoice() {
                 accessorKey: 'createdAt',
                 header: 'Ngày tạo',
                 cell: ({ row }) => (
-                    <Text className="text-sm font-semibold">{formatStringTime(row.original.createdAt)}</Text>
+                    <Text className="text-sm font-semibold">
+                        {convertGMTtoGMTPlus7(new Date(row.original.createdAt))}
+                    </Text>
                 ),
             },
         ],

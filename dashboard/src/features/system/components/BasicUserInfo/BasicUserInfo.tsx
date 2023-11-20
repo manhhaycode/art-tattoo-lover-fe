@@ -52,6 +52,8 @@ export default function BasicInfoForm({
                 createUserMutation.mutate(data);
             } else if (error.message === 'Email already exists') {
                 toast.error('Email đã tồn tại');
+            } else {
+                toast.error('Có lỗi xảy ra vui lòng thử lại sau');
             }
         },
     });

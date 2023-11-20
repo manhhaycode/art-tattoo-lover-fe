@@ -1,9 +1,9 @@
-import { StudioIcon, UserIcon, BlogIcon, RoleIcon } from '@/assets/icons';
+import { StudioIcon, UserIcon } from '@/assets/icons';
 import { Button, Group, useMantineColorScheme } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { VscDashboard } from 'react-icons/vsc';
 import { Logout } from '@/features/auth';
-import { BiCategory } from 'react-icons/bi';
+// import { BiCategory } from 'react-icons/bi';
 import { useAuthStore } from '@/store/authStore';
 export default function SystemNav() {
     const location = useLocation();
@@ -64,7 +64,7 @@ export default function SystemNav() {
                 >
                     Quản lý người dùng
                 </Button>
-                <Button
+                {/* <Button
                     fullWidth
                     mih={40}
                     {...(!location.pathname.includes('manage-category')
@@ -114,7 +114,7 @@ export default function SystemNav() {
                     leftSection={<BlogIcon styles={{ width: '24px', height: '24px', fill: 'currentcolor' }} />}
                 >
                     Quản lý bài viết
-                </Button>
+                </Button> */}
             </Group>
             <Logout
                 onSuccess={() => {
