@@ -31,6 +31,16 @@ export default function AuthenticationTitle() {
                 toast.error('Tài khoản của bạn đã bị khóa, hoặc chưa kích hoạt');
                 return;
             }
+
+            if (
+                (!data.session.studioId && data.session.roleId <= 5 && data.session.roleId >= 3) ||
+                data.session.roleId > 5
+            ) {
+                reset();
+                toast.error('Không có quyền truy cập vào hệ thống');
+                return;
+            }
+
             setAccountType({
                 role: { id: data.session.roleId, name: 'Member' },
                 permissions: data.session.permissions,
@@ -52,7 +62,7 @@ export default function AuthenticationTitle() {
             if (error) {
                 toast.error(error);
             } else {
-                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+                toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
             }
         },
     });

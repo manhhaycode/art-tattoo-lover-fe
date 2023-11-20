@@ -28,10 +28,6 @@ const login = async (credentials: LoginCredentials): Promise<ILogin> => {
             expires: new Date(resLogin.token.accessTokenExp * 1000),
         });
         const resSession = await getSession();
-        if (resSession.roleId === 6) {
-            resetAuthStore();
-            throw new Error('You are not allowed to access this page');
-        }
         return { ...resLogin, session: resSession };
     } catch (e) {
         throw new Error(e.error);
