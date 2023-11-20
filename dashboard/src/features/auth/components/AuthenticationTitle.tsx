@@ -18,6 +18,7 @@ import { toast } from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 export default function AuthenticationTitle() {
     const { setAccountType } = useAuthStore();
     const navigate = useNavigate();
@@ -40,8 +41,13 @@ export default function AuthenticationTitle() {
                 navigate('/studio/dashboard');
             if (roleId === ERoleId['SYSTEM_STAFF'] || roleId === ERoleId['ADMIN']) navigate('/system/dashboard');
         },
-        onError: () => {
-            toast.error('Sai tài khoản hoặc mật khẩu hoặc không có quyền đăng nhập');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
     const { handleSubmit, register } = useForm<LoginCredentials>();

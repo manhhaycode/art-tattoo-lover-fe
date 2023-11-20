@@ -33,8 +33,8 @@ const updateAppointment = async (data: IUpdateAppointmentReq): Promise<IUpdateAp
     try {
         const response = await httpAuth.put(`/appointment/studio/${id}`, rest);
         return response;
-    } catch (error) {
-        throw new Error(error.message);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 

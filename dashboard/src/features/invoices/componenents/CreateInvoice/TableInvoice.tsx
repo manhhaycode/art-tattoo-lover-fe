@@ -10,6 +10,7 @@ import { IService, useGetListServiceStudio } from '@/features/services';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 declare module '@tanstack/react-table' {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -37,9 +38,13 @@ export default function TableInvoice() {
             reset();
             navigate('/studio/manage-invoice');
         },
-        onError: (error) => {
-            console.log(error);
-            toast.error('Tạo hóa đơn thất bại');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
     const column = useMemo<ColumnDef<ITableInvoice>[]>(

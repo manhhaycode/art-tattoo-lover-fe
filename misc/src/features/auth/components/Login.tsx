@@ -6,7 +6,7 @@ import { useLoginMutation } from '../api/authAPI';
 import { Loader, PasswordInput } from '@mantine/core';
 import Button from '@/components/common/Button';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 interface ILogin {
     email: string;
     password: string;
@@ -28,10 +28,7 @@ export default function Login() {
                 setIsLogout(false);
                 reset();
             } else {
-                toast('Tài khoản của bạn chưa được kích hoạt  hoặc đã bị khóa', {
-                    type: 'error',
-                    theme: 'dark',
-                });
+                toast.error('Tài khoản của bạn chưa được kích hoạt hoặc đã bị khóa');
             }
         },
     });

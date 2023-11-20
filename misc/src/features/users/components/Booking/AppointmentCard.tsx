@@ -4,12 +4,20 @@ import StudioCardImage from '@/assets/img/studio-card.jpg';
 import Button from '@/components/common/Button';
 import { formatStringTime } from '@/lib/helper/dateHelper';
 
-import { IconCalendar, IconCalendarPin, IconCalendarRepeat, IconCalendarX, IconCategory } from '@tabler/icons-react';
+import {
+    IconCalendar,
+    IconCalendarPin,
+    IconCalendarRepeat,
+    IconCalendarX,
+    IconCategory,
+    IconClock,
+} from '@tabler/icons-react';
 import AppointmentStatusTag from './AppointmentStatus';
 import { useMutation } from '@tanstack/react-query';
 import { cancelAppointment } from '../../api/appointmentAPI';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useModalStore } from '@/store/componentStore';
+import { convertTimeToDisplayFormat } from '@/lib/helper';
 
 interface Props {
     appointment: AppointmentType;
@@ -39,7 +47,7 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
     });
 
     return (
-        <div className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
+        <div className="px-6 py-4 flex flex-col justify-between  rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
             <div className="flex flex-col w-full gap-x-2 gap-y-3  xs:flex-row">
                 <img
                     className="cursor-pointer rounded-xl w-full aspect-video xs:w-40"
@@ -66,9 +74,17 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                         <IconCalendar size={16} className="text-white w-5" />
                         <h6 className="text-sm">{formatStringTime(appointment.shift.start)}</h6>
                     </div>
+                    {appointment.duration !== '00:00:00' && (
+                        <div className="flex items-center gap-1">
+                            <IconClock size={16} className="text-white w-5" />
+                            <h6 className="text-sm">
+                                Hoàn thành trong: {convertTimeToDisplayFormat(appointment.duration)}
+                            </h6>
+                        </div>
+                    )}
                     <div className="flex items-center gap-1">
                         <IconCategory size={16} className="text-white w-5" />
-                        <h6 className="text-sm">Dịch vụ: {appointment.service.name}</h6>
+                        <h6 className="text-sm">{appointment.service.name}</h6>
                     </div>
                 </div>
             </div>

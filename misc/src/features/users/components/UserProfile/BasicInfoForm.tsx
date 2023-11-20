@@ -8,7 +8,7 @@ import { DatesProvider, DatePickerInput } from '@mantine/dates';
 import { useState } from 'react';
 import 'dayjs/locale/vi';
 import { Loader } from '@mantine/core';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { typeEnum, useUploadMediaMutation } from '@/features/media';
 import { ErrorAuth } from '@/lib/error';
@@ -18,7 +18,7 @@ export default function BasicInfoForm() {
     const updateBasicInfoMutation = useUpdateBasicInfoMutation({
         onSuccess: () => {
             setIsChange(true);
-            toast('Cập nhật thông tin cơ bản thành công', { type: 'success', theme: 'dark' });
+            toast.success('Cập nhật thông tin cơ bản thành công');
         },
         onError: (error, data) => {
             if (error.message === ErrorAuth.RT_INVALID || error.message === ErrorAuth.AT_RT_INVALID) {
@@ -31,7 +31,7 @@ export default function BasicInfoForm() {
 
     const uploadMediaMutation = useUploadMediaMutation({
         onError: () => {
-            toast('Upload ảnh lên server xảy ra lỗi, tải lại trang và thử lại', { type: 'error', theme: 'dark' });
+            toast.error('Upload ảnh lên server xảy ra lỗi, tải lại trang và thử lại');
         },
     });
 
@@ -92,16 +92,10 @@ export default function BasicInfoForm() {
                                 onDrop={(files) => {
                                     setFile(files[0]);
                                     setValue('avatar', files[0].name, { shouldDirty: true });
-                                    toast('Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật', {
-                                        type: 'success',
-                                        theme: 'dark',
-                                    });
+                                    toast.success('Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật');
                                 }}
                                 onReject={() => {
-                                    toast('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh', {
-                                        type: 'error',
-                                        theme: 'dark',
-                                    });
+                                    toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
                                 }}
                                 maxSize={100 * 1024}
                                 accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}

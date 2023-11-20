@@ -191,7 +191,7 @@ export default function ManageAppointment() {
                             <ActionIcon
                                 disabled={
                                     !row.getIsSelected() ||
-                                    row.original.status >= 2 ||
+                                    row.original.status > 2 ||
                                     !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
                                 }
                                 onClick={(e) => {

@@ -2,6 +2,7 @@ import { IStudio, useUpdateStudioMutation } from '@/features/studio';
 import PreviewStudioCard from './PreviewStudioCard';
 import { Suspense, lazy, useCallback } from 'react';
 import toast from 'react-hot-toast';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 const Editor = lazy(() => import('@/components/Editor'));
 
@@ -10,8 +11,13 @@ export default function PreviewStudio({ studio }: { studio: Partial<IStudio> }) 
         onSuccess: () => {
             toast.success('Lưu thành công!');
         },
-        onError: () => {
-            toast.error('Lưu thất bại!');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
     const saveEditor = useCallback(async (text: string) => {

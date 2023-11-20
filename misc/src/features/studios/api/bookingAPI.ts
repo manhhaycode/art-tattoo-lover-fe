@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { Shift } from '../types';
 import * as httpRequest from '@/lib/axios';
 import * as httpAuth from '@/lib/axios-auth';

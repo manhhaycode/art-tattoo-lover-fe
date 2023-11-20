@@ -9,12 +9,13 @@ import { QUERY_FORMAT, formatStringDate } from '@/lib/helper/dateHelper';
 import { clsx } from '@mantine/core';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import queryClient from '@/lib/react-query';
 import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';
 import { IService } from '../../types';
 import { convertTimeToDisplayFormat, numbertoPrice } from '@/lib/helper';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -135,8 +136,9 @@ const BookingModal = () => {
             queryClient.invalidateQueries(['appointments']);
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError(error: any) {
-            toast.error(error.message as string);
+        onError(e) {
+            const error = (e as { error: ErrorCode }).error;
+            toast.error(errorMsg[error]);
         },
     });
 

@@ -2,10 +2,9 @@ import { useAuthStore } from '@/store/authStore';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { toast } from 'react-toastify';
 
 const WithAuthencation = ({ children }: { children: React.ReactNode }) => {
-    const { reset } = useAuthStore();
+    const { reset, isLogout } = useAuthStore();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -14,10 +13,15 @@ const WithAuthencation = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (!((rf && rf.length > 0) || (at && at.length > 0))) {
             reset();
-            navigate('/', { replace: true, state: { message: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại' } });
+            if (isLogout) navigate('/');
+            else
+                navigate('/', {
+                    replace: true,
+                    state: { message: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại' },
+                });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location.pathname, at, rf]);
+    }, [location.pathname, at, rf, isLogout]);
 
     return <>{(rf && rf.length > 0) || (at && at.length > 0) ? children : <></>}</>;
 };

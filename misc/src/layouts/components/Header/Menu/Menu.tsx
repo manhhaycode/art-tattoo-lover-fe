@@ -155,7 +155,6 @@ export default function Menu() {
                             <div className="p-4">
                                 <Logout
                                     onSuccess={() => {
-                                        // setIsModalVisible(false);
                                         setIsOpenMenu(false);
                                         setIsLogout(true);
                                     }}

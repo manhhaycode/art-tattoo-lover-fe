@@ -8,7 +8,7 @@ import { Rating } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
 import { useModalStore } from '@/store/componentStore';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
 import webLink from '@/assets/img/web-link.png';
 import ListItemOfStudio from '@/components/ListItemOfStudio';
@@ -16,9 +16,11 @@ import ListItemOfStudio from '@/components/ListItemOfStudio';
 export default function StudioIntroCard({
     studio,
     callButton, // maxLineIntro,
+    withServices,
 }: {
     studio: Partial<IStudio>;
     callButton?: boolean;
+    withServices?: boolean;
     // maxLineIntro?: number;
 }) {
     const navigator = useNavigate();
@@ -38,10 +40,10 @@ export default function StudioIntroCard({
                     <Button
                         onClick={() => {
                             if (!isAuth) {
-                                toast.info('Vui lòng đăng nhập trước để đặt lịch');
+                                toast.error('Vui lòng đăng nhập trước để đặt lịch');
                             } else {
                                 if (!studio) {
-                                    toast.info('Vui lòng chọn studio trước');
+                                    toast.error('Vui lòng chọn studio trước');
                                 } else {
                                     setBookingModal({
                                         studioId: studio.id as string,
@@ -60,7 +62,8 @@ export default function StudioIntroCard({
                     {callButton && (
                         <Button className="py-[10px] bg-white text-black flex-1">
                             <PhoneCallIcon />
-                            <p className="sm:text-base block">Gọi điện tư vấn</p>
+                            <p className="sm:text-base hidden sm:block">Gọi điện tư vấn</p>
+                            <p className="sm:text-base block sm:hidden">Tư vấn</p>
                         </Button>
                     )}
                 </div>
@@ -119,7 +122,7 @@ export default function StudioIntroCard({
                                 <p className="text-sm font-medium italic">Studio chưa có khung giờ hoạt động</p>
                             </div>
                         )}
-                        {studio.services ? (
+                        {withServices && studio.services ? (
                             studio.services.length > 0 ? (
                                 <ListItemOfStudio
                                     listItem={studio.services.map((service) => service.name)}

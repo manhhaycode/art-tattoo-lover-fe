@@ -3,7 +3,7 @@ import Header from '@/layouts/components/Header';
 import { useModalStore } from '@/store/componentStore';
 import { lazy, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 const Modal = lazy(() => import('@/components/Modal'));
 const PortalModal = lazy(() => import('@/components/Portal/PortalModal'));
 
@@ -14,7 +14,7 @@ export default function DefaultLayout() {
 
     useEffect(() => {
         if (location.state && location.state.message) {
-            toast(location.state.message, { type: 'error', theme: 'dark' });
+            toast.error(location.state.message);
             location.state = undefined;
             navigate('/', { replace: true });
         }

@@ -4,6 +4,7 @@ import { convertDateToString } from '@/lib/helper';
 import { EventImpl } from '@fullcalendar/core/internal';
 import toast from 'react-hot-toast';
 import { UserIcon } from '@/assets/icons';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 export default function ManageShiftInfo({
     handleModal,
@@ -28,8 +29,13 @@ export default function ManageShiftInfo({
             shiftInfo!.remove();
             handleModal[1].close();
         },
-        onError: (error) => {
-            toast.error(error.message);
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
             handleModal[1].close();
         },
     });

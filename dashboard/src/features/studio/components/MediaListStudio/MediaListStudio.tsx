@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/authStore';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 import queryClient from '@/lib/react-query';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 export default function MediaListStudio({ listMedia, isLoading }: { listMedia?: IMedia[]; isLoading?: boolean }) {
     const [imageList, setImageList] = useState<IMedia[]>([]);
@@ -16,8 +17,13 @@ export default function MediaListStudio({ listMedia, isLoading }: { listMedia?: 
             toast.success('Cập nhật hình ảnh studio thành công!');
             queryClient.invalidateQueries(['studio']);
         },
-        onError: () => {
-            toast.error('Cập nhật hình ảnh studio thất bại!');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
             queryClient.invalidateQueries(['studio']);
         },
     });

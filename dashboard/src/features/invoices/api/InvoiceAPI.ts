@@ -8,8 +8,8 @@ const createInvoice = async (data: CreateInvoiceReq): Promise<EditRes> => {
     try {
         const res: EditRes = await httpAuth.post('/invoice', data);
         return res;
-    } catch (error) {
-        throw new Error(error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -36,7 +36,7 @@ const getInvoiceStudio = async (id: string): Promise<IInvoice> => {
 
 export const useCreateInvoiceMutation = (
     handleFn: {
-        onError?: (error: unknown, variables: CreateInvoiceReq, context: unknown) => void;
+        onError?: (error: Error, variables: CreateInvoiceReq, context: unknown) => void;
         onSuccess?: (data: EditRes, variables: CreateInvoiceReq, context: unknown) => void;
         onMutate?: (data: CreateInvoiceReq) => Promise<ILogout>;
     },

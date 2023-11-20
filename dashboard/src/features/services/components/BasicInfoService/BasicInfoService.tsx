@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { BiCategory } from 'react-icons/bi';
 import { useGetListCategory } from '@/features/category';
 import { typeEnum, useUploadMediaMutation } from '@/features/media';
+import { ErrorCode, errorMsg } from '@/common/types/error';
 
 export default function BasicInfoService({
     refreshData,
@@ -48,8 +49,13 @@ export default function BasicInfoService({
             toast.success('Thêm dịch vụ mới thành công');
             refreshData && refreshData();
         },
-        onError: () => {
-            toast.error('Có lỗi xảy ra, vui lòng thử lại');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
     const updateServiceMutation = useUpdateServiceMutation({
@@ -58,8 +64,13 @@ export default function BasicInfoService({
             toast.success('Cập nhật dịch vụ thành công');
             refreshData && refreshData();
         },
-        onError: () => {
-            toast.error('Có lỗi xảy ra, vui lòng thử lại');
+        onError: (e) => {
+            const error = errorMsg[e.message as ErrorCode];
+            if (error) {
+                toast.error(error);
+            } else {
+                toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+            }
         },
     });
 
