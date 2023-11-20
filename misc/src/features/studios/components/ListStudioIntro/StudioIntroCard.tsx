@@ -143,7 +143,7 @@ export default function StudioIntroCard({
             <div className="absolute right-6 font-medium hidden sm:block">
                 <div className="flex flex-col gap-y-3 items-end">
                     <Rating defaultValue={studio.rating} fractions={3} size="sm" readOnly />
-                    <p className="text-sm">5.0/5.0 Đánh giá KH</p>
+                    <p className="text-sm">{studio.rating?.toFixed(2) || '0.00'}/5.00 Đánh giá KH</p>
                     <div className="flex gap-x-3">
                         <a href={studio.facebook} target="_blank" rel="noreferrer">
                             <FacebookIcon />

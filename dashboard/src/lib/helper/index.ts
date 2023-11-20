@@ -173,3 +173,16 @@ export const formatStringDate = (date: string | Date) => {
 export const formatStringTime = (date: string | Date) => {
     return formatStringDate(date) + ' ' + dayjs(date).format('HH:mm');
 };
+
+export const convertGMTtoGMTPlus7 = (gmtDate: Date): string => {
+    // Get the current hours in GMT
+    const gmtHours = gmtDate.getUTCHours();
+
+    // Calculate the equivalent hours in GMT+7
+    const gmtPlus7Hours = gmtHours + 7;
+
+    // Set the new hours in the GMT+7 timezone
+    gmtDate.setUTCHours(gmtPlus7Hours);
+
+    return formatStringTime(gmtDate.toISOString());
+};

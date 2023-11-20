@@ -20,17 +20,23 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { ErrorCode, errorMsg } from '@/common/types/error';
 export default function AuthenticationTitle() {
-    const { setAccountType } = useAuthStore();
+    const { setAccountType, reset } = useAuthStore();
     const navigate = useNavigate();
     const at = Cookies.get('tattus-at');
     const roleId = Number(sessionStorage.getItem('tattus-role'));
     const loginMutation = useLoginMutation({
         onSuccess: (data) => {
+            if (data.session.status !== 1) {
+                reset();
+                toast.error('Tài khoản của bạn đã bị khóa, hoặc chưa kích hoạt');
+                return;
+            }
             setAccountType({
                 role: { id: data.session.roleId, name: 'Member' },
                 permissions: data.session.permissions,
                 studioId: data.session.studioId,
                 user: { id: data.session.userId },
+                status: data.session.status,
             });
             const roleId = data.session.roleId;
             if (

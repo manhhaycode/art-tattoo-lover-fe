@@ -66,7 +66,7 @@ export default function StudioCardInfo({
                         <div className="flex items-center">
                             <StarIcon />
                             <p className="ml-1 font-medium text-sm">
-                                {studio.rating ? studio.rating.toFixed(2) : 0 + ' (0)'}
+                                {studio.rating ? studio.rating.toFixed(2) : '0.00'}
                             </p>
                         </div>
                     </div>

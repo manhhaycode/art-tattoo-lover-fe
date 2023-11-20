@@ -11,6 +11,7 @@ interface IAuth {
     permissions?: EPermission[];
     studioId?: string;
     user?: Partial<IUser>;
+    status?: number;
 }
 
 interface AuthState {
@@ -38,5 +39,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         set({ accountType: null, isAuth: false, isLogout: false });
         Cookies.remove('tattus-at');
         Cookies.remove('tattus-rft');
+        sessionStorage.removeItem('tattus-session');
     },
 }));
