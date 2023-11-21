@@ -8,6 +8,7 @@ import ManageStudioServicePage from './ManageStudioServicePage';
 import ManageInvoicePage from './ManageInvoicePage';
 import CreateInvoicePage from './CreateInvoicePage';
 import ViewInvoicePage from './ViewInvoicePage';
+import ManageAppointmentArtistPage from './ManageAppointmentArtistPage';
 export {
     StudioDashBoard,
     StudioMangeUser,
@@ -19,4 +20,5 @@ export {
     ManageInvoicePage,
     CreateInvoicePage,
     ViewInvoicePage,
+    ManageAppointmentArtistPage,
 };

@@ -45,7 +45,7 @@ export default function Header() {
     return (
         <Group justify="space-between" h="100%">
             <Group ml="md" gap={'xl'} h="100%">
-                <Link to="/">
+                <Link to={accountType?.role && accountType.role.id <= 2 ? '/system/dashboard' : '/studio/dashboard'}>
                     <LogoIcon styles={schema.colorScheme === 'dark' ? { fill: '#fff' } : { fill: '#000' }} />
                 </Link>
             </Group>

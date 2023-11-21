@@ -50,7 +50,6 @@ export default function EditWorkingTime({
                             onBlur={() => handleChange(data)}
                             value={data.find((item) => item.dayOfWeek === index)?.openAt || ''}
                             onChange={(e) => {
-                                console.log(e.target.value);
                                 setData((prev) => {
                                     const item = prev.find((item) => item.dayOfWeek === index);
                                     if (!item)
@@ -68,7 +67,6 @@ export default function EditWorkingTime({
                             value={data.find((item) => item.dayOfWeek === index)?.closeAt || ''}
                             onBlur={() => handleChange(data)}
                             onChange={(e) => {
-                                console.log(e.target.value);
                                 setData((prev) => {
                                     prev.find((item) => item.dayOfWeek === index)!.closeAt = e.target.value + ':00';
                                     return [...prev];

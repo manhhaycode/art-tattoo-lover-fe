@@ -94,6 +94,7 @@ export default function TableForm<T extends object>({
                         data={['10', '20', '50', '100']}
                     />
                     <Pagination
+                        value={pageIndex + 1}
                         fw={600}
                         fs="14px"
                         total={total}

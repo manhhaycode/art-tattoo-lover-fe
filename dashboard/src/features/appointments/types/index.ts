@@ -13,12 +13,13 @@ export interface IFilterAppointment {
     searchKeyWord?: string;
     page?: number;
     pageSize?: number;
+    artistId?: string;
 }
 
 export interface IPaginationListAppointmentStudio {
     appointments: IAppointmentStudio[];
     page: number;
-    pagesize: number;
+    pageSize: number;
     total: number;
 }
 

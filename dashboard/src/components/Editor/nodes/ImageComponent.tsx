@@ -88,8 +88,8 @@ export default function ImageComponent({
     width,
     height,
     maxWidth, // resizable,
-    // caption,
-} // showCaption,
+    // showCaption,
+} // caption,
 // captionsEnabled,
 : {
     altText: string;

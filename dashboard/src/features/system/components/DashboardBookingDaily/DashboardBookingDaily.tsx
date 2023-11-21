@@ -11,7 +11,6 @@ interface Props {
 const DashboardBookingDaily = ({ data, isLoading }: Props) => {
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
-    console.log(data);
     if (isLoading) {
         return <Skeleton height={400} radius={'md'} />;
     }

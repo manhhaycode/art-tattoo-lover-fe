@@ -162,13 +162,10 @@ export default function BasicInfoService({
                                 onDrop={(files) => {
                                     setFile(files[0]);
                                     setValue('thumbnail', files[0].name, { shouldDirty: true });
-                                    // console.log('accepted files', files[0]);
                                     toast.success('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật');
                                 }}
                                 onReject={() => {
                                     toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
-
-                                    // console.log('rejected files', files)
                                 }}
                                 maxSize={100 * 1024}
                                 accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
@@ -350,7 +347,6 @@ export default function BasicInfoService({
                                     },
                                 ]}
                                 onChange={(e) => {
-                                    console.log(watch('isDisabled'));
                                     const isDisabled = e === 'true' ? true : false;
                                     if (isDisabled === watch('isDisabled')) return;
                                     setValue('isDisabled', isDisabled, { shouldDirty: true });
@@ -377,9 +373,6 @@ export default function BasicInfoService({
                 />
                 <Group justify="flex-end" className="mt-8">
                     <Button
-                        onClick={() => {
-                            console.log('submit');
-                        }}
                         disabled={
                             !isValid ||
                             !isDirty ||

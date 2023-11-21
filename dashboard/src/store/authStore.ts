@@ -40,5 +40,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         Cookies.remove('tattus-at');
         Cookies.remove('tattus-rft');
         sessionStorage.removeItem('tattus-session');
+        sessionStorage.removeItem('tattus-role');
     },
 }));

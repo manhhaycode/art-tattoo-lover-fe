@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import Error from '@/components/common/Error';
 import { useThemeStore } from '@/store/componentStore';
 import { Toaster } from 'react-hot-toast';
+import HistoryProvider from './HistoryProvider';
 
 // import { lightTheme } from '@/theme';
 
@@ -18,11 +19,13 @@ export default function AppProvider({ children }: { children: React.ReactNode })
     const { theme } = useThemeStore();
     return (
         <ErrorBoundary fallback={<Error />}>
-            <Suspense fallback={<div className="h-screen w-screen bg-dark-theme"></div>}>
-                <MantineProvider defaultColorScheme="dark" theme={theme}>
-                    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-                </MantineProvider>
-            </Suspense>
+            <HistoryProvider>
+                <Suspense fallback={<div className="h-screen w-screen bg-dark-theme"></div>}>
+                    <MantineProvider defaultColorScheme="dark" theme={theme}>
+                        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                    </MantineProvider>
+                </Suspense>
+            </HistoryProvider>
             <Toaster
                 toastOptions={{
                     className: 'font-semibold text-sm',

@@ -275,6 +275,25 @@ export default function ManageServiceStudio() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rowSelection]);
 
+    useEffect(() => {
+        const pageCount = data?.total && Math.ceil(data.total / pageSize);
+        if (pageCount) {
+            if (pageIndex > pageCount - 1) {
+                setPagination((prev) => {
+                    return {
+                        ...prev,
+                        pageIndex: 0,
+                    };
+                });
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data]);
+
+    useEffect(() => {
+        setRowSelection({});
+    }, [searchKeyword]);
+
     return (
         data && (
             <>
