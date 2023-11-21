@@ -16,6 +16,7 @@ import { rescheduleAppointment } from '@/features/users/api/appointmentAPI';
 import { IService } from '../../types';
 import { convertTimeToDisplayFormat, numbertoPrice } from '@/lib/helper';
 import { ErrorCode, errorMsg } from '@/common/types/error';
+import { ErrorAuth } from '@/lib/error';
 
 const defaultArtist = {
     label: 'Studio chọn cho bạn',
@@ -138,7 +139,17 @@ const BookingModal = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError(e) {
             const error = (e as { error: ErrorCode }).error;
-            toast.error(errorMsg[error]);
+            if ((e as { error: string }).error === ErrorAuth.AT_RT_INVALID) {
+                toast.error('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
+                setBookingModal({
+                    visible: false,
+                    studioId: null,
+                    appointmentReschedule: null,
+                    service: null,
+                });
+                return;
+            }
+            toast.error(errorMsg[error] ?? 'Đã có lỗi xảy ra, vui lòng thử lại sau');
         },
     });
 

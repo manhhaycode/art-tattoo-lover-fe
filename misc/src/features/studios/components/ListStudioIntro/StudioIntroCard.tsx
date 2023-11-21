@@ -24,7 +24,7 @@ export default function StudioIntroCard({
     // maxLineIntro?: number;
 }) {
     const navigator = useNavigate();
-    const { setBookingModal } = useModalStore();
+    const { setBookingModal, setIsLoginModalVisible, setIsModalVisible } = useModalStore();
     const { isAuth } = useAuthStore();
 
     return (
@@ -40,6 +40,8 @@ export default function StudioIntroCard({
                     <Button
                         onClick={() => {
                             if (!isAuth) {
+                                setIsLoginModalVisible(true);
+                                setIsModalVisible(true);
                                 toast.error('Vui lòng đăng nhập trước để đặt lịch');
                             } else {
                                 if (!studio) {

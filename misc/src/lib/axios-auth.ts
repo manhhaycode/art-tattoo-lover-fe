@@ -4,12 +4,13 @@ import Cookies from 'js-cookie';
 import { IRefreshToken } from '@/features/auth/types';
 import { refreshToken } from '@/features/auth/api';
 import { ErrorAuth } from './error';
+import { useAuthStore } from '@/store/authStore';
 
 const httpRequest = axios.create({
     baseURL: config.API.API_URL,
 });
 
-export const sleep = (ms = 500): Promise<void> => {
+export const sleep = (ms = 100000): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
@@ -31,6 +32,10 @@ httpRequest.interceptors.request.use(async (value) => {
 });
 
 httpRequest.interceptors.response.use(undefined, async (error) => {
+    if (error.response?.status === 403) {
+        useAuthStore.getState().setAccountType(null);
+        return Promise.reject(error);
+    }
     if (error instanceof Error && !(error instanceof AxiosError)) {
         return Promise.reject({ error: error.message });
     }
@@ -43,8 +48,10 @@ httpRequest.interceptors.response.use(undefined, async (error) => {
             if (error.response.status === 401) {
                 const res: IRefreshToken = await refreshToken();
                 res && Cookies.set('tattus-at', res.accessToken, { expires: new Date(res.accessTokenExp * 1000) });
+                return Promise.reject({ error: ErrorAuth.AT_INVALID });
             }
         } catch (e) {
+            useAuthStore.getState().reset();
             return Promise.reject({ error: (e as Error).message });
         }
         return Promise.reject(error.response.data);
