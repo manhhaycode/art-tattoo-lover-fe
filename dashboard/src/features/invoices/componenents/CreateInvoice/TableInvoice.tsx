@@ -32,8 +32,7 @@ export default function TableInvoice() {
         appointment?.service ? [appointment.service] : [],
     );
     const createInvoiceMuatation = useCreateInvoiceMutation({
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: () => {
             toast.success('Tạo hóa đơn thành công');
             reset();
             navigate('/studio/manage-invoice');
@@ -334,7 +333,6 @@ export default function TableInvoice() {
                                     }),
                                     userId: appointment?.user?.id,
                                 });
-                                console.log(table.getRowModel().rows.map((e) => e.original));
                             }}
                         >
                             Tạo hóa đơn

@@ -23,16 +23,13 @@ export default function CreateShift({
 }) {
     const { accountType } = useAuthStore();
     const createShiftMutation = useCreateShiftMutation({
-        onSuccess: async (data) => {
-            console.log(data);
+        onSuccess: async () => {
             const shift = await getShiftList({
                 start: shiftCreate!.start,
                 end: shiftCreate!.end,
                 studioId: accountType?.studioId || '',
             });
-            // shiftInfo?.setProp('publicId', shift[0].id);
             shiftInfo!.setProp('id', shift[0].id);
-            // shiftInfo!.setExtendedProp('id', shift[0].id);
             shiftInfo!.setExtendedProp('shiftArtists', shift[0].shiftArtists);
             shiftInfo!.setExtendedProp('studioId', shift[0].studioId);
             toast.success('Đăng ký lịch mới thành công');

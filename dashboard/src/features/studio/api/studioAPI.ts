@@ -29,23 +29,17 @@ const getListStudio = async (filter: IFilter): Promise<IPaginationStudio> => {
     try {
         const response: IPaginationStudio = await httpAuth.post('/studios/admin', filter);
         return response;
-    } catch (_error) {
-        console.log(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
-    return {
-        data: [],
-        page: 0,
-        pageSize: 0,
-        total: 0,
-    };
 };
 
 const getStudio = async (id: string): Promise<IStudio> => {
     try {
         const response: IStudio = await httpRequest.get(`/studios/${id}`);
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 

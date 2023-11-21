@@ -152,8 +152,6 @@ export default function BasicInfoForm() {
                                             }}
                                             onReject={() => {
                                                 toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
-
-                                                // console.log('rejected files', files)
                                             }}
                                             maxSize={100 * 1024}
                                             accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}

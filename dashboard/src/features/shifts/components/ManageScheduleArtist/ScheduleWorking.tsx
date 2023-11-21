@@ -102,28 +102,35 @@ export default function ScheduleWorking() {
                                 onClick={async (e) => {
                                     e.preventDefault();
                                     const promiseList: unknown[] = [];
-                                    for (const event of calendarRef.current!.getApi().getEvents()) {
-                                        const eventU = event as EventImpl;
-                                        console.log(eventU);
-                                        if (!eventU._def.publicId) {
-                                            // checkEventVaild = false;
-                                            console.log(event.extendedProps);
-                                            toast.error('Vui lòng nhập đầy đủ thông tin cho các ca làm việc');
-                                            return;
-                                        } else {
-                                            promiseList.push(
-                                                new Promise((resolve, reject) =>
-                                                    updateShift({
-                                                        shiftId: eventU._def.publicId,
-                                                        time: {
-                                                            start: eventU.startStr,
-                                                            end: eventU.endStr,
-                                                        },
-                                                    })
-                                                        .then(resolve)
-                                                        .catch(reject),
-                                                ),
-                                            );
+                                    if (shift.data) {
+                                        for (const event of calendarRef.current!.getApi().getEvents()) {
+                                            const eventU = event as EventImpl;
+                                            if (!eventU._def.publicId) {
+                                                toast.error('Vui lòng nhập đầy đủ thông tin cho các ca làm việc');
+                                                return;
+                                            } else {
+                                                //check if shift is change (start, end)
+                                                const shiftData = shift.data.find((e) => e.id === eventU.id);
+                                                if (
+                                                    shiftData &&
+                                                    (shiftData.start + 'Z' !== eventU.startStr ||
+                                                        shiftData.end + 'Z' !== eventU.endStr)
+                                                ) {
+                                                    promiseList.push(
+                                                        new Promise((resolve, reject) =>
+                                                            updateShift({
+                                                                shiftId: eventU._def.publicId,
+                                                                time: {
+                                                                    start: eventU.startStr,
+                                                                    end: eventU.endStr,
+                                                                },
+                                                            })
+                                                                .then(resolve)
+                                                                .catch(reject),
+                                                        ),
+                                                    );
+                                                }
+                                            }
                                         }
                                     }
                                     const id = toast.loading('Đang cập nhật...');

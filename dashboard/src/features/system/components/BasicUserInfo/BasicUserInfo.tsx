@@ -25,8 +25,7 @@ export default function BasicInfoForm({
     const [visible, { toggle }] = useDisclosure(false);
 
     const updateBasicInfoMutation = useUpdateUserMutation({
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: () => {
             toast.success('Cập nhật thông tin cơ bản thành công');
             onChangedOrCreate && onChangedOrCreate();
         },
@@ -40,8 +39,7 @@ export default function BasicInfoForm({
     });
 
     const createUserMutation = useCreateUserMutation({
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: () => {
             toast.success('Tạo mới tài khoản thành công');
             onChangedOrCreate && onChangedOrCreate();
         },
@@ -138,13 +136,10 @@ export default function BasicInfoForm({
                             onDrop={(files) => {
                                 setFile(files[0]);
                                 setValue('avatar', files[0].name, { shouldDirty: true });
-                                // console.log('accepted files', files[0]);
                                 toast.success('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật');
                             }}
                             onReject={() => {
                                 toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
-
-                                // console.log('rejected files', files)
                             }}
                             maxSize={100 * 1024}
                             accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}

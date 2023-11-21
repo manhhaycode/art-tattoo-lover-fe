@@ -71,19 +71,15 @@ export const usePlaceDetail = (option: google.maps.places.PlaceDetailsRequest) =
     });
 };
 
-export const usePlaceDetailMutation = (
-    handleFn: {
-        onError?: (error: unknown, variables: unknown, context: unknown) => void;
-        onSuccess?: (data: PlaceDetailsResponseData['result'], variables: unknown, context: unknown) => void;
-        onMutate?: (variables: google.maps.places.PlaceDetailsRequest) => Promise<PlaceDetailsResponseData['result']>;
-    },
-    retry?: number,
-) => {
+export const usePlaceDetailMutation = (handleFn: {
+    onError?: (error: unknown, variables: unknown, context: unknown) => void;
+    onSuccess?: (data: PlaceDetailsResponseData['result'], variables: unknown, context: unknown) => void;
+    onMutate?: (variables: google.maps.places.PlaceDetailsRequest) => Promise<PlaceDetailsResponseData['result']>;
+}) => {
     return useMutation({
         mutationFn: (options: google.maps.places.PlaceDetailsRequest) => placeDetail(options),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
-        retry,
     });
 };

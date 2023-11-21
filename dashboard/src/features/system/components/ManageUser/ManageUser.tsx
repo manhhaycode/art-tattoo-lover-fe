@@ -234,6 +234,25 @@ export default function ManageUser() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataUpdate]);
 
+    useEffect(() => {
+        const pageCount = dataQuery.data?.total && Math.ceil(dataQuery.data.total / pageSize);
+        if (pageCount) {
+            if (pageIndex > pageCount - 1) {
+                setPagination((prev) => {
+                    return {
+                        ...prev,
+                        pageIndex: 0,
+                    };
+                });
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataQuery.data]);
+
+    useEffect(() => {
+        setRowSelection({});
+    }, [searchKeyword]);
+
     return (
         <>
             <Group justify="space-between">

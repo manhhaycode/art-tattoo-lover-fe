@@ -34,20 +34,16 @@ const getInvoiceStudio = async (id: string): Promise<IInvoice> => {
     }
 };
 
-export const useCreateInvoiceMutation = (
-    handleFn: {
-        onError?: (error: Error, variables: CreateInvoiceReq, context: unknown) => void;
-        onSuccess?: (data: EditRes, variables: CreateInvoiceReq, context: unknown) => void;
-        onMutate?: (data: CreateInvoiceReq) => Promise<ILogout>;
-    },
-    retry?: number,
-) => {
+export const useCreateInvoiceMutation = (handleFn: {
+    onError?: (error: Error, variables: CreateInvoiceReq, context: unknown) => void;
+    onSuccess?: (data: EditRes, variables: CreateInvoiceReq, context: unknown) => void;
+    onMutate?: (data: CreateInvoiceReq) => Promise<ILogout>;
+}) => {
     return useMutation({
         mutationFn: (data: CreateInvoiceReq) => createInvoice(data),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
-        retry,
     });
 };
 

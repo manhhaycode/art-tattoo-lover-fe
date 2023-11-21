@@ -41,7 +41,7 @@ export default function ManageAppointment() {
     });
     const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
     const [date, setDate] = useState<[Date | null, Date | null]>([null, null]);
-    const [listStatus, setListStatus] = useState<number[]>([]);
+    const [listStatus, setListStatus] = useState<number[]>([1]);
     const [listService, setListService] = useState<string[]>([]);
     const defaultData = useMemo(() => [], []);
     const dataQuery = useGetListAppointmentStudio(
@@ -261,13 +261,32 @@ export default function ManageAppointment() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rowSelection]);
 
+    useEffect(() => {
+        const pageCount = dataQuery.data?.total && Math.ceil(dataQuery.data?.total / pageSize);
+        if (pageCount) {
+            if (pageIndex > pageCount - 1) {
+                setPagination((prev) => {
+                    return {
+                        ...prev,
+                        pageIndex: 0,
+                    };
+                });
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataQuery]);
+
+    useEffect(() => {
+        setRowSelection({});
+    }, [searchKeyword, date, listStatus, listService]);
+
     return (
         <>
             <Group justify="space-between">
                 <Input
                     defaultValue={searchKeyword}
                     onChange={(event) => setSearchKeyword(event.currentTarget.value)}
-                    placeholder="Tìm kiếm nhân viên studio"
+                    placeholder="Tìm khách hàng theo tên, số điện thoại, email"
                     className="w-1/2"
                 />
                 <Group gap={rem(12)}>

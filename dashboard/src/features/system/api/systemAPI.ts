@@ -25,8 +25,8 @@ const getListUser = async (data: IPaginationUserListReq): Promise<IPaginationUse
             params: data,
         });
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -73,74 +73,61 @@ export const useGetListUser = (data: IPaginationUserListReq) => {
         queryFn: () => getListUser(data),
         staleTime: Infinity,
         keepPreviousData: true,
+        retry: () => {
+            return true;
+        },
     });
 };
 
-export const useUpdateUserMutation = (
-    handleFn: {
-        onError?: (error: Error, variables: Partial<IUpdateUserReq>, context: unknown) => void;
-        onSuccess?: (data: IUpdateUser, variables: Partial<IUpdateUserReq>, context: unknown) => void;
-        onMutate?: (userData: Partial<IUpdateUserReq>) => Promise<IUpdateUser>;
-    },
-    retry?: number,
-) => {
+export const useUpdateUserMutation = (handleFn: {
+    onError?: (error: Error, variables: Partial<IUpdateUserReq>, context: unknown) => void;
+    onSuccess?: (data: IUpdateUser, variables: Partial<IUpdateUserReq>, context: unknown) => void;
+    onMutate?: (userData: Partial<IUpdateUserReq>) => Promise<IUpdateUser>;
+}) => {
     return useMutation({
         mutationFn: (userData: Partial<IUpdateUserReq>) => updateUser(userData),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
-        retry,
     });
 };
 
-export const useCreateUserMutation = (
-    handleFn: {
-        onError?: (error: Error, variables: Partial<ICreateUserReq>, context: unknown) => void;
-        onSuccess?: (data: ICreateUser, variables: Partial<ICreateUserReq>, context: unknown) => void;
-        onMutate?: (userData: Partial<ICreateUserReq>) => Promise<ICreateUser>;
-    },
-    retry?: number,
-) => {
+export const useCreateUserMutation = (handleFn: {
+    onError?: (error: Error, variables: Partial<ICreateUserReq>, context: unknown) => void;
+    onSuccess?: (data: ICreateUser, variables: Partial<ICreateUserReq>, context: unknown) => void;
+    onMutate?: (userData: Partial<ICreateUserReq>) => Promise<ICreateUser>;
+}) => {
     return useMutation({
         mutationFn: (userData: Partial<ICreateUserReq>) => createUser(userData),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
-        retry,
     });
 };
 
-export const useCreateStudioMutation = (
-    handleFn: {
-        onError?: (error: Error, variables: Partial<IStudio>, context: unknown) => void;
-        onSuccess?: (data: ICreateStudio, variables: Partial<IStudio>, context: unknown) => void;
-        onMutate?: (data: Partial<IStudio>) => Promise<ICreateStudio>;
-    },
-    retry?: number,
-) => {
+export const useCreateStudioMutation = (handleFn: {
+    onError?: (error: Error, variables: Partial<IStudio>, context: unknown) => void;
+    onSuccess?: (data: ICreateStudio, variables: Partial<IStudio>, context: unknown) => void;
+    onMutate?: (data: Partial<IStudio>) => Promise<ICreateStudio>;
+}) => {
     return useMutation({
         mutationFn: (data: Partial<IStudio>) => createStudio(data),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
-        retry,
     });
 };
 
-export const useDeleteStudioMutation = (
-    handleFn: {
-        onError?: (error: Error, variables: string, context: unknown) => void;
-        onSuccess?: (data: IDeleteStudio, variables: string, context: unknown) => void;
-        onMutate?: (id: string) => Promise<IDeleteStudio>;
-    },
-    retry?: number,
-) => {
+export const useDeleteStudioMutation = (handleFn: {
+    onError?: (error: Error, variables: string, context: unknown) => void;
+    onSuccess?: (data: IDeleteStudio, variables: string, context: unknown) => void;
+    onMutate?: (id: string) => Promise<IDeleteStudio>;
+}) => {
     return useMutation({
         mutationFn: (id: string) => deleteStudio(id),
         onError: handleFn.onError,
         onSuccess: handleFn.onSuccess,
         onMutate: handleFn.onMutate,
-        retry,
     });
 };
 

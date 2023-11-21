@@ -126,7 +126,7 @@ export const errorMsg: Record<ErrorCode, string> = {
     [ErrorCode.CreateUserFailed]: 'Tạo người dùng không thành công',
     [ErrorCode.UpdateUserFailed]: 'Cập nhật người dùng không thành công',
     [ErrorCode.UpdatePasswordFailed]: 'Cập nhật mật khẩu không thành công',
-    [ErrorCode.NoTokenProvided]: 'Không có mã thông tin nào được cung cấp',
+    [ErrorCode.NoTokenProvided]: 'Có lỗi xảy ra vui lòng thử lại sau',
     [ErrorCode.PermissionDenied]: 'Từ chối quyền',
 };
 

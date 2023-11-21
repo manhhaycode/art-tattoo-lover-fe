@@ -3,7 +3,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { StudioNav } from '../components/NavBar';
 import { useAuthStore } from '@/store/authStore';
 import { useEffect } from 'react';
-import { resetAuthStore } from '@/lib/helper';
 
 export default function StudioLayout() {
     const { accountType, reset } = useAuthStore();
@@ -16,7 +15,6 @@ export default function StudioLayout() {
                     state: { message: 'Vui lòng chọn studio để chỉnh sửa trước' },
                 });
             else {
-                resetAuthStore();
                 reset();
             }
         }

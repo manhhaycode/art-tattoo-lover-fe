@@ -132,7 +132,11 @@ export default function StudioNav() {
                                       }
                                     : { variant: 'gradient' })}
                                 onClick={() => {
-                                    navigate('/studio/manage-appointment');
+                                    navigate(
+                                        accountType?.role?.id === 5
+                                            ? '/studio/manage-appointment/artist'
+                                            : '/studio/manage-appointment',
+                                    );
                                 }}
                                 className="flex gap-x-3 justify-start active:transform-none text-base"
                                 leftSection={

@@ -148,25 +148,6 @@ export default function ManageStudios() {
                             >
                                 Sửa
                             </Button>
-                            {/* <Button
-                                className="text-sm font-semibold cursor-pointer"
-                                onClick={() => {
-                                    setRowSelection({ [row.id]: true });
-                                    sessionStorage.setItem('tattus-studio', row.id);
-                                    setAccountType({ ...accountType, studioId: row.id });
-                                    navigate('/studio/dashboard');
-                                }}
-                            >
-                                Sửa
-                            </Button>
-                            <Button
-                                color="red.6"
-                                className="text-sm font-semibold cursor-pointer"
-                                disabled={!row.getIsSelected()}
-                                onClick={open}
-                            >
-                                Xóa
-                            </Button> */}
                         </Group>
                     );
                 },
@@ -231,6 +212,25 @@ export default function ManageStudios() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataUpdate]);
+
+    useEffect(() => {
+        const pageCount = dataQuery.data?.total && Math.ceil(dataQuery.data.total / pageSize);
+        if (pageCount) {
+            if (pageIndex > pageCount - 1) {
+                setPagination((prev) => {
+                    return {
+                        ...prev,
+                        pageIndex: 0,
+                    };
+                });
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataQuery.data]);
+
+    useEffect(() => {
+        setRowSelection({});
+    }, [searchKeyword, listStatus]);
 
     return (
         <>

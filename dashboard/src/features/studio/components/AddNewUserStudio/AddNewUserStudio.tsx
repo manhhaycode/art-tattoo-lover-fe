@@ -32,6 +32,7 @@ export default function AddNewUserStudio({ refreshData }: { refreshData: () => v
             } else {
                 toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
             }
+            throw new Error(e.message);
         },
     });
 

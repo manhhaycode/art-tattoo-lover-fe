@@ -34,7 +34,7 @@ const login = async (credentials: LoginCredentials): Promise<ILogin> => {
     }
 };
 
-const logout = async (): Promise<ILogout> => {
+export const logout = async (): Promise<ILogout> => {
     try {
         const refreshToken = Cookies.get('tattus-rft');
         const res: ILogout = await httpRequest.post('/auth/logout', { refreshToken });

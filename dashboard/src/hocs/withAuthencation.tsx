@@ -1,4 +1,3 @@
-import { resetAuthStore } from '@/lib/helper';
 import { useAuthStore } from '@/store/authStore';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
@@ -15,13 +14,14 @@ const WithAuthencation = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (!((rf && rf.length > 0) || (at && at.length > 0))) {
             reset();
-            resetAuthStore();
             if (!(roleId && roleId > 5)) {
                 if (!isLogout) {
                     navigate('/login', {
                         replace: true,
                         state: { message: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại' },
                     });
+                } else {
+                    navigate('/login', { replace: true });
                 }
             }
         } else if (roleId && roleId < 6 && roleId > 2 && location.pathname.includes('system')) {

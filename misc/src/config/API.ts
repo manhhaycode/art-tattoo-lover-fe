@@ -1,6 +1,6 @@
-const API_URL = 'https://api.art-tattoo-lover.online/api';
-const API_PLACE_URL = 'https://binhminhcooking.store/api/map/place';
-const API_KEY = 'AIzaSyBXonzxvAl5VdZbt5Iib4BncKfB6izJZd8';
+const API_URL = import.meta.env.VITE_API_URL;
+const API_PLACE_URL = import.meta.env.VITE_API_PLACE_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const API = {
     API_URL,

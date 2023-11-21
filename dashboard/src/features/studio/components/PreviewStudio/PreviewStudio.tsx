@@ -22,7 +22,6 @@ export default function PreviewStudio({ studio }: { studio: Partial<IStudio> }) 
     });
     const saveEditor = useCallback(async (text: string) => {
         updateStudioMutation.mutate({ id: studio.id, detail: text });
-        console.log(text);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (

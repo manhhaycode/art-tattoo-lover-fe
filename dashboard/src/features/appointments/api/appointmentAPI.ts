@@ -14,8 +14,8 @@ const getListAppointmentStudio = async (filter: IFilterAppointment): Promise<IPa
             paramsSerializer: { indexes: null },
         });
         return response;
-    } catch (error) {
-        throw new Error(error.message);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -23,8 +23,20 @@ const getAppointmentStudio = async (id: string): Promise<IAppointmentStudio> => 
     try {
         const response: IAppointmentStudio = await httpAuth.get(`/appointment/studio/${id}`);
         return response;
-    } catch (error) {
-        throw new Error(error.message);
+    } catch (e) {
+        throw new Error(e.error);
+    }
+};
+
+const getListAppointmentArtist = async (filter: IFilterAppointment): Promise<IPaginationListAppointmentStudio> => {
+    try {
+        const response: IPaginationListAppointmentStudio = await httpAuth.get(`/appointment/artist`, {
+            params: filter,
+            paramsSerializer: { indexes: null },
+        });
+        return response;
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -42,6 +54,16 @@ export const useGetListAppointmentStudio = (filter: IFilterAppointment, enabled?
     return useQuery({
         queryKey: ['appointmentsStudio', filter],
         queryFn: () => getListAppointmentStudio(filter),
+        staleTime: Infinity,
+        keepPreviousData: true,
+        enabled,
+    });
+};
+
+export const useGetListAppointmentArtist = (filter: IFilterAppointment, enabled?: boolean) => {
+    return useQuery({
+        queryKey: ['appointmentsArtist', filter],
+        queryFn: () => getListAppointmentArtist(filter),
         staleTime: Infinity,
         keepPreviousData: true,
         enabled,
