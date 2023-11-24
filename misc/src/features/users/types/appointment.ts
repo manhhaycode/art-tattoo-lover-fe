@@ -1,4 +1,4 @@
-import { Shift } from '@/features/studios';
+import { IMedia, Shift } from '@/features/studios';
 import { IUser } from '.';
 import { PaginationResp } from '@/config/types/pagination';
 import { IService } from '@/features/services';
@@ -41,6 +41,7 @@ export type AppointmentType = {
     status: keyof typeof AppointmentStatus;
     service: IService;
     duration: string;
+    listMedia: IMedia[];
 };
 
 export type AppointmentRescheduleReq = {

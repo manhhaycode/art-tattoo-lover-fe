@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceData } from '@googlemaps/google-maps-services-js';
-import { IFilter, IStudio } from '@/features/studios';
+import { IFilter, IStudio, StudioArtist } from '@/features/studios';
 import { EPositionOverlayView } from '@/features/map/types';
 import { AppointmentType } from '@/features/users/types/appointment';
 import { IService } from '@/features/services';
+import { IInvoice } from '@/features/invoices';
 interface SearchLocationState {
     placeChoose: Partial<google.maps.places.AutocompletePrediction> | null;
     setPlaceChoose: (placeId: Partial<google.maps.places.AutocompletePrediction> | null) => void;
@@ -44,6 +45,7 @@ interface IBookingModal {
     studioId: string | null;
     appointmentReschedule: AppointmentType | null;
     service: IService | null;
+    artist: StudioArtist | null;
 }
 
 interface ModalState {
@@ -68,6 +70,16 @@ interface ModalState {
         studio: IStudio | null;
     };
     setTesimonialModal: (tesimonialModal: { visible: boolean; studio: IStudio | null }) => void;
+    appointmentModal: {
+        visible: boolean;
+        appointment: AppointmentType | null;
+        invoice: IInvoice | null;
+    };
+    setAppointmentModal: (appointmentModal: {
+        visible: boolean;
+        appointment: AppointmentType | null;
+        invoice: IInvoice | null;
+    }) => void;
     reset: () => void;
 }
 
@@ -84,6 +96,7 @@ export const useModalStore = create<ModalState>((set) => ({
         visible: false,
         studioId: null,
         service: null,
+        artist: null,
         appointmentReschedule: null,
     },
     setBookingModal: (bookingModal: IBookingModal) =>
@@ -103,7 +116,12 @@ export const useModalStore = create<ModalState>((set) => ({
         studio: null,
     },
     setTesimonialModal: (tesimonialModal) => set({ tesimonialModal, isModalVisible: tesimonialModal.visible }),
-
+    appointmentModal: {
+        visible: false,
+        appointment: null,
+        invoice: null,
+    },
+    setAppointmentModal: (appointmentModal) => set({ appointmentModal, isModalVisible: appointmentModal.visible }),
     reset: () => {
         set({
             isLoginModalVisible: false,
@@ -121,7 +139,13 @@ export const useModalStore = create<ModalState>((set) => ({
                 visible: false,
                 studioId: null,
                 service: null,
+                artist: null,
                 appointmentReschedule: null,
+            },
+            appointmentModal: {
+                visible: false,
+                appointment: null,
+                invoice: null,
             },
         });
     },
@@ -171,6 +195,16 @@ export const useStudioPinStore = create<StuidoPinState>((set) => ({
     positionInfo: EPositionOverlayView.CENTER,
     setPositionInfo: (positionInfo: EPositionOverlayView) => set({ positionInfo }),
     setStudioPin: (studioPin: IStudio | null) => set({ studioPin }),
+}));
+
+interface ArtistDetailState {
+    artist: StudioArtist | null;
+    setArtist: (artistId: StudioArtist | null) => void;
+}
+
+export const useArtistDetailStore = create<ArtistDetailState>((set) => ({
+    artist: null,
+    setArtist: (artist) => set({ artist }),
 }));
 
 interface ThemeState {

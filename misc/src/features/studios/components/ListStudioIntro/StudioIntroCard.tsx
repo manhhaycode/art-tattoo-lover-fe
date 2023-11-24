@@ -52,6 +52,7 @@ export default function StudioIntroCard({
                                         appointmentReschedule: null,
                                         visible: true,
                                         service: null,
+                                        artist: null,
                                     });
                                 }
                             }

@@ -3,6 +3,7 @@ import BasicInfoForm from './BasicInfoForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import Loading from '@/components/Loading';
 import ManageCertificateArtist from './ManageCertificateArtist';
+import ManageMediaArtist from './ManageMediaArtist';
 
 export default function UserProfile() {
     const { isLoading, accountType, onMount } = useUserProfileManageState();
@@ -22,10 +23,16 @@ export default function UserProfile() {
                             <ChangePasswordForm />
                         </div>
                         {accountType.role?.id === 5 && (
-                            <div className="basic-info-conainter p-6 bg-gray-dark rounded-lg flex flex-col gap-y-4">
-                                <h1 className="font-semibold text-xl">Quản lý chứng chỉ xăm</h1>
-                                <ManageCertificateArtist listMedia={accountType.user.listMedia} />
-                            </div>
+                            <>
+                                <div className="basic-info-conainter p-6 bg-gray-dark rounded-lg flex flex-col gap-y-4">
+                                    <h1 className="font-semibold text-xl">Quản lý chứng chỉ xăm</h1>
+                                    <ManageCertificateArtist listMedia={accountType.user.listMedia} />
+                                </div>
+                                <div className="basic-info-conainter p-6 bg-gray-dark rounded-lg flex flex-col gap-y-4">
+                                    <h1 className="font-semibold text-xl">Quản lý ảnh giới thiệu</h1>
+                                    <ManageMediaArtist listMedia={accountType.user.listMedia} />
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>

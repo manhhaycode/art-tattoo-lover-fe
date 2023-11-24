@@ -1,5 +1,5 @@
 import { IShift } from '@/features/shifts';
-import { IUserStudio } from '@/features/studio';
+import { IMedia, IUserStudio } from '@/features/studio';
 import { IUser } from '@/features/users';
 import { ILogout } from '@/features/auth/types';
 import { IService } from '@/features/services';
@@ -30,7 +30,7 @@ export interface IAppointmentStudio {
     doneBy: string | null;
     notes: string;
     status: number;
-    listMedia: string[];
+    listMedia: IMedia[];
     artist: IUserStudio | null;
     shift: IShift;
     service: IService | null;
@@ -44,6 +44,8 @@ export interface IUpdateAppointmentReq {
     artistId?: string;
     status?: number;
     duration?: string;
+    listNewMedia?: IMedia[];
+    listRemoveMedia?: string[];
 }
 
 export interface IUpdateAppointment extends ILogout {}

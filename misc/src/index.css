@@ -126,6 +126,23 @@
         background-color: rgb(255, 255, 255);
     }
 
+    .modal-container::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .modal-container::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+    }
+
+    /* ::-webkit-scrollbar-thumb {
+        background: white;
+        -webkit-box-shadow: none;
+    }
+    
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: none;
+    } */
+
     .maintine-input-inner {
         height: 100%;
         width: calc(100% - 40px);

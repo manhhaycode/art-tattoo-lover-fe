@@ -6,11 +6,12 @@ export interface IMedia {
 export enum typeEnum {
     IMAGE = 0,
     VIDEO = 1,
-    AUDIO = 2,
-    FILE = 3,
+    CERT = 2,
+    YOUTUBE = 3,
 }
 
 export interface MediaCredentials {
+    id?: string;
     file: File;
     type: typeEnum;
 }

@@ -12,10 +12,13 @@ export default function DropZoneImage({
     classNames,
     maxSize,
     errorString,
+    handleRemove,
     src,
 }: {
     handleDrop?: (files: FileWithPath[]) => void;
     handleSave?: (files: FileWithPath[]) => void;
+    handleRemove?: (files: FileWithPath[]) => void;
+
     classNames?: {
         dropZone?: string;
         image?: string;
@@ -81,6 +84,7 @@ export default function DropZoneImage({
                             onClick={() => {
                                 setFiles([]);
                                 setSrcDefault('');
+                                handleRemove && handleRemove(files);
                             }}
                             color="red"
                             radius="xl"

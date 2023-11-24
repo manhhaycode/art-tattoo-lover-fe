@@ -130,6 +130,7 @@ const BookingModal = () => {
                 visible: false,
                 studioId: null,
                 appointmentReschedule: null,
+                artist: null,
                 service: null,
             });
             toast.success('Đặt lịch thành công');
@@ -145,6 +146,7 @@ const BookingModal = () => {
                     visible: false,
                     studioId: null,
                     appointmentReschedule: null,
+                    artist: null,
                     service: null,
                 });
                 return;
@@ -174,7 +176,10 @@ const BookingModal = () => {
         if (bookingModal.service?.id) {
             setSelectedService(bookingModal.service);
         }
-    }, [bookingModal.service]);
+        if (bookingModal.artist?.id) {
+            setArtist(bookingModal.artist.id);
+        }
+    }, [bookingModal.service, bookingModal.artist]);
 
     return (
         <div className="flex flex-col overflow-auto h-full w-full max-w-lg px-10 pb-8">

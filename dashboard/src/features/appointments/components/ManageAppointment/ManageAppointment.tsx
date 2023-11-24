@@ -17,7 +17,6 @@ import { EditIcon, UserIcon } from '@/assets/icons';
 import { convertStartEndTimeToDisplayFormat, getDateAppointment } from '@/lib/helper';
 import AppointmentStatusTag from './AppointmentStatus';
 import EditAppointment from './EditAppointment';
-import { AiOutlineCheck } from 'react-icons/ai';
 import { TbCalendarCancel } from 'react-icons/tb';
 import CancelAppointment from './CancelAppointment';
 import 'dayjs/locale/vi';
@@ -27,12 +26,15 @@ import DropdownFilter from '@/components/DropdownFilter/DropdownFilter';
 import { useGetListServiceStudio } from '@/features/services';
 import { useAuthStore } from '@/store/authStore';
 import { EPermission } from '@/features/auth';
+import { IconPhotoPlus } from '@tabler/icons-react';
+import MangeMediaAppointment from './MangeMediaAppointment';
 
 export default function ManageAppointment() {
     const { accountType } = useAuthStore();
     const editModalState = useDisclosure(false);
     const cancelModalState = useDisclosure(false);
     const viewModalState = useDisclosure(false);
+    const manageMediaState = useDisclosure(false);
     const [isedit, setIsEdit] = useState(false);
 
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
@@ -175,6 +177,21 @@ export default function ManageAppointment() {
 
                             <ActionIcon
                                 disabled={
+                                    (row.original.status !== 1 && row.original.status !== 2) ||
+                                    !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
+                                }
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    manageMediaState[1].open();
+                                    setAppointmentChoose(row.original);
+                                }}
+                                color="lime.4"
+                            >
+                                <IconPhotoPlus size={16} />
+                            </ActionIcon>
+
+                            {/* <ActionIcon
+                                disabled={
                                     row.original.status !== 0 ||
                                     !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
                                 }
@@ -187,7 +204,7 @@ export default function ManageAppointment() {
                                 color="lime.4"
                             >
                                 <AiOutlineCheck />
-                            </ActionIcon>
+                            </ActionIcon> */}
                             <ActionIcon
                                 disabled={
                                     !row.getIsSelected() ||
@@ -346,6 +363,7 @@ export default function ManageAppointment() {
             <EditAppointment isEdit={isedit} handleModalState={editModalState} appointmentInfo={appointmentChooose} />
             <ViewAppointment handleModalState={viewModalState} apointmentInfo={appointmentChooose} />
             <CancelAppointment handleModalState={cancelModalState} appointmentList={dataCancel} />
+            <MangeMediaAppointment handleModalState={manageMediaState} appointmentInfo={appointmentChooose} />
         </>
     );
 }

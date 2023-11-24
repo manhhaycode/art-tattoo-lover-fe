@@ -1,31 +1,29 @@
 import DropZoneImage from '@/components/DropZone';
 import Button from '@/components/common/Button';
 import { IMedia, typeEnum, useUploadMediaMutation } from '@/features/media';
+import { useUpdateBasicInfoMutation } from '@/features/users';
+import { useAuthStore } from '@/store/authStore';
 import { FileWithPath } from '@mantine/dropzone';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
-import { useUpdateBasicInfoMutation } from '../../api';
-import { useAuthStore } from '@/store/authStore';
-export default function ManageCertificateArtist({ listMedia }: { listMedia: IMedia[] }) {
+export default function ManageMediaArtist({ listMedia }: { listMedia: IMedia[] }) {
     const { setIsChange } = useAuthStore();
-    const [certificateList, setCertificateList] = useState<IMedia[]>(
-        listMedia.filter((media) => media.type === typeEnum.CERT),
-    );
+    const [mediaList, setMediaList] = useState<IMedia[]>(listMedia.filter((media) => media.type === typeEnum.IMAGE));
 
     const uploadMediaMutation = useUploadMediaMutation({
         onSuccess: (data, variables) => {
-            const media = certificateList.find((item) => item.id === variables.id);
+            const media = mediaList.find((item) => item.id === variables.id);
             if (media) {
                 media.url = data.url;
-                setCertificateList([...certificateList]);
+                setMediaList([...mediaList]);
             } else {
-                toast.error('Tải chứng chỉ thành công nhưng xảy ra lỗi ứng dụng');
+                toast.error('Tải lên ảnh giới thiệu thành công nhưng xảy ra lỗi ứng dụng');
             }
-            toast.success('Tải lên chứng chỉ thành công');
+            toast.success('Tải lên ảnh giới thiệu thành công');
         },
         onError: () => {
-            toast.error('Tải lên chứng chỉ thất bại');
+            toast.error('Tải lên ảnh giới thiệu thất bại');
         },
     });
 
@@ -40,40 +38,39 @@ export default function ManageCertificateArtist({ listMedia }: { listMedia: IMed
     });
 
     useEffect(() => {
-        setCertificateList(listMedia.filter((media) => media.type === typeEnum.CERT));
+        setMediaList(listMedia.filter((media) => media.type === typeEnum.IMAGE));
     }, [listMedia]);
-
     return (
         <div className="w-full">
             <div className="flex gap-x-6">
                 <Button
                     onClick={() => {
-                        setCertificateList([...certificateList, { id: uuidv4(), url: '', type: typeEnum.CERT }]);
+                        setMediaList([...mediaList, { id: uuidv4(), url: '', type: typeEnum.IMAGE }]);
                     }}
                     className="w-fit mb-6"
                 >
-                    Thêm chứng chỉ mới
+                    Thêm ảnh giới thiệu mới
                 </Button>
                 <Button
                     onClick={() => {
                         updateProfileMutation.mutate({
-                            listNewMedia: certificateList.filter((item) => item.url.length > 0),
+                            listNewMedia: mediaList.filter((item) => item.url.length > 0),
                             listRemoveMedia: listMedia
-                                .filter((media) => media.type === typeEnum.CERT)
+                                .filter((media) => media.type === typeEnum.IMAGE)
                                 .map((item) => item.id),
                         });
                     }}
                     className="w-fit mb-6 bg-white text-black"
                 >
-                    Lưu chứng chỉ
+                    Lưu ảnh giới thiệu
                 </Button>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {certificateList.map((media) => {
+                {mediaList.map((media) => {
                     return (
                         <DropZoneImage
                             handleRemove={() => {
-                                setCertificateList(certificateList.filter((item) => item.id !== media.id));
+                                setMediaList(mediaList.filter((item) => item.id !== media.id));
                             }}
                             handleSave={(files: FileWithPath[]) => {
                                 uploadMediaMutation.mutate({
