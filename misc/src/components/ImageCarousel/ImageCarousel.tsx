@@ -72,7 +72,7 @@ export default function ImageCarousel({
                     customRightArrow={<CustomRightArrow />}
                     customLeftArrow={<CustomLeftArrow />}
                     {...props}
-                    responsive={props.responsive ? props.responsive : responsive}
+                    responsive={props.responsive ?? responsive}
                     className={twMerge('group h-full rounded-lg', props.className || '')}
                 >
                     {listSrc.map((src, index) => {

@@ -111,3 +111,13 @@ export const useBecomeStudioMutation = (
         retry,
     });
 };
+
+export const useGetListStudioArtists = (studioId: string) => {
+    return useQuery({
+        queryKey: ['studio-artists', studioId],
+        queryFn: () => getStudioArtists(studioId),
+        staleTime: 0,
+        keepPreviousData: true,
+        enabled: studioId !== '',
+    });
+};

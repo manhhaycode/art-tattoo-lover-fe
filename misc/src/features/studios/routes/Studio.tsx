@@ -1,6 +1,6 @@
-import { useParams } from 'react-router-dom';
-import { useGetStudio } from '../api/studioAPI';
-import { Suspense, lazy, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useGetListStudioArtists, useGetStudio } from '../api/studioAPI';
+import { Suspense, lazy, useState, useEffect } from 'react';
 import ImageListStudio from '../components/ImageListStudio';
 import { StudioIntroCard } from '../components/ListStudioIntro';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
@@ -9,16 +9,38 @@ import Loading from '@/components/Loading';
 const Editor = lazy(() => import('@/components/Editor'));
 const TestimonialTab = lazy(() => import('../components/Testimonial'));
 const ServiceTab = lazy(() => import('../components/Service'));
+const ArtistsTab = lazy(() => import('../components/Artists'));
 
 export default function Studio() {
     const { studioId } = useParams();
     const { data, isLoading } = useGetStudio(studioId || '');
+    const { data: listArtist, isLoading: isLoadArtist } = useGetListStudioArtists(studioId || '');
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [tab, setTab] = useState<{
         detail: boolean;
         testimonial: boolean;
         service: boolean;
-    }>({ detail: true, testimonial: false, service: false });
+        artist: boolean;
+    }>({ detail: true, testimonial: false, service: false, artist: false });
+
+    useEffect(() => {
+        switch (location.hash) {
+            case '#service':
+                setTab({ detail: false, testimonial: false, service: true, artist: false });
+                break;
+            case '#artists':
+                setTab({ detail: false, testimonial: false, service: false, artist: true });
+                break;
+            case '#testimonial':
+                setTab({ detail: false, testimonial: true, service: false, artist: false });
+                break;
+            default:
+                setTab({ detail: true, testimonial: false, service: false, artist: false });
+                break;
+        }
+    }, [location.hash]);
 
     // if (isLoading) return <div>Loading...</div>;
     return (
@@ -28,12 +50,12 @@ export default function Studio() {
                     listImage={data?.listMedia.filter((media) => media.type === 0).map((media) => media.url) || []}
                     isLoading={isLoading}
                 />
-                {isLoading && (
+                {isLoading && isLoadArtist && (
                     <div className="w-full h-[308px]">
                         <SkeletonLoader />
                     </div>
                 )}
-                {data && (
+                {data && listArtist && (
                     <div className="flex flex-col gap-y-8 font-sans">
                         <StudioIntroCard
                             withServices={true}
@@ -43,24 +65,35 @@ export default function Studio() {
                         <div className="flex gap-x-4">
                             <button
                                 className={`text-base font-semibold ${tab?.detail ? 'text-primary' : 'text-gray-400'}`}
-                                onClick={() => setTab({ detail: true, testimonial: false, service: false })}
+                                onClick={() => navigate('')}
                             >
                                 Giới thiệu
                             </button>
                             <div className="w-px h-5 bg-gray-400"></div>
                             <button
+                                id="service"
                                 className={`text-base font-semibold ${tab?.service ? 'text-primary' : 'text-gray-400'}`}
-                                onClick={() => setTab({ detail: false, testimonial: false, service: true })}
+                                onClick={() => navigate(`#service`)}
                             >
                                 Dịch vụ
                             </button>
+
+                            <div className="w-px h-5 bg-gray-400"></div>
+
+                            <button
+                                className={`text-base font-semibold ${tab?.artist ? 'text-primary' : 'text-gray-400'}`}
+                                onClick={() => navigate(`#artists`)}
+                            >
+                                Artists
+                            </button>
+
                             <div className="w-px h-5 bg-gray-400"></div>
 
                             <button
                                 className={`text-base font-semibold ${
                                     tab?.testimonial ? 'text-primary' : 'text-gray-400'
                                 }`}
-                                onClick={() => setTab({ detail: false, testimonial: true, service: false })}
+                                onClick={() => navigate(`#testimonial`)}
                             >
                                 Đánh giá
                             </button>
@@ -78,6 +111,11 @@ export default function Studio() {
                         {tab?.service && (
                             <Suspense fallback={<Loading />}>
                                 <ServiceTab serviceList={data.services} studioId={data.id} />
+                            </Suspense>
+                        )}
+                        {tab?.artist && (
+                            <Suspense fallback={<Loading />}>
+                                <ArtistsTab listArtist={listArtist} />
                             </Suspense>
                         )}
                     </div>

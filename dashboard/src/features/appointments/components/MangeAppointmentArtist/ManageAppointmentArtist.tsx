@@ -10,6 +10,7 @@ import queryClient from '@/lib/react-query';
 import { useAuthStore } from '@/store/authStore';
 import AppointmentCard from './AppointmentCard';
 import { ViewAppointment } from '../ManageAppointment';
+import 'dayjs/locale/vi';
 
 export default function ManageAppointmentArtist() {
     const { accountType } = useAuthStore();

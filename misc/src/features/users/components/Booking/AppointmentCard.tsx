@@ -1,4 +1,4 @@
-import { IStudio } from '@/features/studios';
+import { IStudio, StudioArtist } from '@/features/studios';
 import { AppointmentStatusString, AppointmentType } from '../../types/appointment';
 import StudioCardImage from '@/assets/img/studio-card.jpg';
 import Button from '@/components/common/Button';
@@ -119,6 +119,7 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                             studioId: studio.id,
                             appointmentReschedule: appointment,
                             service: appointment.service,
+                            artist: appointment.artist as StudioArtist | null,
                         });
                     }}
                     {...(appointment.status.toString() === AppointmentStatusString.CANCELED && {

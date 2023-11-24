@@ -32,6 +32,7 @@ export default function ServiceCard({ service, studioId }: { service: IService; 
                                     appointmentReschedule: null,
                                     service,
                                     visible: true,
+                                    artist: null,
                                 });
                             }
                         }}

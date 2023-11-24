@@ -7,19 +7,23 @@ import { useModalStore } from '@/store/componentStore';
 import { IconCalendar, IconCalendarPin } from '@tabler/icons-react';
 
 export default function InvoiceCard({ invoice }: { invoice: IInvoice }) {
-    const { setTesimonialModal } = useModalStore();
+    const { setTesimonialModal, setAppointmentModal } = useModalStore();
     return (
-        <div className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
+        <div
+            onClick={() => setAppointmentModal({ invoice: invoice, visible: true, appointment: null })}
+            className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative"
+        >
             <div className="flex flex-col gap-3 xs:flex-row items-center">
                 <div className="flex flex-col gap-y-3 w-full min-w-[40%] sm:w-auto">
                     <ImageSlider className="rounded-xl" src={invoice.studio.logo} />
                     <Button
-                        onClick={() =>
+                        onClick={(e) => {
+                            e.stopPropagation();
                             setTesimonialModal({
                                 studio: invoice.studio,
                                 visible: true,
-                            })
-                        }
+                            });
+                        }}
                         className="text-sm p-[10px]"
                     >
                         Đánh giá studio
