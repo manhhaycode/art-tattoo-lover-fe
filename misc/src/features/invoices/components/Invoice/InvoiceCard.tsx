@@ -11,7 +11,7 @@ export default function InvoiceCard({ invoice }: { invoice: IInvoice }) {
     return (
         <div
             onClick={() => setAppointmentModal({ invoice: invoice, visible: true, appointment: null })}
-            className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative"
+            className="px-6 py-4 rounded-xl bg-gray-dark shadow-shadow-dropdown relative cursor-pointer"
         >
             <div className="flex flex-col gap-3 xs:flex-row items-center">
                 <div className="flex flex-col gap-y-3 w-full min-w-[40%] sm:w-auto">

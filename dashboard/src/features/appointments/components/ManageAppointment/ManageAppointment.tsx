@@ -28,6 +28,7 @@ import { useAuthStore } from '@/store/authStore';
 import { EPermission } from '@/features/auth';
 import { IconPhotoPlus } from '@tabler/icons-react';
 import MangeMediaAppointment from './MangeMediaAppointment';
+import { AiOutlineCheck } from 'react-icons/ai';
 
 export default function ManageAppointment() {
     const { accountType } = useAuthStore();
@@ -175,36 +176,38 @@ export default function ManageAppointment() {
                                 <EditIcon styles={{ fill: 'currentcolor' }} />
                             </ActionIcon>
 
-                            <ActionIcon
-                                disabled={
-                                    (row.original.status !== 1 && row.original.status !== 2) ||
-                                    !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
-                                }
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    manageMediaState[1].open();
-                                    setAppointmentChoose(row.original);
-                                }}
-                                color="lime.4"
-                            >
-                                <IconPhotoPlus size={16} />
-                            </ActionIcon>
-
-                            {/* <ActionIcon
-                                disabled={
-                                    row.original.status !== 0 ||
-                                    !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
-                                }
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    editModalState[1].open();
-                                    setIsEdit(false);
-                                    setAppointmentChoose(row.original);
-                                }}
-                                color="lime.4"
-                            >
-                                <AiOutlineCheck />
-                            </ActionIcon> */}
+                            {row.original.status === 0 ? (
+                                <ActionIcon
+                                    disabled={
+                                        row.original.status !== 0 ||
+                                        !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
+                                    }
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        editModalState[1].open();
+                                        setIsEdit(false);
+                                        setAppointmentChoose(row.original);
+                                    }}
+                                    color="lime.4"
+                                >
+                                    <AiOutlineCheck />
+                                </ActionIcon>
+                            ) : (
+                                <ActionIcon
+                                    disabled={
+                                        (row.original.status !== 1 && row.original.status !== 2) ||
+                                        !accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)
+                                    }
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        manageMediaState[1].open();
+                                        setAppointmentChoose(row.original);
+                                    }}
+                                    color="lime.4"
+                                >
+                                    <IconPhotoPlus size={16} />
+                                </ActionIcon>
+                            )}
                             <ActionIcon
                                 disabled={
                                     !row.getIsSelected() ||
