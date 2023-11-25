@@ -35,12 +35,12 @@ export default function MangeMediaAppointment({
                 media.url = data.url;
                 setMediaList([...mediaList]);
             } else {
-                toast.error('Tải chứng chỉ thành công nhưng xảy ra lỗi ứng dụng');
+                toast.error('Tải lên ảnh thành công nhưng xảy ra lỗi ứng dụng');
             }
-            toast.success('Tải lên chứng chỉ thành công');
+            toast.success('Tải ảnh lên thành công');
         },
         onError: () => {
-            toast.error('Tải lên chứng chỉ thất bại');
+            toast.error('Tải ảnh lên thất bại');
         },
     });
 
