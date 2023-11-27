@@ -10,7 +10,7 @@ import { CalendarIcon, PhoneCallIcon } from '@/assets/icons';
 export default function ArtistCard({ artist }: { artist: StudioArtist }) {
     const { isAuth } = useAuthStore();
     const { setArtist } = useArtistDetailStore();
-    const { setBookingModal } = useModalStore();
+    const { setBookingModal, setIsModalVisible, setIsLoginModalVisible } = useModalStore();
     return (
         <div className="border solid border-stroke-gray bg-gray-dark rounded-xl">
             <div className="flex flex-col items-center">
@@ -31,6 +31,8 @@ export default function ArtistCard({ artist }: { artist: StudioArtist }) {
                         onClick={() => {
                             if (!isAuth) {
                                 toast.error('Vui lòng đăng nhập trước để đặt lịch');
+                                setIsLoginModalVisible(true);
+                                setIsModalVisible(true);
                             } else {
                                 setBookingModal({
                                     studioId: artist.studioId,
@@ -48,7 +50,9 @@ export default function ArtistCard({ artist }: { artist: StudioArtist }) {
                     </Button>
                     <Button className="py-[10px] bg-white text-black flex-1">
                         <PhoneCallIcon />
-                        <p className="sm:text-base block">Tư vấn</p>
+                        <a className="sm:text-base block" href={`tel:${artist.user.phone}`}>
+                            Tư vấn
+                        </a>
                     </Button>
                 </div>
                 <div className="flex flex-col gap-y-2 w-full p-4 pt-0">

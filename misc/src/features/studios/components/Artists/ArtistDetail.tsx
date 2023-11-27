@@ -1,4 +1,4 @@
-import { ImageSlider } from '@/components/common/Image';
+import Image, { ImageSlider } from '@/components/common/Image';
 import { typeEnum } from '@/features/media';
 import { StudioArtist } from '@/features/studios';
 import { useArtistDetailStore } from '@/store/componentStore';
@@ -15,8 +15,8 @@ export default function ArtistDetail({ artist }: { artist: StudioArtist }) {
             </button>
 
             {artist.user.avatar && (
-                <div className="w-full max-w-[80%]">
-                    <ImageSlider className="rounded-lg rounded-b-none" src={artist.user.avatar} />
+                <div className="w-full max-w-[50%]">
+                    <Image className="rounded-lg rounded-b-none" src={artist.user.avatar} />
                 </div>
             )}
             <h1 className="text-lg font-semibold w-full">Các chứng chỉ của artist</h1>

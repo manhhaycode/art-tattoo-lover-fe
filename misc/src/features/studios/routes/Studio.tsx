@@ -110,7 +110,7 @@ export default function Studio() {
                         )}
                         {tab?.service && (
                             <Suspense fallback={<Loading />}>
-                                <ServiceTab serviceList={data.services} studioId={data.id} />
+                                <ServiceTab studioId={data.id} />
                             </Suspense>
                         )}
                         {tab?.artist && (

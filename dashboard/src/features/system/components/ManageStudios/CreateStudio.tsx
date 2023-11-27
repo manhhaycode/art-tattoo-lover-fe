@@ -135,9 +135,9 @@ export default function CreateStudio({ refreshData }: { refreshData: () => void 
                                         toast.success('Tải ảnh thành công, nhấn lưu thay đổi để cập nhật');
                                     }}
                                     onReject={() => {
-                                        toast.error('Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
+                                        toast.error('Kích thước ảnh quá 1Mb hoặc không đúng định dạng ảnh');
                                     }}
-                                    maxSize={100 * 1024}
+                                    maxSize={1024 * 1024}
                                     accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
                                 >
                                     Tải ảnh mới
