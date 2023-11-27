@@ -1,5 +1,4 @@
 import { IService } from '@/features/services';
-import { ImageSlider } from '@/components/common/Image';
 import { IconCategory } from '@tabler/icons-react';
 import { convertTimeToDisplayFormat, numbertoPrice } from '@/lib/helper';
 import Button from '@/components/common/Button';
@@ -8,15 +7,21 @@ import toast from 'react-hot-toast';
 import { useModalStore } from '@/store/componentStore';
 import { useAuthStore } from '@/store/authStore';
 import { Badge } from '@mantine/core';
+import { useMemo } from 'react';
+import ImageCarousel from '@/components/ImageCarousel';
 export default function ServiceCard({ service, studioId }: { service: IService; studioId: string }) {
     const { isAuth } = useAuthStore();
-    const { setBookingModal } = useModalStore();
+    const { setBookingModal, setIsLoginModalVisible, setIsModalVisible } = useModalStore();
+    const mediaList = useMemo(
+        () => [service.thumbnail, ...service.listMedia.map((media) => media.url)],
+        [service.thumbnail, service.listMedia],
+    );
     return (
         <div className="border solid border-stroke-gray bg-gray-dark rounded-xl">
             <div className="flex flex-col items-center">
                 <div className="w-full">
                     {service.thumbnail ? (
-                        <ImageSlider className="rounded-lg rounded-b-none" src={service.thumbnail} />
+                        <ImageCarousel isSlide={true} listSrc={mediaList} />
                     ) : (
                         <IconCategory size={'100%'} />
                     )}
@@ -25,6 +30,8 @@ export default function ServiceCard({ service, studioId }: { service: IService; 
                     <Button
                         onClick={() => {
                             if (!isAuth) {
+                                setIsLoginModalVisible(true);
+                                setIsModalVisible(true);
                                 toast.error('Vui lòng đăng nhập trước để đặt lịch');
                             } else {
                                 setBookingModal({

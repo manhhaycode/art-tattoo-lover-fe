@@ -65,8 +65,12 @@ export default function StudioIntroCard({
                     {callButton && (
                         <Button className="py-[10px] bg-white text-black flex-1">
                             <PhoneCallIcon />
-                            <p className="sm:text-base hidden sm:block">Gọi điện tư vấn</p>
-                            <p className="sm:text-base block sm:hidden">Tư vấn</p>
+                            <a className="sm:text-base hidden sm:block" href={`tel:${studio.phone}`}>
+                                Gọi điện tư vấn
+                            </a>
+                            <a className="sm:text-base block sm:hidden" href={`tel:${studio.phone}`}>
+                                Tư vấn
+                            </a>
                         </Button>
                     )}
                 </div>

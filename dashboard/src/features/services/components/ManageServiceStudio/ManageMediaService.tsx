@@ -1,18 +1,18 @@
 import { ErrorCode, errorMsg } from '@/common/types/error';
 import DropZoneImage from '@/components/DropZone';
-import { IAppointmentStudio, useUpdateAppointmentMutation } from '@/features/appointments';
 import { typeEnum, useUploadMediaMutation } from '@/features/media';
 import { IMedia } from '@/features/studio';
-import queryClient from '@/lib/react-query';
 import { Button, Modal, Text } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
+import { IService, useUpdateServiceMutation } from '@/features/services';
 
-export default function MangeMediaAppointment({
+export default function ManageMediaService({
     handleModalState,
-    appointmentInfo,
+    serviceInfo,
+    refreshData,
 }: {
     handleModalState: readonly [
         boolean,
@@ -22,10 +22,11 @@ export default function MangeMediaAppointment({
             readonly toggle: () => void;
         },
     ];
-    appointmentInfo?: IAppointmentStudio;
+    serviceInfo?: IService;
+    refreshData: () => void;
 }) {
     const [mediaList, setMediaList] = useState<IMedia[]>(
-        appointmentInfo?.listMedia.filter((media) => media.type === typeEnum.IMAGE) || [],
+        serviceInfo?.listMedia.filter((media) => media.type === typeEnum.IMAGE) || [],
     );
 
     const uploadMediaMutation = useUploadMediaMutation({
@@ -44,11 +45,11 @@ export default function MangeMediaAppointment({
         },
     });
 
-    const updateAppointmentMutation = useUpdateAppointmentMutation({
+    const updateServiceMutation = useUpdateServiceMutation({
         onSuccess: () => {
-            toast.success('Cập nhật hình ảnh lịch hẹn thành công');
-            queryClient.invalidateQueries(['appointmentsStudio']);
+            toast.success('Cập nhật hình ảnh dịch vụ thành công');
             handleModalState[1].close();
+            refreshData && refreshData();
         },
         onError: (e) => {
             const error = e.message as ErrorCode;
@@ -57,16 +58,16 @@ export default function MangeMediaAppointment({
     });
 
     useEffect(() => {
-        if (appointmentInfo?.listMedia)
-            setMediaList(appointmentInfo.listMedia.filter((media) => media.type === typeEnum.IMAGE));
-    }, [appointmentInfo?.listMedia]);
+        if (serviceInfo?.listMedia)
+            setMediaList(serviceInfo.listMedia.filter((media) => media.type === typeEnum.IMAGE));
+    }, [serviceInfo?.listMedia]);
 
     return (
         <Modal
             opened={handleModalState[0]}
             onClose={handleModalState[1].close}
             size={'xl'}
-            title={<Text className="text-sm font-semibold">Quản lý các ảnh trong lịch hẹn</Text>}
+            title={<Text className="text-sm font-semibold">Quản lý ảnh giới thiệu dịch vụ</Text>}
             overlayProps={{
                 backgroundOpacity: 0.7,
                 blur: 2,
@@ -84,10 +85,10 @@ export default function MangeMediaAppointment({
                     </Button>
                     <Button
                         onClick={() => {
-                            updateAppointmentMutation.mutate({
+                            updateServiceMutation.mutate({
                                 listNewMedia: mediaList.filter((item) => item.url.length > 0),
-                                listRemoveMedia: appointmentInfo?.listMedia.map((item) => item.id),
-                                id: appointmentInfo?.id || '',
+                                listRemoveMedia: serviceInfo?.listMedia.map((item) => item.id),
+                                id: serviceInfo?.id || '',
                             });
                         }}
                         className="w-fit mb-6 bg-white text-black"

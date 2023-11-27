@@ -1,5 +1,5 @@
 import { IPagination, IPaginationReq } from '@/common/types';
-import { IMedia } from '@/features/media';
+import { IMedia } from '@/features/studio';
 
 export interface IServiceListStudioReq extends IPaginationReq {
     studioId?: string;
@@ -23,6 +23,8 @@ export interface IService {
     expectDuration: string;
     category: ICategory;
     listMedia: IMedia[];
+    listNewMedia?: IMedia[];
+    listRemoveMedia?: string[];
 }
 
 export interface ICategory {

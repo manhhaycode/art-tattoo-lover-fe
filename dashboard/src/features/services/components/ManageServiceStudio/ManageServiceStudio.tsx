@@ -22,6 +22,8 @@ import queryClient from '@/lib/react-query';
 import toast from 'react-hot-toast';
 import DeleteService from './DeleteService';
 import { EPermission } from '@/features/auth';
+import { IconPhotoPlus } from '@tabler/icons-react';
+import ManageMediaService from './ManageMediaService';
 
 export default function ManageServiceStudio() {
     const { accountType } = useAuthStore();
@@ -34,6 +36,7 @@ export default function ManageServiceStudio() {
     const [sorting, setSorting] = useState<SortingState>([]);
     const basicInfoState = useDisclosure();
     const deleteServiceState = useDisclosure();
+    const manageMediaState = useDisclosure();
     const [serviceChoose, setServiceChoose] = useState<IService>();
     const defaultData = useMemo(() => [], []);
 
@@ -112,7 +115,7 @@ export default function ManageServiceStudio() {
             },
             {
                 accessorKey: 'expectDuration',
-                header: 'Thời gian dự kiến',
+                header: 'Dự kiến',
                 cell: ({ row }) => {
                     return (
                         <Text className="text-sm font-semibold">
@@ -174,6 +177,18 @@ export default function ManageServiceStudio() {
                                 }}
                             >
                                 <EditIcon styles={{ fill: 'currentcolor' }} />
+                            </ActionIcon>
+
+                            <ActionIcon
+                                disabled={!accountType?.permissions?.includes(EPermission.MANAGE_STUDIO_BOOKING)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    manageMediaState[1].open();
+                                    setServiceChoose(row.original);
+                                }}
+                                color="lime.4"
+                            >
+                                <IconPhotoPlus size={16} />
                             </ActionIcon>
 
                             <ActionIcon
@@ -333,6 +348,11 @@ export default function ManageServiceStudio() {
                         <DeleteService
                             dataList={dataDelete}
                             handleModalState={deleteServiceState}
+                            refreshData={refreshData}
+                        />
+                        <ManageMediaService
+                            serviceInfo={serviceChoose}
+                            handleModalState={manageMediaState}
                             refreshData={refreshData}
                         />
                     </>

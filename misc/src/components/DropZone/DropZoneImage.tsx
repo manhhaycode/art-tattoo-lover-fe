@@ -47,9 +47,9 @@ export default function DropZoneImage({
                         toast.success('Tải ảnh thành công, nhấn thay đổi thông tin để cập nhật');
                     }}
                     onReject={() => {
-                        toast.error(errorMessage ?? 'Kích thước ảnh quá 100Kb hoặc không đúng định dạng ảnh');
+                        toast.error(errorMessage ?? 'Kích thước ảnh quá 1Mb hoặc không đúng định dạng ảnh');
                     }}
-                    maxSize={fileSize ? fileSize * 1024 : 100 * 1024}
+                    maxSize={fileSize ? fileSize * 1024 : 1024 * 1024}
                     accept={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
                     classNames={{
                         root: 'w-full h-full',

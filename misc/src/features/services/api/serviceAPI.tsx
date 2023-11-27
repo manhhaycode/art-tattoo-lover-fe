@@ -1,4 +1,4 @@
-// import * as httpRequest from '@/lib/axios';
+import * as httpRequest from '@/lib/axios';
 import * as httpAuth from '@/lib/axios-auth';
 
 import { IService, IServiceListStudio, IServiceListStudioReq } from '../types';
@@ -7,7 +7,7 @@ import { EditRes } from '@/common/types';
 
 const getListServiceStudio = async (filter: IServiceListStudioReq): Promise<IServiceListStudio> => {
     try {
-        const response: IServiceListStudio = await httpAuth.get('/studio/service', { params: filter });
+        const response: IServiceListStudio = await httpRequest.get('/studio/service', { params: filter });
         return response;
     } catch (error) {
         throw new Error(error);
