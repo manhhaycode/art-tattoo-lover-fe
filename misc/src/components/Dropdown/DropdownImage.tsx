@@ -32,7 +32,7 @@ export default function DropdownImage({ children, ...props }: { children: React.
             animate={props.animate ? 'open' : 'closed'}
             variants={variants}
             className={
-                'modal max-w-[850px] bg-gray-dark absolute origin-[50%_5%] w-[436px] shadow-shadow-dropdown rounded-3xl text-white pr-1 ' +
+                'modal max-w-[850px] bg-gray-dark absolute origin-[50%_5%] w-[436px] shadow-shadow-dropdown rounded-3xl text-white pr-1 cursor-pointer ' +
                 props.className
             }
         >

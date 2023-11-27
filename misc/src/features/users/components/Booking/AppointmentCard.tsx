@@ -48,7 +48,7 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
 
     return (
         <div className="px-6 py-4 flex flex-col justify-between  rounded-xl bg-gray-dark shadow-shadow-dropdown relative">
-            <div className="flex flex-col w-full gap-x-2 gap-y-3  xs:flex-row">
+            <div className="flex flex-col w-full gap-x-2 gap-y-3 flex-1  xs:flex-row">
                 <img
                     className="cursor-pointer rounded-xl w-full aspect-video xs:w-40"
                     src={studio.logo?.includes('http') ? studio.logo : StudioCardImage}
@@ -102,8 +102,7 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                             cancelMutate();
                         }
                     }}
-                    {...((appointment.status.toString() === AppointmentStatusString.CANCELED ||
-                        appointment.status.toString() === AppointmentStatusString.DONE) && {
+                    {...(Number(appointment.status) > Number(AppointmentStatusString.RESCHEDULED) && {
                         disabled: true,
                         className: 'w-full h-fit py-3 !bg-disable text-placeholder-gray',
                     })}
@@ -122,13 +121,13 @@ const AppointmentCard = ({ appointment, studio, refetch }: Props) => {
                             artist: appointment.artist as StudioArtist | null,
                         });
                     }}
-                    {...(appointment.status.toString() === AppointmentStatusString.CANCELED && {
+                    {...(Number(appointment.status) > Number(AppointmentStatusString.RESCHEDULED) && {
                         disabled: true,
                         className: 'w-full h-fit py-3 !bg-disable text-placeholder-gray',
                     })}
                 >
                     <IconCalendarRepeat size={18} className="text-white" />
-                    <span>Đặt lại lịch</span>
+                    <span>Đổi lịch hẹn</span>
                 </Button>
             </div>
         </div>

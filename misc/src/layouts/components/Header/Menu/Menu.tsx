@@ -142,15 +142,6 @@ export default function Menu() {
                             >
                                 Xem lịch sử xăm tại studio
                             </button>
-                            <button
-                                onClick={() => {
-                                    setIsOpenMenu(false);
-                                    navigate('/user/blog');
-                                }}
-                                className="p-3 text-start font-medium hover:bg-[rgba(58,59,60,0.3)]"
-                            >
-                                Quản lý Blog cá nhân
-                            </button>
                             <div className="border-[1px] border-stroke-gray"></div>
                             <div className="p-4">
                                 <Logout
