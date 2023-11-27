@@ -37,6 +37,7 @@ export enum ErrorCode {
     ErrorUploadingFile = 'Error uploading file',
     EndDateGreaterThanStartDate = 'End date must be greater than start date',
     NoPermissionToAccessStudio = "You don't have permission to access this studio",
+    NoPermissionToAddThisUserStudio = "You don't have permission to add this user",
     StudioNoWorkingTime = 'Studio has no working time',
     StudioNotFoundAgain = 'Studio Not found',
     StudioCreateFail = 'Studio Create Fail',
@@ -128,6 +129,7 @@ export const errorMsg: Record<ErrorCode, string> = {
     [ErrorCode.UpdatePasswordFailed]: 'Cập nhật mật khẩu không thành công',
     [ErrorCode.NoTokenProvided]: 'Có lỗi xảy ra vui lòng thử lại sau',
     [ErrorCode.PermissionDenied]: 'Từ chối quyền',
+    [ErrorCode.NoPermissionToAddThisUserStudio]: 'Bạn không được phép thêm người dùng này vào studio',
 };
 
 errorMsg[ErrorCode.StudioUsersNotFound];

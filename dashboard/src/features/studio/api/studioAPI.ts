@@ -49,8 +49,8 @@ const getStudioArtist = async (studioId: string): Promise<IUserStudio[]> => {
             params: { studioId },
         });
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -60,8 +60,8 @@ const getUserStudio = async (data: IUserListReq): Promise<IPaginationUserList> =
             params: data,
         });
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -69,8 +69,8 @@ const updateStudio = async (data: Partial<IUpdateStudioReq>): Promise<IUpdateStu
     try {
         const response: IUpdateStudio = await httpAuth.put(`/studios/${data.id}`, data);
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -78,8 +78,8 @@ const deleteUserStudio = async (id: string): Promise<IDeleteUserStudio> => {
     try {
         const response: IDeleteUserStudio = await httpAuth.remove(`/studios/user/${id}`, {});
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -87,8 +87,8 @@ const createUserStudio = async (data: ICreateUserStudioReq): Promise<ICreateUser
     try {
         const response: ICreateUserStudio = await httpAuth.post('/studios/create/user', data);
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 
@@ -99,8 +99,8 @@ const updateUserStudio = async (data: IUpdateUserStudioReq): Promise<IUpdateUser
             roleId: data.roleId,
         });
         return response;
-    } catch (_error) {
-        throw new Error(_error);
+    } catch (e) {
+        throw new Error(e.error);
     }
 };
 

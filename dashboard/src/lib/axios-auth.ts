@@ -5,6 +5,7 @@ import { IRefreshToken } from '@/features/auth/types';
 import { logout, refreshToken } from '@/features/auth/api';
 import { ErrorAuth } from './error';
 import { useAuthStore } from '@/store/authStore';
+import { ErrorCode } from '@/common/types/error';
 
 const httpRequest = axios.create({
     baseURL: config.API.API_URL,
@@ -32,7 +33,7 @@ httpRequest.interceptors.request.use(async (value) => {
 });
 
 httpRequest.interceptors.response.use(undefined, async (error) => {
-    if (error.response?.status === 403) {
+    if (error.response?.status === 403 && error.response?.data?.error !== ErrorCode.NoPermissionToAddThisUserStudio) {
         await logout();
         useAuthStore.getState().setAccountType(null);
         useAuthStore.getState().setIsLogout(true);
