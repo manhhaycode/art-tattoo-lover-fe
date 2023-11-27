@@ -8,6 +8,8 @@
 //   marginTop: 'auto',
 // }));
 
+import { LogoIcon } from '@/assets/icons';
+
 //   return (
 //     <FooterContainer sx={{ background: "#607d8b"}}>
 //       <Container maxWidth="md">
@@ -30,19 +32,12 @@
 // };
 export default function Footer() {
     return (
-        <footer className="pt-40 w-full">
-            <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+        <footer className="pt-40 mx-auto w-[calc(100%-2rem)] 2xl:w-[1372px] sm:w-[calc(100%-4rem)]">
+            <div className="w-full lg:py-8">
                 <div className="md:flex md:justify-between">
                     <div className="mb-6 md:mb-0">
                         <a href="https://art-tattoo-lover.vercel.app/" className="flex items-center">
-                            <img
-                                src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAdCAYAAAAzfpVwAAAEMklEQVRYhcWXfWiWZRTGf7OablFOLWhFaW0Z+ZF9kWnLvkhqpFLIUgpXf7Q+tLG/tgyzWVQUFZlaWSEFrRGaFCmIU8uPsKQ0gmrhNqbhRItRC5uorDhy3XC8ed7nfd/p7Prnee7z3M95rufc577OuQsOj6jA4WLgNzKjFrhc139T5g0IBjmnbwK7gTEZPjQEWAzM0w9VDBCnjAhkJwFPAoOBXcDQhBcWu/uLgGP/F9kmZzuSsMQjgRo3fgL45jTwOwFGdipwqTPeDPRE82qj8WSgVPeFwE2ni+xDbvwp8EM0pzSB7INAKzATeAHYBrwPXDKQZE0NOlxk7wA2RXO+B67VfYfydXAGf33aqIuAPzPMqQY6gc35krXIDnPjzuh5lSNqGAdcAbSk+KsD2rVhYwwHPgC+ApYCRfmS7XPjs6Lny93980AvsEd5/k6K3+GKsKVUcQZ/NflqtZE94MZeYy0XS3T/B7AwevfqHPyPcRI3QTkecANwOF+yP7pxta6ms087e13Cux+l5GVAlaTQ8KGzr0zYyDmRfcuNZwC3Aa9F80Y5TR6qPF4GXAC8qNSIsQ74TLYaRRbJ4iP5EkVqYNeNwO1Z5rap1N4LPAo0AK+45wulAgZb+nOV47aBu908W7GXToasaWlXP97/Th8P6nAj8J70ulG2lS5Xe/UT/SrVYWn3q3IdiJ5fBzyW8v71wHoRKlMJHu+Ijog2lanN5ynNUk5kURX6y41NmnZKbkZn6QVmqmNriOzPROMzgUrgJ+Bl4Jx8yPp+tl4OkLNx0dzuqIAkwYrKZdLPC4F9bs5WrZ7H7/qh5Vn8HkeIbIUjinLRwz78CXA0i7+7ndCvcXbL4ylqgD529vO1glZ6Z+VKdnZkr1YK3KWxbb7HlQ5NJGONmhuD5fk1uv/VtZfbgQekKD87L/YjzcCGNFU6Y0Hx8UbpS3X/E4Gz9axU3dVVwLfKZysCq7WktvPPiz54SE3OFvMte7d+osPNbZW+H1KvHPxYCv0CfJ0W2V7lTTmwJJpznxz45nuTcjro5TKnJNYTFLq5oyVta/XjHq/KHrAtSscTEB8YAypFJHa+XRtio7ON18b6Wx1ZSIVMaHTFY6RUJDRQU7RqiQhpEGO3Er9HuRdSw06/c5yUGcGDrv6vUmlGFW+altafRG5VMNpU9bzq2FmwANiRT2Q9inWaeD1qunvVmzaK8ISoOZmslUDHnqeAe7J9TGjXRtvrjYPS3hD+0WYojzqnIilEm449b7tnzY4o2jAW5emaH8Ok7QtnK1N0r/TzcolsjFuA55RfSTCdLUk4dAYUapXmatznlKNOHZkvx3dK0nKKbIzNIlwfnTIC5qcQRfk9T32FRfxZ9+wNYKxy912taotOKf2KrEeZThT3y9alA+WpgvUSVkQeBlacLNkAWyqTNIuMFY1TDxj1H1K66r8BteOiAAAAAElFTkSuQmCC"
-                                className="h-8 me-3"
-                                alt=""
-                            />
-                            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-                                Tattus
-                            </span>
+                            <LogoIcon styles={{ fill: '#fff' }} />
                         </a>
                     </div>
                     <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
@@ -62,14 +57,6 @@ export default function Footer() {
                                         href="https://art-tattoo-lover.vercel.app/become-studio"
                                         className="hover:underline"
                                     >
-                                        Trở thành Studio
-                                    </a>
-                                    <a href="https://art-tattoo-lover.vercel.app/" className="hover:underline">
-                                        Khám phá
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://art-tattoo-lover.vercel.app/" className="hover:underline">
                                         Trở thành Studio
                                     </a>
                                 </li>

@@ -16,7 +16,7 @@ export default function Home() {
                 </div>
             </div>
             {/* An code từ đây */}
-            <div className="pt-20">
+            <div className="pt-32">
                 <h1 className="text-center text-white text-4xl font-semibold mb-5">Câu chuyện khách hàng</h1>
                 <h2 className="text-center text-white mb-10 text-xl font-light ">Xem nhiều đánh giá hơn ở Tattus</h2>
             </div>
@@ -33,7 +33,8 @@ export default function Home() {
                     <h3 className="text-center font-medium text-lg mb-3">THỰC SỰ DỄ DÀNG SỬ DỤNG ! </h3>
                     <span className="block text-center  font-medium text-white-200 text-sm mb-3">
                         {' '}
-                        "Nó thực sự dễ sử dụng. Nó cho tôi thấy vô số ví dụ khác nhau về các nghệ sĩ, vì vậy nếu tôi không thích một phong cách, tôi có thể xem qua các lựa chọn khác.”
+                        "Nó thực sự dễ sử dụng. Nó cho tôi thấy vô số ví dụ khác nhau về các nghệ sĩ, vì vậy nếu tôi
+                        không thích một phong cách, tôi có thể xem qua các lựa chọn khác.”
                     </span>
                     <h4 className="text-center font-medium text-lg mb-24"> Scarlett</h4>
                 </div>
@@ -49,7 +50,8 @@ export default function Home() {
                     <h3 className="text-center font-medium text-lg mb-3">DỊCH VỤ TUYỆT VỜI !</h3>
                     <span className="block text-center  font-medium text-white-200 text-sm mb-4">
                         {' '}
-                        “Tôi thích Tattus vì bạn có thể thấy nhiều nghệ sĩ và nhiều phong cách xăm khác nhau. Nó thực sự dễ sử dụng.”
+                        “Tôi thích Tattus vì bạn có thể thấy nhiều nghệ sĩ và nhiều phong cách xăm khác nhau. Nó thực sự
+                        dễ sử dụng.”
                     </span>
                     <h4 className="text-center font-medium text-lg mb-24 "> Daniel</h4>
                 </div>
@@ -64,13 +66,15 @@ export default function Home() {
                     </div>
                     <h3 className="text-center font-medium text-lg mb-3"> TÔI YÊU TRẢI NGHIỆM NÀY !</h3>
                     <span className="block text-center font-medium text-white-200 text-sm mb-3">
-                        {' '}“Tattus đã giúp tôi dễ dàng tìm được một nghệ sĩ có thể tạo ra một thiết kế có mức giá phù hợp cho tôi và một người nào đó mà tôi có thể hợp tác.”
+                        {' '}
+                        “Tattus đã giúp tôi dễ dàng tìm được một nghệ sĩ có thể tạo ra một thiết kế có mức giá phù hợp
+                        cho tôi và một người nào đó mà tôi có thể hợp tác.”
                     </span>
                     <h4 className="text-center font-medium text-lg mb-24 ">Zaynab </h4>
                 </div>
             </div>
 
-            <div className="mx-auto w-full xl:w-[900px] pt-24 max-md:hidden" >
+            <div className="mx-auto w-full xl:w-[900px] pt-24 max-md:hidden">
                 <div>
                     <div className="h-96 mb-12 transition-all duration-300 ease-in-out hover:scale-110">
                         <img
@@ -79,22 +83,40 @@ export default function Home() {
                             className="w-full h-full rounded-lg object-cover "
                         />
                     </div>
-                    <h3 className="text-center font-medium text-2xl mb-8"> Lấy cảm hứng cho hình xăm tiếp theo của bạn.</h3>
+                    <h3 className="text-center font-medium text-2xl mb-8">
+                        {' '}
+                        Lấy cảm hứng cho hình xăm tiếp theo của bạn.
+                    </h3>
                     <span className="block text-center font-medium text-gray-200 text-sm mb-1">
-                        {' '}Chúng tôi đã tuyển chọn một bộ sưu tập các hình xăm đẹp để bạn phám phá.
+                        {' '}
+                        Chúng tôi đã tuyển chọn một bộ sưu tập các hình xăm đẹp để bạn phám phá.
                     </span>
-                
                 </div>
             </div>
-            <div className="mx-auto w-full xl:w-[900px] pt-24 max-md:hidden" >
+            <div className="mx-auto w-full xl:w-[900px] pt-24 max-md:hidden">
                 <h1 className="text-[64px] mb-2 text-center font-bold">Tattoo Gallery</h1>
-                <h2 className="text-[16px] mb-2 text-center font-medium mt-10">Tất cả hình ảnh trong bộ sưu tập đều là ảnh xăm thực tế được chụp bởi các nghệ sĩ xăm hình của Tattus</h2>
+                <h2 className="text-[16px] mb-2 text-center font-medium mt-10">
+                    Tất cả hình ảnh trong bộ sưu tập đều là ảnh xăm thực tế được chụp bởi các nghệ sĩ xăm hình của
+                    Tattus
+                </h2>
 
                 <div className=" flex h-96 mb-12 transition-all duration-300 ease-in-out hover:scale-110 ">
-                            <img src="https://morgansinktattoo.com/wp-content/uploads/2023/11/8.png" alt="" className="w-2/6 h-full rounded-lg object-cover mt-10 mx-3.5 " />
-                            <img src="https://morgansinktattoo.com/wp-content/uploads/2023/11/2.png" alt="" className="w-2/6 h-full rounded-lg object-cover mt-10 mx-3.5" />
-                            <img src="https://morgansinktattoo.com/wp-content/uploads/2023/11/14.png" alt="" className="w-2/6 h-full rounded-lg object-cover mt-10 mx-3.5 " />
-                        </div>
+                    <img
+                        src="https://morgansinktattoo.com/wp-content/uploads/2023/11/8.png"
+                        alt=""
+                        className="w-2/6 h-full rounded-lg object-cover mt-10 mx-3.5 "
+                    />
+                    <img
+                        src="https://morgansinktattoo.com/wp-content/uploads/2023/11/2.png"
+                        alt=""
+                        className="w-2/6 h-full rounded-lg object-cover mt-10 mx-3.5"
+                    />
+                    <img
+                        src="https://morgansinktattoo.com/wp-content/uploads/2023/11/14.png"
+                        alt=""
+                        className="w-2/6 h-full rounded-lg object-cover mt-10 mx-3.5 "
+                    />
+                </div>
             </div>
         </div>
     );
