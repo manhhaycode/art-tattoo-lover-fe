@@ -110,7 +110,22 @@ export default function ScheduleWorking() {
                                                 return;
                                             } else {
                                                 //check if shift is change (start, end)
-                                                const shiftData = shift.data.find((e) => e.id === eventU.id);
+                                                const shiftData = shift.data.find((shiftE) => shiftE.id === eventU.id);
+                                                if (!shiftData) {
+                                                    promiseList.push(
+                                                        new Promise((resolve, reject) =>
+                                                            updateShift({
+                                                                shiftId: eventU._def.publicId,
+                                                                time: {
+                                                                    start: eventU.startStr,
+                                                                    end: eventU.endStr,
+                                                                },
+                                                            })
+                                                                .then(resolve)
+                                                                .catch(reject),
+                                                        ),
+                                                    );
+                                                }
                                                 if (
                                                     shiftData &&
                                                     (shiftData.start + 'Z' !== eventU.startStr ||
