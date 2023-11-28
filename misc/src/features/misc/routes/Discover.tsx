@@ -42,7 +42,7 @@ const services = [
   {
     title: 'Hình xăm theo yêu cầu',
     description: 'Bạn có thể yêu cầu hình xăm theo ý muốn của mình.',
-    image: 'https://d1kq2dqeox7x40.cloudfront.net/images/posts/20180925_lpFNYCbzXR77T1U.png?w=600',
+    image: 'https://truongthanhaudio.com/upload/image/nhung-hinh-xam-dep-nhat-hien-nay1.webp',
   },
   {
     title: 'Tư vấn hình xăm',
