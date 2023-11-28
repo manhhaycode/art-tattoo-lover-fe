@@ -16,7 +16,7 @@ export default function ManageAppointmentArtist() {
     const { accountType } = useAuthStore();
     const [searchKeyword, setSearchKeyword] = useDebouncedState('', 300, { leading: true });
     const [date, setDate] = useState<[Date | null, Date | null]>([null, null]);
-    const [listStatus, setListStatus] = useState<number[]>([1]);
+    const [listStatus, setListStatus] = useState<number[]>([1, 2]);
     const [listService, setListService] = useState<string[]>([]);
     const [page, setPage] = useState(0);
     const handleViewAppointment = useDisclosure();
