@@ -47,6 +47,6 @@ const services = [
   {
     title: 'Tư vấn hình xăm',
     description: 'Chúng tôi cung cấp dịch vụ tư vấn hình xăm để bạn có thể lựa chọn được hình xăm phù hợp nhất.',
-    image: 'https://morgansinktattoo.com/wp-content/uploads/2023/03/tattoo2.jpg',
+    image: 'https://phongthuy.danang.vn/wp-content/uploads/2023/04/tu-van-hinh-xam-phong-thuy.jpg',
   },
 ];
