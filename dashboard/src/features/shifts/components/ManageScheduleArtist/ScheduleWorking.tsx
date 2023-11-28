@@ -207,6 +207,24 @@ export default function ScheduleWorking() {
                         arg={arg}
                     />
                 )}
+                eventAdd={(info) => {
+                    const newDate = new Date(info.event.start!);
+                    const now = new Date();
+                    now.setHours(now.getHours() + 7);
+                    const start = newDate.getTime();
+                    if (start < now.getTime()) {
+                        info.revert();
+                    }
+                }}
+                eventChange={(info) => {
+                    const newDate = new Date(info.event.start!);
+                    const now = new Date();
+                    now.setHours(now.getHours() + 7);
+                    const start = newDate.getTime();
+                    if (start < now.getTime()) {
+                        info.revert();
+                    }
+                }}
                 datesSet={(arg) => {
                     const start = getDateShiftList().start;
                     if (arg.endStr !== date.end && arg.end > start)
