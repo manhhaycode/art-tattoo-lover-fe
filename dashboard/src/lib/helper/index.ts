@@ -52,9 +52,9 @@ export const convertTimeToDisplayFormat = (timeString: string) => {
         if (!isNaN(minutes)) {
             if (minutes < 10) {
                 if (minutes === 0) return displayTime;
-                displayTime += `0${minutes}`;
+                displayTime += `0${minutes}p`;
             } else {
-                displayTime += `${minutes}`;
+                displayTime += `${minutes}p`;
             }
         }
 
