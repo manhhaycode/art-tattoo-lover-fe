@@ -5,7 +5,7 @@ export default function Discover() {
     <div id="content" className="pt-6 w-full">
       <div className="mx-auto w-full mb-16 xl:max-w-[1372px]">
         <div className="h-[40vh] md:h-[50vh] lg:h-[60vh] relative" style={{ backgroundImage: `url(${Slider1})`, backgroundSize: 'cover' }}>
-          <div className="absolute top-2/5 w-full font-serif-slide text-white text-center">
+          <div className="absolute top-1/5 w-full font-serif-slide text-white text-center mt-6">
             <h1 className="text-3xl md:text-4xl lg:text-5xl mb-2">Chào mừng đến với Tattus</h1>
           </div>
         </div>
