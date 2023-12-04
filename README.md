@@ -10,7 +10,7 @@
 
   <p align="center">
     Dự án platform kết nối những người yêu thích tattoo và các Studio Tattoo trên thị trường
-    <br />
+    <br/>
   </p>
 </div>
 
